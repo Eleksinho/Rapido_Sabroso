@@ -1,0 +1,28 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RapidoYSabroso</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'app/css/vista1.css' %}">
+
+</head>
+<body>
+  <div class="container">
+    <form>
+      <img src="https://res.cloudinary.com/dejzo3x6l/image/upload/v1462601844/login%20page%20design/3.png" alt="Profile-pic">
+      <div class="input_box">
+        <input type="text" name="username" placeholder="User Name">
+      </div>
+      <div class="input_box">
+        <input type="password" name="password" placeholder="Password">
+      </div>
+      <input type="submit" name="submit" value="Login" class="submit_btn">
+      <br><a href="#" class="for_pass">Forgot Password</a>
+    </form>
+  </div>
+  
+</body>
+</html>
