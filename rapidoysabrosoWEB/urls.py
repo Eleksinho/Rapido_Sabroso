@@ -1,9 +1,11 @@
 from django.urls import path , include
-from .views import vista1
-from django.conf import settings
-from django.conf.urls.static import static
+from .views import vista1, vistaBk,mcdonals
+
+
 
 
 urlpatterns = [
-    path('', vista1,name="vista1")
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    path('', vista1,name="vista1"),
+    path('vistaBk/', vistaBk,name="vistaBk"),
+    path('mcdonals/', mcdonals,name="mcdonals")
+ ]
