@@ -1,9 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render , redirect
 from django.urls import path , include
 import requests
 from lxml import html
 import requests
 import json
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 
 encabezado = {
@@ -11,41 +14,30 @@ encabezado = {
 }
 
 def vista1(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('menu') 
+        else:
+            error_message = 'Usuario o contraseña incorrectos.'
+            return render(request, 'service/vista1.html', {'error_message': error_message})
+    
+ 
+    return render(request, 'service/vista1.html')
 
 
-    # ##url = "https://www.wikipedia.org"
-    # url = "https://www.pedidosya.cl/restaurantes/santiago/burger-king-los-heroes-menu?search=burger%20king"
+def menu(request):
+    return render(request , 'service/menu.html')
 
-
-
-    # respuesta = requests.get(url, headers = encabezado)
-
-    # parser = html.fromstring(respuesta.text)
-
-    # #titulo = parser.get_element_by_id("js-link-box-en") #busca x ID#
-
-    # #print (titulo.text_content()) #.text_content para obtener texto de la etiqueta#
-
-    # hambrugesas = parser.find_class('sc-72orc4-1 sc-byqjo7-0 fImiFL gLYqNM')
-
-    # for hamburguesa in hambrugesas: 
-    #     print(hamburguesa.text_content())
-
-    # #----------------------------------------------------------------------------------#
-    # #CODIGO TRAE TODOS LOS NOMBRES DEL MENU POR XPATH PERSONALIZADO#
-
-    # # hamburguesas = parser.xpath("//div[@class='col-sm-4 col-md-4 col-6']//h4/text()")
-
-    # # for hamburguesa in hamburguesas: 
-    # #     print(hamburguesa)
-
-    # #-----------------------------------------------------------------------------------#
-
-
-
-
-
-    return render(request,'service/vista1.html')
+#Cerrar sesion#
+def logout_view(request):
+    logout(request)
+    return redirect('vista1')
 
 def vistaBk(request):
 

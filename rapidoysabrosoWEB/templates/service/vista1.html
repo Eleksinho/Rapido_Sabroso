@@ -7,22 +7,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RapidoYSabroso</title>
   <link rel="stylesheet" type="text/css" href="{% static 'app/css/vista1.css' %}">
-
 </head>
 <body>
   <div class="container">
-    <form>
+    <form method="post">
+      {% csrf_token %}
       <img src="https://res.cloudinary.com/dejzo3x6l/image/upload/v1462601844/login%20page%20design/3.png" alt="Profile-pic">
       <div class="input_box">
-        <input type="text" name="username" placeholder="User Name">
+        <input type="text" name="username" placeholder="User Name" required>
       </div>
       <div class="input_box">
-        <input type="password" name="password" placeholder="Password">
+        <input type="password" name="password" placeholder="Password" required>
       </div>
-      <input type="submit" name="submit" value="Login" class="submit_btn" href="{% static 'service/burgerk' %}">
-      <br><a href="#" class="for_pass">Forgot Password</a>
+      <input type="submit" value="Login" class="submit_btn">
+      <br><a href="#" class="for_pass">Ingresar</a>
+      <br><a href="{% url 'menu' %}" class="for_pass">No iniciar sesión</a> <!-- Este enlace te lleva directamente al menú -->
+
+      {% if error_message %}
+        <p class="error">{{ error_message }}</p>
+      {% endif %}
     </form>
   </div>
-  
 </body>
 </html>
