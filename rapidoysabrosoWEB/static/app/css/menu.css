@@ -1,0 +1,109 @@
+/* Menu , centrado en barra de navegacion */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
+  
+  header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+  }
+  
+  nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+  }
+  
+  nav .logo a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  nav .nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  
+  nav .nav-links li {
+    margin-left: 20px;
+  }
+  
+  nav .nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+  }
+  
+  nav .nav-links a:hover {
+    text-decoration: underline;
+  }
+  
+  main {
+    padding: 20px;
+  }
+  
+  footer {
+    background-color: #f1f1f1;
+    padding: 10px;
+    text-align: center;
+  }
+/* Termino de barra de navegacion  */
+
+/* Tarjetas estilo  */
+
+.promo-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.promo-card {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 30%;
+  text-align: center;
+  padding: 20px;
+  position: relative;
+}
+
+.promo-card img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.promo-card h3 {
+  margin-top: 15px;
+  font-size: 1.5em;
+}
+
+.promo-card p {
+  margin: 10px 0;
+  color: #666;
+}
+
+.promo-card .promo-btn {
+  background-color: #ff4500;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+.promo-card .promo-btn:hover {
+  background-color: #ff5733;
+}
+
+/* Tarjetas Termino  */

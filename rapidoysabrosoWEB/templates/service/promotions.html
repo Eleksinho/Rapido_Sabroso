@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menús</title>
+</head>
+<body>
+    <h1>Promociones</h1>
+    <ul>
+        {% for menu in menus %}
+        <li>
+            <strong>Restaurante:</strong> {{ menu.rest_name }}<br>
+            <strong>Descripción:</strong> {{ menu.description }}<br>
+            <strong>Precio:</strong> {{ menu.price }}<br>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
