@@ -1,20 +1,22 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menús</title>
-</head>
-<body>
-    <h1>Promociones</h1>
-    <ul>
-        {% for menu in menus %}
-        <li>
-            <strong>Restaurante:</strong> {{ menu.rest_name }}<br>
-            <strong>Descripción:</strong> {{ menu.description }}<br>
-            <strong>Precio:</strong> {{ menu.price }}<br>
-        </li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+<h1>Promociones</h1>
+{% if menus %}
+<ul>
+    {% for menu in menus %}
+    <li>
+        <strong>Restaurante:</strong> {{ menu.restaurant }}<br>
+        <strong>Promoción:</strong> {{ menu.promo }}<br>
+        <strong>Detalles:</strong>
+        <ul>
+            {% for detail in menu.details %}
+            <li>
+                <strong>Descripción:</strong> {{ detail.description }}<br>
+                <strong>Precio:</strong> {{ detail.price }}<br>
+            </li>
+            {% endfor %}
+        </ul>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+    <p>No se encontraron menús disponibles.</p>
+{% endif %}
