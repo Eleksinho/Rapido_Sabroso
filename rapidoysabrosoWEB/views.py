@@ -94,7 +94,8 @@ def extract_target_urls(data, max_depth=10, max_urls=50, current_depth=0, visite
 def get_all_menus(urls, id_list, max_requests=10):
     url_pedidos_ya_bk = "https://www.pedidosya.cl/v2/niles/partners/{id}/menus?isJoker=false&occasion=DELIVERY"
     
-    headers['referer'] = 'https://www.pedidosya.cl/'  
+    headers['referer']  = 'https://www.pedidosya.cl/'
+      
     list_total = []
     processed_requests = 0
 
