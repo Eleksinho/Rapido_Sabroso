@@ -1,12 +1,10 @@
-from django.urls import path , include
-from .views import vista1 , menu , logout_view , menu_view
-
-
-
+from django.urls import path
+from .views import *
 
 urlpatterns = [
-    path('', vista1,name="vista1"),
-    path('menu', menu,name="menu"),
+    path('', vista1, name="vista1"),
+    path('menu', menu, name="menu"),
     path('logout/', logout_view, name='logout'),
-    path('promotions/', menu_view, name='promotions'),
- ]
+    path('promotions/', menu_index, name='promotions'),
+    path('menus/', menu_view, name='menu_view'),
+]
