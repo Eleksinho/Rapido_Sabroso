@@ -51,16 +51,27 @@ class Command(BaseCommand):
                 # Asegurarse de que 'imagenes[i]' sea un elemento de imagen antes de obtener el 'src'
                 imagen_url = imagenes[i].get('src') if i < len(imagenes) and isinstance(imagenes[i], html.HtmlElement) else None
 
-                # Crear una nueva entrada en la tabla de productos
-                Producto.objects.create(
-                    nombre=nombre_producto,
-                    precio=precio_producto,
-                    descripcion=descripcion_producto,
-                    imagen_url=imagen_url,
-                    fuente_url=url_obj
-                )
+                # Verificar si el producto ya existe en la base de datos
+                producto_existente = Producto.objects.filter(nombre=nombre_producto).first()
 
-                self.stdout.write(self.style.SUCCESS(f"Producto '{nombre_producto}' guardado con éxito."))
+                if producto_existente:
+                    # Actualizar el producto existente
+                    producto_existente.precio = precio_producto
+                    producto_existente.descripcion = descripcion_producto
+                    producto_existente.imagen_url = imagen_url
+                    producto_existente.fuente_url = url_obj
+                    producto_existente.save()
+                    self.stdout.write(self.style.SUCCESS(f"Producto '{nombre_producto}' actualizado con éxito."))
+                else:
+                    # Crear una nueva entrada en la tabla de productos
+                    Producto.objects.create(
+                        nombre=nombre_producto,
+                        precio=precio_producto,
+                        descripcion=descripcion_producto,
+                        imagen_url=imagen_url,
+                        fuente_url=url_obj
+                    )
+                    self.stdout.write(self.style.SUCCESS(f"Producto '{nombre_producto}' guardado con éxito."))
 
             # Actualizar la fecha de última vez scrapeada
             url_obj.last_scraped = datetime.now()
