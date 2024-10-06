@@ -8,3 +8,4 @@ urlpatterns = [
     path('promotions/', menu_index, name='promotions'),
     path('menus/', menu_view, name='menu_view'),
 ]
+

@@ -200,55 +200,13 @@ def menu_view(request):
 import requests
 from lxml import html
 
-def obtener_productos():
-    url = "https://www.wendys.cl/pedir"
-    
-    headers = {
-        'accept': 'application/json, text/plain, */*',
-        'accept-language': 'es-419,es;q=0.9',
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 OPR/113.0.0.0'
-    }
-
-    response = requests.get(url, headers=headers)
-
-    if response.status_code == 200:
-        # Parsear el contenido HTML
-        tree = html.fromstring(response.content)
-
-        # Usar XPath para extraer los productos
-        productos = []
-        contenedores_productos = tree.xpath('//div[@class="flex flex-col justify-between h-40 w-[60%] sm:w-56 p-3.5 pr-3"]')
-
-        for producto in contenedores_productos:
-            # Extraer el nombre del producto
-            nombre = producto.xpath('.//span[@class="line-clamp-2"]/text()')[0].strip() if producto.xpath('.//span[@class="line-clamp-2"]/text()') else 'Nombre no disponible'
-            
-            # Extraer la descripción del producto
-            descripcion = producto.xpath('.//p[@class="mt-0.5 text-xs text-ellipsis dark:text-neutral-300 whitespace-pre-wrap line-clamp-3"]/text()')[0].strip() if producto.xpath('.//p[@class="mt-0.5 text-xs text-ellipsis dark:text-neutral-300 whitespace-pre-wrap line-clamp-3"]/text()') else 'Descripción no disponible'
-            
-            # Extraer el precio del producto
-            precio = producto.xpath('.//div[@class="flex gap-x-2 text-sm flex-row"]/div/text()')[0].strip() if producto.xpath('.//div[@class="flex gap-x-2 text-sm flex-row"]/div/text()') else 'Precio no disponible'
-            
-            # Inicializa la URL de imagen como una cadena vacía (ajusta esto si hay imágenes disponibles)
-            imagen_url = ''  # Si hay imágenes, ajusta esta línea para extraerlas
-
-            # Añadir el producto a la lista
-            productos.append({
-                'nombre': nombre,
-                'descripcion': descripcion,
-                'precio': precio,
-                'imagen_url': imagen_url
-            })
-
-        return productos
-    else:
-        print(f"Error al obtener la página: {response.status_code}")
-        return []
-
 from django.shortcuts import render
 
+from django.shortcuts import render
+from .models import Producto  # Asegúrate de importar el modelo Producto
+
 def menu(request):
-    productos = obtener_productos()  # Obtener los productos mediante la función de scraping
+    productos = Producto.objects.all()  # Obtener todos los productos de la base de datos
     context = {
         'productos': productos
     }
