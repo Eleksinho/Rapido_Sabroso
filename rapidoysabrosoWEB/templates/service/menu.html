@@ -28,6 +28,7 @@
     <section class="productos-container">
       {% for producto in productos %}
       <div class="producto-card">
+        <!-- Corregido: Accediendo directamente a la URL de la imagen -->
         <img src="{{ producto.imagen_url }}" alt="{{ producto.nombre }}" class="producto-imagen">
         <div class="producto-info">
           <h4 class="producto-nombre">{{ producto.nombre }}</h4>
@@ -40,7 +41,6 @@
       {% endfor %}
     </section>
   </main>
-  
 
   <footer>
     <p>&copy; 2024 RapidoYSabroso. All rights reserved.</p>
