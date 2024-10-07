@@ -1,101 +1,177 @@
-/* Estilos generales */
-body, html {
+/* General styles */
+body {
+  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
+  color: #333;
 }
 
-/* Estilos del header */
-nav {
+header {
   background-color: #333;
   color: #fff;
-  padding: 15px;
+  padding: 10px 0;
 }
 
 nav .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 20px;
 }
 
-.logo a {
+nav .logo a {
   color: #fff;
   text-decoration: none;
   font-size: 24px;
+  font-weight: bold;
 }
 
-.nav-links {
-  list-style-type: none;
+nav .nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
 }
 
-.nav-links li {
+nav .nav-links li {
   margin-left: 20px;
 }
 
-.nav-links a {
+nav .nav-links a {
   color: #fff;
   text-decoration: none;
+  font-size: 16px;
 }
 
-/* Contenedor de Marcas */
-.marcas-container {
-  margin: 20px auto;
-  text-align: center;
-  width: 100%;
+nav .nav-links a:hover {
+  text-decoration: underline;
 }
 
-/* Contenedor de las cartas de marcas */
-.marca-cuadrados-container {
-  display: flex;
-  overflow-x: auto; /* Permitir desplazamiento horizontal */
-  padding: 10px;
-  scroll-behavior: smooth; /* Desplazamiento suave */
-}
-
-/* Estilo individual de la carta */
-.marca-cuadro {
-  background-color: #ffffff;
-  border: 2px solid #ddd;
+main {
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  min-width: 150px; /* Ancho mínimo para cada carta */
-  margin-right: 10px; /* Separación entre cartas */
-  flex: 0 0 auto; /* Evitar que las cartas se expandan */
 }
 
-/* Estilo del texto de la carta */
-.marca-nombre {
+footer {
+  background-color: #f1f1f1;
+  padding: 10px;
+  text-align: center;
+}
+
+/* Promo cards styles */
+.promo-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.promo-card {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 30%;
+  text-align: center;
+  padding: 20px;
+  transition: transform 0.3s;
+}
+
+.promo-card:hover {
+  transform: scale(1.05);
+}
+
+.promo-card h3 {
+  margin-top: 15px;
+  font-size: 1.5em;
+}
+
+.promo-card p {
+  margin: 10px 0;
+  color: #666;
+}
+
+.promo-card .promo-btn {
+  background-color: #ff4500;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+.promo-card .promo-btn:hover {
+  background-color: #ff5733;
+}
+
+/* Product grid */
+.productos-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Individual product card */
+.producto-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.producto-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.producto-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.producto-card h4 {
+  margin-top: 15px;
   font-size: 18px;
   font-weight: bold;
 }
 
-/* Contenedor de Productos */
-.productos-container {
-  margin: 40px auto;
+.producto-card p {
+  color: #555;
+  margin: 10px 0;
 }
 
-.producto-card {
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 15px;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.producto-card .producto-precio {
+  color: #ff4b4b;
+  font-weight: bold;
+  font-size: 20px;
 }
 
-.producto-imagen {
-  max-width: 100%;
-  border-radius: 8px;
-  margin-bottom: 15px;
+/* Additional styles */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.producto-info {
+  margin-top: 10px;
+  text-align: center; /* Centra el texto */
 }
 
 .producto-info h4 {
-  font-size: 20px;
-  font-weight: bold;
+  margin: 10px 0;
+  font-size: 1.2em; /* Ajusta el tamaño según tus preferencias */
 }
 
-.producto-precio {
-  font-size: 18px;
-  color: #333;
+.producto-info p {
+  margin: 5px 0;
+  color: #666; /* Color más claro para la descripción */
+}
+
+.producto-info .producto-precio {
+  font-weight: bold;
+  color: #ff4b4b; /* Mismo color que ya tienes para el precio */
+  font-size: 1.5em; /* Tamaño más grande para el precio */
 }

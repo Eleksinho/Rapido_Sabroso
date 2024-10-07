@@ -7,6 +7,5 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('promotions/', menu_index, name='promotions'),
     path('menus/', menu_view, name='menu_view'),
-    path('marca/<str:marca>/', productos_por_marca, name='marca'),
 ]
 

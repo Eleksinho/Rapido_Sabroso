@@ -9,7 +9,6 @@ class Url(models.Model):
         return self.url
 
 # Modelo para las categorías de los productos
-
 class Categoria(models.Model):
     nombre = models.CharField(max_length=255, unique=True)  # Nombre de la categoría, única para evitar duplicados
 

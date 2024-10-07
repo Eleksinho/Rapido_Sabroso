@@ -207,14 +207,7 @@ from .models import Producto  # Asegúrate de importar el modelo Producto
 
 def menu(request):
     productos = Producto.objects.all()  # Obtener todos los productos de la base de datos
-    marcas_unicas = Producto.objects.values_list('marca', flat=True).distinct()
     context = {
-        'productos': productos,
-        'marcas_unicas': marcas_unicas
+        'productos': productos
     }
     return render(request, 'service/menu.html', context)
-
-def productos_por_marca(request, marca):
-    # Filtrar los productos por la marca seleccionada
-    productos_filtrados = Producto.objects.filter(marca=marca)
-    return render(request, 'service/marca.html', {'productos': productos_filtrados, 'marca': marca})
