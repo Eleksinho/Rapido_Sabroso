@@ -9,11 +9,11 @@ from django.conf import settings
 
 # Definir las palabras clave para cada categoría
 CATEGORIAS = {
-    'Hamburguesa/Burger': ['hamburguesa', 'burger'],
+    'Hamburguesa': ['hamburguesa', 'burger'],
     'Pizza': ['pizza'],
     'Bebidas': ['bebida', 'drink', 'drinks'],
     'Burritos': ['burrito'],
-    'Pollo/Chicken': ['pollo', 'chicken'],
+    'Pollo': ['pollo', 'chicken'],
     'Empanadas': ['empanada'],
     'Sandwiches': ['sandwich'],
     'Combos': ['combo'],

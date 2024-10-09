@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Productos de la Marca - {{ marca }}</title>
   <link rel="stylesheet" href="{% static 'app/css/menu.css' %}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
   <header>
@@ -29,13 +30,13 @@
     <section class="productos-container">
         {% for producto in productos %}
         <div class="producto-card">
+          <!-- Corregido: Accediendo directamente a la URL de la imagen -->
           <img src="{{ producto.imagen_url }}" alt="{{ producto.nombre }}" class="producto-imagen">
           <div class="producto-info">
             <h4 class="producto-nombre">{{ producto.nombre }}</h4>
             <p class="producto-descripcion">{{ producto.descripcion }}</p>
             <span class="producto-precio">{{ producto.precio }}</span>
-            <br>
-            <h4 class="producto-marca">{{ producto.marca }}</h4>
+            <span class="producto-precio">{{ producto.marca }}</span>
           </div>
         </div>
         {% empty %}
@@ -47,5 +48,7 @@
   <footer class="text-center mt-5">
     <p>&copy; 2024 RapidoYSabroso. All rights reserved.</p>
   </footer>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
