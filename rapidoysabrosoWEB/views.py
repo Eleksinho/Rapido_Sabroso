@@ -51,11 +51,10 @@ def categorias(request, categoria):
     # Obtener todas las categorías (opcional, si no lo necesitas puedes quitar esta línea)
     categorias = Categoria.objects.all()
 
-    # Verificar si la categoría es "Todas"
     if categoria == "Todas":
-        productos = Producto.objects.all()  # Obtener todos los productos
+        productos = Producto.objects.all()  
     else:
-        # Obtener la categoría específica por nombre
+        
         categoria_obj = get_object_or_404(Categoria, nombre=categoria) 
         productos = Producto.objects.filter(categoria=categoria_obj) 
 
