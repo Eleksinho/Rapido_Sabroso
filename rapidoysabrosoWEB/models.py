@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils.text import slugify
 # Modelo para almacenar las URLs que se van a scrapear
 class Url(models.Model):
     url = models.URLField(unique=True)  # URL que vas a scrapear
@@ -10,7 +10,7 @@ class Url(models.Model):
 
 # Modelo para las categorías de los productos
 class Categoria(models.Model):
-    nombre = models.CharField(max_length=255, unique=True)  # Nombre de la categoría, única para evitar duplicados
+    nombre = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
         return self.nombre

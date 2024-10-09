@@ -1,4 +1,14 @@
 /* General styles */
+ /* Estilo para ocultar la lista de categorías */
+ #category-list {
+  display: none; /* Ocultar por defecto */
+  margin-left: 20px; /* Espacio a la izquierda para las categorías */
+}
+
+/* Mostrar la lista de categorías al pasar el mouse sobre el enlace */
+li:hover #category-list {
+  display: block; /* Mostrar la lista al pasar el mouse */
+}
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -174,4 +184,33 @@ footer {
   font-weight: bold;
   color: #ff4b4b; /* Mismo color que ya tienes para el precio */
   font-size: 1.5em; /* Tamaño más grande para el precio */
+}
+
+/* Estilos para el logo */
+.logo-img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Para pantallas pequeñas (móviles) */
+@media (max-width: 600px) {
+  .logo-img {
+      width: 150px; /* Ajusta el tamaño del logo en móviles */
+  }
+}
+
+/* Para pantallas medianas (tabletas) */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .logo-img {
+      width: 250px; /* Ajusta el tamaño del logo en tabletas */
+  }
+}
+
+/* Para pantallas grandes (escritorio) */
+@media (min-width: 1025px) {
+  .logo-img {
+      width: 300px; /* Ajusta el tamaño del logo en pantallas grandes */
+  }
 }

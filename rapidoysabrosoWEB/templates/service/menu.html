@@ -2,20 +2,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="shortcut icon" href="{% static 'imagenes/favicon.ico' %}" type="image/x-icon">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - RapidoYSabroso</title>
   <link rel="stylesheet" type="text/css" href="{% static 'app/css/menu.css' %}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
   <header>
     <nav>
       <div class="container">
         <div class="logo">
-          <a href="{% url 'menu' %}">RapidoYSabroso</a>
+          <a href="{% url 'menu' %}">
+            
+        </a>
+    
         </div>
-        <ul class="nav-links">
-          <li><a href="#">Categorias</a></li>
+        <ul class="nav-links">         
+          <ul>
+              <li><a href="{% url 'categoria' 'Todas' %}">Todas las Categorías</a></li>
+              {% for categoria in categorias %}
+                  <li><a href="{% url 'categoria' categoria.nombre %}">{{ categoria.nombre }}</a></li>
+              {% endfor %}
+          </ul>
+        </li>
+        </ul>
+        
           <li><a href="#">Configuracion</a></li>
           <li><a href="#">Perfil</a></li>
           <li><a href="{% url 'logout' %}">Cerrar Sesion</a></li>
@@ -23,7 +36,19 @@
       </div>
     </nav>
   </header>
-
+  <section class="marcas-container container">
+    <h2 class="text-center my-4">Marcas Disponibles</h2>
+    <div class="marca-cards-container d-flex overflow-auto">
+      <!-- Contenedor de las cartas en fila -->
+      {% for marca in marcas_unicas %}
+      <a href="{% url 'marca' marca=marca %}" class="marca-card text-center mx-3 p-3">
+        <div class="card-body">
+          <h4 class="marca-nombre">{{ marca }}</h4>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
   <main>
     <section class="productos-container">
       {% for producto in productos %}

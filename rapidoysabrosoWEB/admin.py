@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from django.contrib import admin
-from .models import Url, Producto, PageSelector
+from .models import Url, Producto, PageSelector , Categoria
 
 @admin.register(Url)
 class UrlAdmin(admin.ModelAdmin):
@@ -18,3 +18,9 @@ class ProductoAdmin(admin.ModelAdmin):
 class PageSelectorAdmin(admin.ModelAdmin):
     list_display = ('url', 'product_selector', 'price_selector', 'description_selector', 'image_selector')
     search_fields = ('url__url',)
+
+@admin.register(Categoria)
+class CategoriaAdmin(admin.ModelAdmin):
+    # Corregir 'list_display' y 'search_fields' como tuplas
+    list_display = ('nombre',)  # Asegúrate de incluir la coma (,) para definirlo como tupla
+    search_fields = ('nombre',)
