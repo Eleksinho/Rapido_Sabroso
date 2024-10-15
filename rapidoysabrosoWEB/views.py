@@ -48,7 +48,6 @@ from django.shortcuts import render, get_object_or_404
 from .models import Producto, Categoria
 
 def categorias(request, categoria):
-    # Obtener todas las categorías (opcional, si no lo necesitas puedes quitar esta línea)
     categorias = Categoria.objects.all()
 
     if categoria == "Todas":
@@ -64,4 +63,9 @@ def categorias(request, categoria):
         'categorias': categorias 
     }
     return render(request, 'service/categoria.html', context)
+
+def producto(request, id):
+    categorias = Categoria.objects.all()
+    producto = get_object_or_404(Producto, id=id)
+    return render(request, 'service/producto.html', {'producto': producto})
 

@@ -22,10 +22,13 @@
     <div class="producto-card">
       <img src="{{ producto.imagen_url }}" alt="{{ producto.nombre }}" class="producto-imagen">
       <div class="producto-info">
+        <h4 class="producto-nombre">{{ id }}</h4>
         <h4 class="producto-nombre">{{ producto.nombre }}</h4>
         <p class="producto-descripcion">{{ producto.descripcion }}</p>
         <span class="producto-precio">{{ producto.precio }}</span>
         <span class="producto-marca">{{ producto.marca }}</span>
+        <a href="{% url 'producto' id=producto.id %}">Ver detalles</a>
+
       </div>
     </div>
     {% empty %}
