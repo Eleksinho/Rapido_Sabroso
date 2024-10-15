@@ -4,8 +4,8 @@ import requests
 from lxml import html
 from urllib.parse import urlparse
 from datetime import datetime
-import os
-from django.conf import settings
+from django.db import transaction
+from concurrent.futures import ThreadPoolExecutor
 
 # Definir las palabras clave para cada categoría
 CATEGORIAS = {
@@ -21,120 +21,137 @@ CATEGORIAS = {
     'Sin Categoría': []
 }
 
+# Selectores por defecto
+DEFAULT_SELECTORS = {
+    'producto': "//span[@class='line-clamp-2']",
+    'precio': "//div[@class='flex gap-x-2 text-sm flex-row']/div[1]/text()",
+    'descripcion': "//p[contains(@class, 'mt-0.5') and contains(@class, 'line-clamp-3')]",
+    'imagen': "//img[contains(@src, 'tofuu') and @class='rounded-l-lg']/@src"
+}
+
 def obtener_marca(url):
-    # Extraer la marca del dominio
     dominio = urlparse(url).netloc
-    marca = dominio.split('.')[1]  # Extraer la parte que está entre los puntos
+    marca = dominio.split('.')[1] if '.' in dominio else dominio
     return marca
 
 def categorizar_producto(nombre_producto):
-    nombre_producto_lower = nombre_producto.lower()  # Convertir el nombre a minúsculas para hacer la búsqueda insensible a mayúsculas/minúsculas
-    
-    # Verificar cada categoría y sus palabras clave
+    nombre_producto_lower = nombre_producto.lower()
     for categoria, palabras_clave in CATEGORIAS.items():
         if any(palabra in nombre_producto_lower for palabra in palabras_clave):
-            categoria_obj, created = Categoria.objects.get_or_create(nombre=categoria)
+            categoria_obj, _ = Categoria.objects.get_or_create(nombre=categoria)
             return categoria_obj
-
-    # Si no coincide con ninguna palabra clave, asignar 'Sin Categoría'
-    categoria_obj, created = Categoria.objects.get_or_create(nombre='Sin Categoría')
+    categoria_obj, _ = Categoria.objects.get_or_create(nombre='Sin Categoría')
     return categoria_obj
+
+def descargar_imagen(url_imagen):
+    try:
+        response_imagen = requests.get(url_imagen)
+        if response_imagen.status_code == 200:
+            return response_imagen.content
+        return None
+    except requests.exceptions.RequestException:
+        return None
 
 class Command(BaseCommand):
     help = 'Realiza scraping de todas las URLs almacenadas y extrae los productos'
 
+    @transaction.atomic
     def handle(self, *args, **kwargs):
-        # Obtener todas las URLs para scraping
         urls = Url.objects.all()
 
         for url_obj in urls:
             url = url_obj.url
             self.stdout.write(f"Scraping {url}...")
 
-            # Obtener los selectores correspondientes para esa URL
             try:
+                # Intentar obtener los selectores personalizados desde la base de datos
                 selectors = PageSelector.objects.get(url=url_obj)
             except PageSelector.DoesNotExist:
-                self.stdout.write(self.style.ERROR(f"No se encontraron selectores para {url}"))
+                self.stdout.write(self.style.ERROR(f"No se encontraron selectores para {url}. Usando selectores por defecto."))
+                selectors = None  # Para usar los selectores por defecto más adelante
+
+            try:
+                response = requests.get(url)
+                response.raise_for_status()  # Asegura que la respuesta fue exitosa
+            except requests.RequestException as e:
+                self.stdout.write(self.style.ERROR(f"Error al acceder a {url}: {e}"))
                 continue
 
-            # Hacer la solicitud GET a la URL
-            response = requests.get(url)
-            if response.status_code != 200:
-                self.stdout.write(self.style.ERROR(f"Error al acceder a {url}"))
-                continue
-
-            # Parsear el contenido HTML
             tree = html.fromstring(response.content)
 
-            # Extraer los datos usando los selectores de la base de datos
-            productos = tree.xpath(selectors.product_selector)
-            precios = tree.xpath(selectors.price_selector)
-            descripciones = tree.xpath(selectors.description_selector) if selectors.description_selector else []
-            imagenes = tree.xpath(selectors.image_selector)  # Usamos el nuevo selector aquí
+            # Intentar con los selectores por defecto primero
+            productos = tree.xpath(DEFAULT_SELECTORS['producto'])
+            precios = tree.xpath(DEFAULT_SELECTORS['precio'])
+            descripciones = tree.xpath(DEFAULT_SELECTORS['descripcion']) if DEFAULT_SELECTORS['descripcion'] else []
+            imagenes = tree.xpath(DEFAULT_SELECTORS['imagen'])
 
-            # Obtener la marca desde la URL
-            marca = obtener_marca(url)
-
-            # Validar que se hayan encontrado datos
+            # Si no se encontraron productos o precios, usar los selectores guardados
             if not productos or not precios:
-                self.stdout.write(self.style.ERROR(f"No se encontraron productos o precios en {url}"))
+                self.stdout.write(self.style.WARNING(f"Selectores por defecto fallaron para {url}. Usando selectores guardados."))
+
+                if selectors:
+                    productos = tree.xpath(selectors.product_selector)
+                    precios = tree.xpath(selectors.price_selector)
+                    descripciones = tree.xpath(selectors.description_selector) if selectors.description_selector else []
+                    imagenes = tree.xpath(selectors.image_selector) if selectors.image_selector else []
+                else:
+                    self.stdout.write(self.style.ERROR(f"No se encontraron productos o precios en {url}. Favor editar los selectores."))
+
+            # Si todavía no hay productos o precios, continuar con la siguiente URL
+            if not productos or not precios:
                 continue
 
-            # Guardar los productos extraídos en la base de datos
+            # Guardar selectores si los por defecto han funcionado correctamente
+            if selectors is None and productos and precios:
+                # Guardamos los selectores por defecto en la base de datos para esta URL
+                PageSelector.objects.create(
+                    url=url_obj,
+                    product_selector=DEFAULT_SELECTORS['producto'],
+                    price_selector=DEFAULT_SELECTORS['precio'],
+                    description_selector=DEFAULT_SELECTORS['descripcion'],
+                    image_selector=DEFAULT_SELECTORS['imagen']
+                )
+                self.stdout.write(self.style.SUCCESS(f"Selectores por defecto guardados para {url}."))
+
+            # Descargar imágenes de forma concurrente
+            with ThreadPoolExecutor() as executor:
+                imagenes_binarias = list(executor.map(descargar_imagen, [requests.compat.urljoin(url, img) if not img.startswith('http') else img for img in imagenes]))
+
+            # Procesar cada producto
             for i, producto in enumerate(productos):
                 nombre_producto = producto.text_content().strip()
                 precio_producto = precios[i].strip() if i < len(precios) else None
                 descripcion_producto = descripciones[i].text_content().strip() if i < len(descripciones) else None
-                imagen_url = imagenes[i] if i < len(imagenes) else None  # Ahora 'imagenes' tiene las URLs directamente
+                imagen_binaria = imagenes_binarias[i] if i < len(imagenes_binarias) else None
+                imagen_url = imagenes[i] if i < len(imagenes) else None
 
-                # Categorizar el producto según su nombre
+                # Categorizar el producto
                 categoria = categorizar_producto(nombre_producto)
 
-                # Verificar si la imagen_url es relativa y corregirla si es necesario
-                if imagen_url:
-                    # Si la URL es relativa, convertirla a absoluta
-                    if not imagen_url.startswith('http'):
-                        imagen_url = requests.compat.urljoin(url, imagen_url)
-
-                # Descargar la imagen dentro del ciclo
-                imagen_binaria = None
-                if imagen_url:
-                    try:
-                        # Descargar la imagen
-                        response_imagen = requests.get(imagen_url)
-                        if response_imagen.status_code == 200:
-                            # Almacenar el contenido de la imagen en binario
-                            imagen_binaria = response_imagen.content
-                        else:
-                            self.stdout.write(self.style.ERROR(f"Error al descargar la imagen desde {imagen_url}: {response_imagen.status_code}"))
-                    except requests.exceptions.RequestException as e:
-                        self.stdout.write(self.style.ERROR(f"Error al descargar la imagen: {e}"))
-
-                # Verificar si el producto ya existe en la base de datos (nombre + fuente_url)
+                # Verificar si el producto ya existe
                 producto_existente = Producto.objects.filter(nombre=nombre_producto, fuente_url=url_obj).first()
 
                 if producto_existente:
-                    # Si ya existe, actualizar los datos
+                    # Actualizar producto existente
                     producto_existente.precio = precio_producto
                     producto_existente.descripcion = descripcion_producto
-                    producto_existente.imagen_url = imagen_url  # Usar la URL de la imagen
-                    producto_existente.imagen = imagen_binaria  # Usar el contenido binario de la imagen
+                    producto_existente.imagen_url = imagen_url
+                    producto_existente.imagen = imagen_binaria
                     producto_existente.categoria = categoria
-                    producto_existente.marca = marca
+                    producto_existente.marca = obtener_marca(url)
                     producto_existente.save()
                     self.stdout.write(self.style.SUCCESS(f"Producto '{nombre_producto}' actualizado con éxito."))
                 else:
-                    # Crear una nueva entrada en la tabla de productos
+                    # Crear nuevo producto
                     Producto.objects.create(
                         nombre=nombre_producto,
                         precio=precio_producto,
                         descripcion=descripcion_producto,
-                        imagen_url=imagen_url,  # Guardar la URL de la imagen
-                        imagen=imagen_binaria,  # Guardar el contenido binario de la imagen
+                        imagen_url=imagen_url,
+                        imagen=imagen_binaria,
                         fuente_url=url_obj,
                         categoria=categoria,
-                        marca=marca
+                        marca=obtener_marca(url)
                     )
                     self.stdout.write(self.style.SUCCESS(f"Producto '{nombre_producto}' guardado con éxito."))
 
