@@ -113,11 +113,26 @@ footer {
 }
 
 /* Product grid */
+/* Ajuste del contenedor de productos */
 .productos-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas en lugar de auto-fill */
+  gap: 20px; /* Espacio entre los productos */
+  justify-content: center; /* Centrará los productos en el contenedor */
   margin-top: 20px;
+}
+
+/* Ajuste para pantallas más pequeñas */
+@media (max-width: 1024px) {
+  .productos-container {
+    grid-template-columns: repeat(2, 1fr); /* Cambiar a 2 productos por fila en pantallas medianas */
+  }
+}
+
+@media (max-width: 600px) {
+  .productos-container {
+    grid-template-columns: 1fr; /* Cambiar a 1 producto por fila en pantallas pequeñas */
+  }
 }
 
 /* Individual product card */
@@ -232,5 +247,3 @@ footer {
   max-width: 100px; /* Limita el ancho máximo */
   margin-right: 10px; /* Añade un pequeño espacio entre el logo y el texto */
 }
-
-

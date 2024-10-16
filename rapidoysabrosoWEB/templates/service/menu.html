@@ -22,25 +22,66 @@
   </section>
   <script src="{% static 'app/js/menu.js' %}"></script>
 
-
-  <section class="productos-container">
-    {% for producto in productos %}
-    <div class="producto-card">
-      <img src="{{ producto.imagen_url }}" alt="{{ producto.nombre }}" class="producto-imagen">
-      <div class="producto-info">
-        <h4 class="producto-nombre">{{ producto.nombre }}</h4>
-        <p class="producto-descripcion">{{ producto.descripcion }}</p>
-        <span class="producto-precio">{{ producto.precio }}</span>
-        <span class="producto-marca">{{ producto.marca }}</span>
-        <a href="{% url 'producto' id=producto.id %}">Ver detalles</a>
-        <form action="{% url 'agregar_a_orden' producto.id %}" method="POST">
-          {% csrf_token %}
-          <button type="submit" class="boton-agregar-carrito">Agregar al carrito</button>
-      </form>
-      </div>
+  <div class="container">
+    <div class="row">
+      <!-- Filtros a la izquierda -->
+      <aside class="col-md-3">
+        <h5>Filtrar por precio</h5>
+        <form id="filtro-precio-form" method="GET" action="{% url 'menu' %}">
+          <label for="rango-precio" class="form-label">Rango de precios: </label>
+          
+          <!-- Rango de precios -->
+          <input type="range" class="form-range" id="rango-precio" min="0" max="50000" step="1000" oninput="actualizarValor(this.value)">
+          <p>Precio seleccionado: $<span id="valor-precio">0</span> - $50,000</p>
+          
+          <!-- Valores ocultos que se actualizarán según el rango seleccionado -->
+          <input type="hidden" name="precio_min" id="precio-min" value="0">
+          <input type="hidden" name="precio_max" id="precio-max" value="50000">
+          
+          <button type="submit" class="btn btn-primary">Aplicar filtro</button>
+        </form>
+        
+        <script>
+          // Actualiza el valor mostrado y oculta de los campos de precio
+          function actualizarValor(valor) {
+            document.getElementById("valor-precio").innerText = valor;
+            document.getElementById("precio-min").value = valor;
+            document.getElementById("precio-max").value = 50000;  // Deja el máximo en 50,000
+          }
+        </script>
+        
+      </aside>
+  
+      <!-- Productos a la derecha -->
+      <section class="col-md-9 productos-container">
+        <!-- Aquí irían tus productos como antes -->
+        {% for producto in productos %}
+        <div class="producto-card">
+          <img src="{{ producto.imagen_url }}" alt="{{ producto.nombre }}" class="producto-imagen">
+          <div class="producto-info">
+            <h4 class="producto-nombre">{{ producto.nombre }}</h4>
+            <p class="producto-descripcion">{{ producto.descripcion }}</p>
+            <span class="producto-precio">${{ producto.precio_float }}</span>
+            <span class="producto-marca">{{ producto.marca }}</span>
+            <a href="{% url 'producto' id=producto.id %}">Ver detalles</a>
+            <form action="{% url 'agregar_a_orden' producto.id %}" method="POST">
+              {% csrf_token %}
+              <button type="submit" class="boton-agregar-carrito">Agregar al carrito</button>
+            </form>
+          </div>
+        </div>
+        {% endfor %}
+      </section>
     </div>
-    {% empty %}
-    <p>No hay productos disponibles en este momento.</p>
-    {% endfor %}
-  </section>
+  </div>
+
+  <script>
+    // Esta función se asegura de que el rango de precios se actualice correctamente al usar el slider
+    function actualizarValor(valor) {
+      document.getElementById('valor-precio').textContent = valor;
+      document.getElementById('precio-min').value = valor;  // Mínimo se ajusta con el slider
+      document.getElementById('precio-max').value = 50000;  // Máximo fijo
+    }
+  </script>
+
 {% endblock %}

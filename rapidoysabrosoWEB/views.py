@@ -29,14 +29,37 @@ def logout_view(request):
 
 def menu(request):
     productos = Producto.objects.all()
-    categorias = Categoria.objects.all()
+    categorias = Categoria.objects.all()  # Obtén todas las categorías
     marcas_unicas = Producto.objects.values_list('marca', flat=True).distinct()
+    # Recuperamos los filtros del GET (si existen)
+    precio_min = request.GET.get('precio_min', None)
+    precio_max = request.GET.get('precio_max', None)
+
+    # Si se proporcionan ambos valores, filtramos por rango de precios
+    if precio_min is not None and precio_max is not None:
+        try:
+            precio_min = float(precio_min)
+            precio_max = float(precio_max)
+
+            # Filtramos los productos que están dentro del rango de precios
+            productos = Producto.objects.all()
+            productos_filtrados = [producto for producto in productos if producto.precio_float and precio_min <= producto.precio_float <= precio_max]
+
+        except ValueError:
+            productos = Producto.objects.all()
+    else:
+        # Si no se proporcionan filtros, mostramos todos los productos
+        productos = Producto.objects.all()
+
+    # Contexto para la plantilla
     context = {
-        'productos': productos,
+        'productos': productos_filtrados if precio_min and precio_max else productos,
         'marcas_unicas': marcas_unicas,
         'categorias': categorias
     }
+
     return render(request, 'service/menu.html', context)
+
 
     
 def productos_por_marca(request, marca):
