@@ -1,31 +1,10 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Productos de la Marca - {{ marca }}</title>
-  <link rel="stylesheet" href="{% static 'app/css/menu.css' %}">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
-  <header>
-    <nav>
-      <div class="container">
-        <div class="logo">
-          <a href="{% url 'menu' %}">RapidoYSabroso</a>
-        </div>
-        <ul class="nav-links">
-          <li><a href="#">Categorias</a></li>
-          <li><a href="#">Configuracion</a></li>
-          <li><a href="#">Perfil</a></li>
-          <li><a href="{% url 'logout' %}">Cerrar Sesion</a></li>
-        </ul>
-      </div>
-    </nav>
-  </header>
-  
-  <main>
+{% extends 'service/baseplantillaNav.html' %}
+
+{% block title %}Marca {{marca}} - RapidoYSabroso{% endblock %}
+
+
+
+{% block content %}
     <h2 class="text-center my-4">Productos de la Marca: {{ marca }}</h2>
     <section class="productos-container">
         {% for producto in productos %}
@@ -37,18 +16,11 @@
             <p class="producto-descripcion">{{ producto.descripcion }}</p>
             <span class="producto-precio">{{ producto.precio }}</span>
             <span class="producto-precio">{{ producto.marca }}</span>
+            <a href="{% url 'producto' id=producto.id %}">Ver detalles</a>
           </div>
         </div>
         {% empty %}
         <p>No hay productos disponibles en este momento.</p>
         {% endfor %}
       </section>
-  </main>
-
-  <footer class="text-center mt-5">
-    <p>&copy; 2024 RapidoYSabroso. All rights reserved.</p>
-  </footer>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+{% endblock %}

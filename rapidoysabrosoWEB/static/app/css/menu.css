@@ -214,3 +214,23 @@ footer {
       width: 300px; /* Ajusta el tamaño del logo en pantallas grandes */
   }
 }
+/* Estilo del carrusel */
+.marca-cards-container {
+  display: flex;
+  justify-content: flex-start;
+  overflow: hidden; /* Evita que el contenido se desborde */
+}
+
+.marca-card {
+  white-space: nowrap;
+  flex-shrink: 0; /* Asegura que los elementos no se encojan */
+}
+
+.logo-img {
+  height: 40px; /* Ajusta la altura a un tamaño más pequeño */
+  width: auto;  /* Mantiene las proporciones */
+  max-width: 100px; /* Limita el ancho máximo */
+  margin-right: 10px; /* Añade un pequeño espacio entre el logo y el texto */
+}
+
+

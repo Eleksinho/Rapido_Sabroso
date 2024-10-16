@@ -1,21 +1,27 @@
 {% extends 'service/baseplantillaNav.html' %}
+{% load static %}
 
 {% block title %}Menú - RapidoYSabroso{% endblock %}
 
 {% block content %}
+
   <section class="marcas-container container">
     <h2 class="text-center my-4">Marcas Disponibles</h2>
-    <div class="marca-cards-container d-flex overflow-auto">
+    <div id="marcaCarrusel" class="marca-cards-container d-flex overflow-auto">
       <!-- Contenedor de las cartas en fila -->
-      {% for marca in marcas_unicas %}
-      <a href="{% url 'marca' marca=marca %}" class="marca-card text-center mx-3 p-3">
-        <div class="card-body">
-          <h4 class="marca-nombre">{{ marca }}</h4>
-        </div>
-      </a>
-      {% endfor %}
+      <div class="marca-cards-inner d-flex">
+        {% for marca in marcas_unicas %}
+        <a href="{% url 'marca' marca=marca %}" class="marca-card text-center mx-3 p-3">
+          <div class="card-body">
+            <h4 class="marca-nombre">{{ marca }}</h4>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
     </div>
   </section>
+  <script src="{% static 'app/js/menu.js' %}"></script>
+
 
   <section class="productos-container">
     {% for producto in productos %}
@@ -26,6 +32,7 @@
         <p class="producto-descripcion">{{ producto.descripcion }}</p>
         <span class="producto-precio">{{ producto.precio }}</span>
         <span class="producto-marca">{{ producto.marca }}</span>
+        <a href="{% url 'producto' id=producto.id %}">Ver detalles</a>
       </div>
     </div>
     {% empty %}
@@ -33,4 +40,3 @@
     {% endfor %}
   </section>
 {% endblock %}
-

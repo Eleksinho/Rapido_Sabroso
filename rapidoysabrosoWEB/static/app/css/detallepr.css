@@ -1,0 +1,54 @@
+body {
+    background-color: #f8f9fa; /* Color de fondo suave */
+    font-family: Arial, sans-serif; /* Tipografía */
+    margin: 0;
+    padding: 20px; /* Espaciado alrededor de la página */
+}
+
+.producto-container {
+    display: flex;
+    justify-content: center; /* Centra el contenido horizontalmente */
+    align-items: center; /* Centra el contenido verticalmente */
+    flex-direction: column; /* Apila los elementos verticalmente */
+    text-align: center; /* Alinea el texto al centro */
+}
+
+.producto-card {
+    background-color: #ffffff; /* Fondo blanco para la tarjeta */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    padding: 20px; /* Espaciado interno */
+    max-width: 600px; /* Ancho máximo de la tarjeta */
+    margin: 20px; /* Margen alrededor de la tarjeta */
+}
+
+.producto-imagen {
+    width: 100%; /* Imagen ocupa el 100% del ancho de la tarjeta */
+    height: auto; /* Mantiene la relación de aspecto */
+    border-radius: 10px; /* Bordes redondeados para la imagen */
+}
+
+.producto-nombre {
+    font-size: 24px; /* Tamaño de fuente más grande para el nombre */
+    color: #333; /* Color del texto */
+    margin: 10px 0; /* Espaciado vertical */
+}
+
+.producto-descripcion {
+    font-size: 16px; /* Tamaño de fuente para la descripción */
+    color: #555; /* Color más suave para la descripción */
+    margin: 10px 0; /* Espaciado vertical */
+}
+
+.producto-precio {
+    font-size: 20px; /* Tamaño de fuente para el precio */
+    color: #28a745; /* Color verde para el precio */
+    font-weight: bold; /* Negrita */
+    margin: 10px 0; /* Espaciado vertical */
+}
+
+.producto-marca, .producto-id {
+    font-size: 14px; /* Tamaño de fuente más pequeño */
+    color: #777; /* Color gris para marca e ID */
+    margin: 5px 0; /* Espaciado vertical */
+}
