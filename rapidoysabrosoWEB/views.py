@@ -67,5 +67,67 @@ def categorias(request, categoria):
 def producto(request, id):
     categorias = Categoria.objects.all()
     producto = get_object_or_404(Producto, id=id)
-    return render(request, 'service/producto.html', {'producto': producto})
+    context = {
+        'producto': producto,
+        'categorias': categorias 
+    }
+    return render(request, 'service/producto.html', context )
+
+
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Producto, Orden, OrdenProducto
+
+def agregar_a_orden(request, producto_id):
+    # Obtenemos la orden actual o creamos una nueva
+    orden, creada = Orden.objects.get_or_create(id=request.session.get('orden_id'))
+
+    # Guardamos la id de la orden en la sesión
+    request.session['orden_id'] = orden.id
+
+    # Obtenemos el producto por su ID
+    producto = get_object_or_404(Producto, id=producto_id)
+
+    # Agregamos el producto a la orden o aumentamos la cantidad si ya está
+    orden_producto, creado = OrdenProducto.objects.get_or_create(orden=orden, producto=producto)
+    if not creado:
+        orden_producto.cantidad += 1
+    orden_producto.save()
+
+    # Calcular el total de la orden, realizando la conversión en una línea
+    total = sum(float(item.producto.precio.replace('$', '').replace('.', '').replace(',', '.')) * int(item.cantidad) for item in orden.ordenproducto_set.all())
+    
+    # Guardar el total en la orden
+    orden.total = total
+    orden.save()
+
+    return redirect('ver_orden')
+
+
+def eliminar_de_orden(request, producto_id):
+    orden_id = request.session.get('orden_id')
+    if orden_id:
+        orden = get_object_or_404(Orden, id=orden_id)
+        orden_producto = orden.ordenproducto_set.filter(producto__id=producto_id).first()
+        
+        if orden_producto:
+            orden_producto.delete()
+            
+            # Recalcular el total
+            total = sum(float(item.producto.precio.replace('$', '').replace('.', '').replace(',', '.')) * item.cantidad for item in orden.ordenproducto_set.all())
+            orden.total = total
+            orden.save()
+
+    return redirect('ver_orden')
+
+
+
+
+def ver_orden(request):
+    orden = Orden.objects.get(id=request.session.get('orden_id'))
+    productos_en_orden = orden.ordenproducto_set.all()
+    return render(request, 'service/orden.html', {'orden': orden, 'productos_en_orden': productos_en_orden})
+
+
 

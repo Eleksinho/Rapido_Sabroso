@@ -33,6 +33,10 @@
         <span class="producto-precio">{{ producto.precio }}</span>
         <span class="producto-marca">{{ producto.marca }}</span>
         <a href="{% url 'producto' id=producto.id %}">Ver detalles</a>
+        <form action="{% url 'agregar_a_orden' producto.id %}" method="POST">
+          {% csrf_token %}
+          <button type="submit" class="boton-agregar-carrito">Agregar al carrito</button>
+      </form>
       </div>
     </div>
     {% empty %}

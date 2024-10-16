@@ -39,3 +39,16 @@ class PageSelector(models.Model):
 
     def __str__(self):
         return f'Selectores para {self.url}'
+    
+
+class Orden(models.Model):
+    fecha = models.DateTimeField(auto_now_add=True)
+    total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+class OrdenProducto(models.Model):
+    orden = models.ForeignKey(Orden, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField(default=1)
+
+    def subtotal(self):
+        return self.cantidad * self.producto.precio

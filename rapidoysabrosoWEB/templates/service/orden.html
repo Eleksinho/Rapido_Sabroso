@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orden de Compra</title>
+</head>
+<body>
+    <h1>Orden de Compra</h1>
+    <ul>
+        {% for item in productos_en_orden %}
+        <li>
+            {{ item.producto.nombre }} ({{ item.producto.marca }}) - 
+            {{ item.producto.precio }} x {{ item.cantidad }} 
+            (Subtotal: {{ item.subtotal }})
+            <form action="{% url 'eliminar_de_orden' item.producto.id %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Eliminar</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    <h2>Total de la Orden: {{ orden.total }}</h2>
+    <a href="{% url 'menu' %}"><button>Volver al Menú</button></a>
+</body>
+</html>
