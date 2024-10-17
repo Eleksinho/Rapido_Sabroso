@@ -113,12 +113,26 @@ class Command(BaseCommand):
                 )
                 self.stdout.write(self.style.SUCCESS(f"Selectores por defecto guardados para {url}."))
 
-            # Descargar imágenes y el logo de manera concurrente
+            # Descargar imágenes de manera concurrente
             with ThreadPoolExecutor() as executor:
                 imagenes_binarias = list(executor.map(descargar_imagen, 
                     [requests.compat.urljoin(url, img) if not img.startswith('http') else img for img in imagenes]))
-                
-                logo_binario = descargar_imagen(logo_url) if logo_url else None
+
+            # Procesar la marca y guardar el logo
+            marca_nombre = obtener_marca(url)
+            marca, created = Marca.objects.get_or_create(nombre=marca_nombre)
+
+            # Guardar la URL del logo
+            if logo_url and created:
+                marca.logo_url = logo_url
+                marca.save()
+                self.stdout.write(self.style.SUCCESS(f"Logo de la marca '{marca_nombre}' guardado con éxito."))
+
+            elif logo_url and not marca.logo_url:
+                # Actualizar la marca existente si no tiene logo guardado
+                marca.logo_url = logo_url
+                marca.save()
+                self.stdout.write(self.style.SUCCESS(f"Logo de la marca '{marca_nombre}' actualizado con éxito."))
 
             # Procesar cada producto
             for i, producto in enumerate(productos):
@@ -136,28 +150,21 @@ class Command(BaseCommand):
                     producto_existente.precio = precio_producto
                     producto_existente.descripcion = descripcion_producto
                     producto_existente.imagen_url = imagen_url
-                    producto_existente.imagen = imagen_binaria
                     producto_existente.categoria = categoria
                     marca_nombre = obtener_marca(url)
-                    marca, _ = Marca.objects.get_or_create(nombre=marca_nombre)
                     producto_existente.marca = marca
                     producto_existente.save()
                     self.stdout.write(self.style.SUCCESS(f"Producto '{nombre_producto}' actualizado con éxito."))
                 else:
-                    producto_nuevo = Producto.objects.create(
+                    Producto.objects.create(
                         nombre=nombre_producto,
                         precio=precio_producto,
                         descripcion=descripcion_producto,
                         imagen_url=imagen_url,
-                        imagen=imagen_binaria,
                         fuente_url=url_obj,
-                        categoria=categoria
+                        categoria=categoria,
+                        marca=marca
                     )
-                    marca_nombre = obtener_marca(url)
-                    marca, _ = Marca.objects.get_or_create(nombre=marca_nombre)
-                    producto_nuevo.marca = marca
-                    producto_nuevo.save()
-
                     self.stdout.write(self.style.SUCCESS(f"Producto '{nombre_producto}' guardado con éxito."))
 
             url_obj.last_scraped = datetime.now()

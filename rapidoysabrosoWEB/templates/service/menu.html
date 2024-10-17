@@ -7,13 +7,14 @@
 
 <section class="marcas-container container">
   <h2 class="text-center my-4">Marcas Disponibles</h2>
-  <div id="marcaCarrusel" class="marca-cards-container d-flex overflow-auto">
+  <div id="marcaCarrusel" class="marca-cards-container d-flex overflow-auto" >
     <!-- Contenedor de las cartas en fila -->
-    <div class="marca-cards-inner d-flex">
-      {% for marca in marcas %}
-      <a href="{% url 'marca' marca=marca.id %}" class="marca-card text-center mx-3 p-3">
-        <div class="card-body">
-          <h4 class="marca-nombre">{{ marca.nombre }}</h4>
+    <div class="marca-cards-inner d-flex" >
+      {% for marca in marcas %} 
+      <a href="{% url 'marca' marca=marca.id %}" style="background-color:black;" class="marca-card text-center mx-3 p-3">
+        <div class="">
+          <!-- Aquí se sigue mostrando la imagen que proviene de la URL -->
+          <img class="img-fluid marca-logo" src="{{ marca.logo_url }}" alt="{{ marca.nombre }}">
         </div>
       </a>
       {% endfor %}
@@ -21,68 +22,74 @@
   </div>
 </section>
 
-  <script src="{% static 'app/js/menu.js' %}"></script>
 
-  <div class="container">
-    <div class="row">
-      <!-- Filtros a la izquierda -->
-      <aside class="col-md-3">
-        <h5>Filtrar por precio</h5>
-        <form id="filtro-precio-form" method="GET" action="{% url 'menu' %}">
-          <label for="rango-precio" class="form-label">Rango de precios: </label>
-          
-          <!-- Rango de precios -->
-          <input type="range" class="form-range" id="rango-precio" min="0" max="50000" step="1000" oninput="actualizarValor(this.value)">
-          <p>Precio seleccionado: $<span id="valor-precio">0</span> - $50,000</p>
-          
-          <!-- Valores ocultos que se actualizarán según el rango seleccionado -->
-          <input type="hidden" name="precio_min" id="precio-min" value="0">
-          <input type="hidden" name="precio_max" id="precio-max" value="50000">
-          
-          <button type="submit" class="btn btn-primary">Aplicar filtro</button>
-        </form>
-        
-        <script>
-          // Actualiza el valor mostrado y oculta de los campos de precio
-          function actualizarValor(valor) {
-            document.getElementById("valor-precio").innerText = valor;
-            document.getElementById("precio-min").value = valor;
-            document.getElementById("precio-max").value = 50000;  // Deja el máximo en 50,000
-          }
-        </script>
-        
-      </aside>
-  
-      <!-- Productos a la derecha -->
-      <section class="col-md-9 productos-container">
-        <!-- Aquí irían tus productos como antes -->
-        {% for producto in productos %}
-        <div class="producto-card">
-          <img src="{{ producto.imagen_url }}" alt="{{ producto.nombre }}" class="producto-imagen">
-          <div class="producto-info">
-            <h4 class="producto-nombre">{{ producto.nombre }}</h4>
-            <p class="producto-descripcion">{{ producto.descripcion }}</p>
-            <span class="producto-precio">${{ producto.precio_float }}</span>
-            <span class="producto-marca">{{ producto.marca }}</span>
-            <a href="{% url 'producto' id=producto.id %}">Ver detalles</a>
-            <form action="{% url 'agregar_a_orden' producto.id %}" method="POST">
-              {% csrf_token %}
-              <button type="submit" class="boton-agregar-carrito">Agregar al carrito</button>
-            </form>
-          </div>
+
+
+<script src="{% static 'app/js/menu.js' %}"></script>
+
+<div class="container">
+  <div class="row">
+    <!-- Filtros a la izquierda -->
+    <aside class="col-md-3">
+      <h5>Buscar Producto</h5>
+      <input type="text" class="form-control" id="busqueda-producto" placeholder="Buscar por nombre" oninput="filtrarProductos()">
+      
+      <h5>Filtrar por Precio</h5>
+      <input type="text" class="form-control" id="precio-minimo" placeholder="Precio Mínimo" oninput="filtrarProductos()">
+      <input type="text" class="form-control" id="precio-maximo" placeholder="Precio Máximo" oninput="filtrarProductos()">
+    </aside>
+
+    <!-- Productos a la derecha -->
+    <section class="col-md-9 productos-container" id="productos-container">
+      {% for producto in productos %}
+      <div class="producto-card">
+        <img src="{{ producto.imagen_url }}" alt="{{ producto.nombre }}" class="producto-imagen">
+        <div class="producto-info">
+          <h4 class="producto-nombre">{{ producto.nombre }}</h4>
+          <p class="producto-descripcion">{{ producto.descripcion }}</p>
+          <span class="producto-precio">{{ producto.precio }}</span> <!-- Incluyendo símbolo $ -->
+          <span class="producto-marca">{{ producto.marca }}</span>
+          <a href="{% url 'producto' id=producto.id %}">Ver detalles</a>
+          <form action="{% url 'agregar_a_orden' producto.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="boton-agregar-carrito">Agregar al carrito</button>
+          </form>
         </div>
-        {% endfor %}
-      </section>
-    </div>
+      </div>
+      {% endfor %}
+    </section>
   </div>
+</div>
 
-  <script>
-    // Esta función se asegura de que el rango de precios se actualice correctamente al usar el slider
-    function actualizarValor(valor) {
-      document.getElementById('valor-precio').textContent = valor;
-      document.getElementById('precio-min').value = valor;  // Mínimo se ajusta con el slider
-      document.getElementById('precio-max').value = 50000;  // Máximo fijo
-    }
-  </script>
+<script>
+function filtrarProductos() {
+    const busquedaTexto = document.getElementById('busqueda-producto').value.toLowerCase(); // Obtener texto de búsqueda
+    const precioMinimo = parseFloat(document.getElementById('precio-minimo').value.replace(',', '.')) || 0; // Obtener precio mínimo
+    const precioMaximo = parseFloat(document.getElementById('precio-maximo').value.replace(',', '.')) || Infinity; // Obtener precio máximo
+    const productos = document.querySelectorAll('.producto-card'); // Seleccionar todos los productos
+
+    productos.forEach(producto => {
+        // Obtener el nombre del producto y la descripción
+        const nombreProducto = producto.querySelector('.producto-nombre').innerText.toLowerCase();
+        const descripcionProducto = producto.querySelector('.producto-descripcion').innerText.toLowerCase();
+        
+        // Obtener el precio del producto y limpiarlo del símbolo $ y comas
+        const precioTexto = producto.querySelector('.producto-precio').innerText.replace('$', '').replace('.', '').replace(',', '.').trim(); // Reemplaza . y , adecuadamente
+        const precioProducto = parseFloat(precioTexto) || 0;
+
+        // Comprobar si el texto de búsqueda está en el nombre o descripción del producto
+        const coincideBusqueda = nombreProducto.includes(busquedaTexto) || descripcionProducto.includes(busquedaTexto);
+        const dentroRangoPrecio = precioProducto >= precioMinimo && precioProducto <= precioMaximo;
+
+        // Mostrar producto si coincide con el texto de búsqueda y está dentro del rango de precios
+        if (coincideBusqueda && dentroRangoPrecio) {
+            producto.style.display = ''; // Mostrar producto
+        } else {
+            producto.style.display = 'none'; // Ocultar producto
+        }
+    });
+}
+
+</script>
 
 {% endblock %}

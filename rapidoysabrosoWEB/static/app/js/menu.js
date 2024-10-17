@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function() {
     const carrusel = document.getElementById("marcaCarrusel");
-    const carruselInner = carrusel.querySelector("div");  // El contenedor interno
+    const carruselInner = carrusel.querySelector(".marca-cards-inner");  // Asegúrate de que esta clase sea correcta
     let scrollAmount = 0;
-    const scrollStep = 0.5;  // Pequeño desplazamiento en cada paso
+    const scrollStep = 0.2;  // Disminuye este valor para hacerlo más lento
     let isPaused = false;  // Bandera para pausar el movimiento
 
     function scrollCarrusel() {

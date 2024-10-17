@@ -1,14 +1,4 @@
 /* General styles */
- /* Estilo para ocultar la lista de categorías */
- #category-list {
-  display: none; /* Ocultar por defecto */
-  margin-left: 20px; /* Espacio a la izquierda para las categorías */
-}
-
-/* Mostrar la lista de categorías al pasar el mouse sobre el enlace */
-li:hover #category-list {
-  display: block; /* Mostrar la lista al pasar el mouse */
-}
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -113,25 +103,23 @@ footer {
 }
 
 /* Product grid */
-/* Ajuste del contenedor de productos */
 .productos-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* 3 columnas en lugar de auto-fill */
-  gap: 20px; /* Espacio entre los productos */
-  justify-content: center; /* Centrará los productos en el contenedor */
+  gap: 20px;
+  justify-content: center;
   margin-top: 20px;
 }
 
-/* Ajuste para pantallas más pequeñas */
 @media (max-width: 1024px) {
   .productos-container {
-    grid-template-columns: repeat(2, 1fr); /* Cambiar a 2 productos por fila en pantallas medianas */
+    grid-template-columns: repeat(2, 1fr); /* 2 productos por fila en pantallas medianas */
   }
 }
 
 @media (max-width: 600px) {
   .productos-container {
-    grid-template-columns: 1fr; /* Cambiar a 1 producto por fila en pantallas pequeñas */
+    grid-template-columns: 1fr; /* 1 producto por fila en pantallas pequeñas */
   }
 }
 
@@ -182,23 +170,23 @@ footer {
 
 .producto-info {
   margin-top: 10px;
-  text-align: center; /* Centra el texto */
+  text-align: center;
 }
 
 .producto-info h4 {
   margin: 10px 0;
-  font-size: 1.2em; /* Ajusta el tamaño según tus preferencias */
+  font-size: 1.2em;
 }
 
 .producto-info p {
   margin: 5px 0;
-  color: #666; /* Color más claro para la descripción */
+  color: #666;
 }
 
 .producto-info .producto-precio {
   font-weight: bold;
-  color: #ff4b4b; /* Mismo color que ya tienes para el precio */
-  font-size: 1.5em; /* Tamaño más grande para el precio */
+  color: #ff4b4b;
+  font-size: 1.5em;
 }
 
 /* Estilos para el logo */
@@ -209,41 +197,75 @@ footer {
   margin: 0 auto;
 }
 
-/* Para pantallas pequeñas (móviles) */
 @media (max-width: 600px) {
   .logo-img {
-      width: 150px; /* Ajusta el tamaño del logo en móviles */
+    width: 150px; /* Ajusta el tamaño del logo en móviles */
   }
 }
 
-/* Para pantallas medianas (tabletas) */
 @media (min-width: 601px) and (max-width: 1024px) {
   .logo-img {
-      width: 250px; /* Ajusta el tamaño del logo en tabletas */
+    width: 250px; /* Ajusta el tamaño del logo en tabletas */
   }
 }
 
-/* Para pantallas grandes (escritorio) */
 @media (min-width: 1025px) {
   .logo-img {
-      width: 300px; /* Ajusta el tamaño del logo en pantallas grandes */
+    width: 300px; /* Ajusta el tamaño del logo en pantallas grandes */
   }
 }
-/* Estilo del carrusel */
-.marca-cards-container {
-  display: flex;
-  justify-content: flex-start;
-  overflow: hidden; /* Evita que el contenido se desborde */
-}
 
+/* Estilos de las tarjetas de marcas */
 .marca-card {
-  white-space: nowrap;
-  flex-shrink: 0; /* Asegura que los elementos no se encojan */
+  max-width: 200px; /* Ancho máximo de la tarjeta */
+  height: 130px;    /* Altura máxima de la tarjeta */
+  display: flex;    /* Usar Flexbox para centrar el contenido */
+  justify-content: center; /* Centra el contenido horizontalmente */
+  align-items: center;     /* Centra el contenido verticalmente */
+  overflow: hidden;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin: 0 auto;
+  background-color: #2b0303; /* Color de fondo claro */
+  border: 1px solid #ddd; /* Borde sutil para separar las tarjetas */
 }
 
-.logo-img {
-  height: 40px; /* Ajusta la altura a un tamaño más pequeño */
-  width: auto;  /* Mantiene las proporciones */
-  max-width: 100px; /* Limita el ancho máximo */
-  margin-right: 10px; /* Añade un pequeño espacio entre el logo y el texto */
+.marca-card img {
+  max-width: 150px;    /* Establece un tamaño fijo para las imágenes */
+  max-height: 150px;   /* Mantiene la altura fija */
+  object-fit: contain; /* Asegura que la imagen se ajuste sin perder su relación de aspecto */
+  object-position: center; /* Centra la imagen dentro del contenedor */
+  margin: 0 auto;
+}
+
+/* Efecto de hover sobre las tarjetas */
+.marca-card:hover {
+  transform: scale(1.05); /* Un pequeño efecto de zoom al pasar el mouse */
+  background-color: #e0e0e0; /* Cambio de color de fondo al pasar el mouse */
+}
+
+/* Ajustes responsivos para pantallas más pequeñas */
+@media (max-width: 600px) {
+  .marca-card {
+    max-width: 150px;
+    height: 150px;
+  }
+
+  .marca-card img {
+    width: 120px; /* Reduce el tamaño en dispositivos más pequeños */
+    height: 120px;
+  }
+}
+
+.carousel-inner .marca-card img {
+  width: 150px !important; /* Tamaño consistente dentro del carrusel */
+  height: 150px !important;
+  object-fit: contain !important;
+  object-position: center !important;
+}
+
+.marca-logo, .producto-imagen {
+  max-width: 100%; /* Asegura que no se estiren */
+  height: auto; /* Mantiene la relación de aspecto */
 }

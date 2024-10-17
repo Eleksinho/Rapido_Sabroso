@@ -19,8 +19,8 @@ class ProductoAdmin(admin.ModelAdmin):
 
 @admin.register(Marca)
 class MarcaAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'logo')
-
+    list_display = ('nombre', 'logo_url')  # Mostrar el nombre y el logo_url
+    search_fields = ('nombre',) 
 
 @admin.register(PageSelector)
 class PageSelectorAdmin(admin.ModelAdmin):
