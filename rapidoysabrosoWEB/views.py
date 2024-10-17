@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect , get_object_or_404
 from django.urls import path, include
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .models import Producto,  Categoria   # Asegúrate de importar el modelo Producto
+from .models import *
 
-# Vista de autenticación
+
+
 def vista1(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -30,8 +31,8 @@ def logout_view(request):
 def menu(request):
     productos = Producto.objects.all()
     categorias = Categoria.objects.all()  # Obtén todas las categorías
-    marcas_unicas = Producto.objects.values_list('marca', flat=True).distinct()
-    # Recuperamos los filtros del GET (si existen)
+    marcas = Marca.objects.all()  # Obtén todas las marcas
+    
     precio_min = request.GET.get('precio_min', None)
     precio_max = request.GET.get('precio_max', None)
 
@@ -42,7 +43,6 @@ def menu(request):
             precio_max = float(precio_max)
 
             # Filtramos los productos que están dentro del rango de precios
-            productos = Producto.objects.all()
             productos_filtrados = [producto for producto in productos if producto.precio_float and precio_min <= producto.precio_float <= precio_max]
 
         except ValueError:
@@ -54,21 +54,26 @@ def menu(request):
     # Contexto para la plantilla
     context = {
         'productos': productos_filtrados if precio_min and precio_max else productos,
-        'marcas_unicas': marcas_unicas,
+        'marcas': marcas,  # Agrega las marcas al contexto
         'categorias': categorias
     }
 
     return render(request, 'service/menu.html', context)
 
 
+
     
 def productos_por_marca(request, marca):
-    # Filtrar los productos por la marca seleccionada
-    productos_filtrados = Producto.objects.filter(marca=marca)
-    return render(request, 'service/marca.html', {'productos': productos_filtrados, 'marca': marca})
+    # Filtra los productos por el ID de la marca
+    productos_filtrados = Producto.objects.filter(marca_id=marca)
+    # Obtén el objeto Marca para mostrar más detalles si es necesario
+    marca_obj = Marca.objects.get(id=marca)
+    
+    return render(request, 'service/marca.html', {'productos': productos_filtrados, 'marca': marca_obj})
 
-from django.shortcuts import render, get_object_or_404
-from .models import Producto, Categoria
+
+
+
 
 def categorias(request, categoria):
     categorias = Categoria.objects.all()
@@ -99,11 +104,10 @@ def producto(request, id):
 
 
 
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Producto, Orden, OrdenProducto
+
 
 def agregar_a_orden(request, producto_id):
-    # Obtenemos la orden actual o creamos una nueva
+    
     orden, creada = Orden.objects.get_or_create(id=request.session.get('orden_id'))
 
     # Guardamos la id de la orden en la sesión

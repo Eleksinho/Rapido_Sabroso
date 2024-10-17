@@ -5,7 +5,7 @@
 
 
 {% block content %}
-    <h2 class="text-center my-4">Productos de la Marca: {{ marca }}</h2>
+    <h2 class="text-center my-4">Productos de la Marca: {{ marca.nombre }}</h2>
     <section class="productos-container">
         {% for producto in productos %}
         <div class="producto-card">

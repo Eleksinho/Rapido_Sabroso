@@ -5,21 +5,22 @@
 
 {% block content %}
 
-  <section class="marcas-container container">
-    <h2 class="text-center my-4">Marcas Disponibles</h2>
-    <div id="marcaCarrusel" class="marca-cards-container d-flex overflow-auto">
-      <!-- Contenedor de las cartas en fila -->
-      <div class="marca-cards-inner d-flex">
-        {% for marca in marcas_unicas %}
-        <a href="{% url 'marca' marca=marca %}" class="marca-card text-center mx-3 p-3">
-          <div class="card-body">
-            <h4 class="marca-nombre">{{ marca }}</h4>
-          </div>
-        </a>
-        {% endfor %}
-      </div>
+<section class="marcas-container container">
+  <h2 class="text-center my-4">Marcas Disponibles</h2>
+  <div id="marcaCarrusel" class="marca-cards-container d-flex overflow-auto">
+    <!-- Contenedor de las cartas en fila -->
+    <div class="marca-cards-inner d-flex">
+      {% for marca in marcas %}
+      <a href="{% url 'marca' marca=marca.id %}" class="marca-card text-center mx-3 p-3">
+        <div class="card-body">
+          <h4 class="marca-nombre">{{ marca.nombre }}</h4>
+        </div>
+      </a>
+      {% endfor %}
     </div>
-  </section>
+  </div>
+</section>
+
   <script src="{% static 'app/js/menu.js' %}"></script>
 
   <div class="container">
