@@ -9,24 +9,40 @@
 {% endblock %}
 
 {% block content %}
-    <h2 class="text-center my-4">Productos de la Marca: {{ marca.nombre }}</h2>
-    <section class="productos-container">
-        {% for producto in productos %}
-        <div class="producto-card">
-          <!-- Corregido: Accediendo directamente a la URL de la imagen -->
-          <img src="{{ producto.imagen_url }}" alt="{{ producto.nombre }}" class="producto-imagen">
-          <div class="producto-info">
-            <h4 class="producto-nombre">{{ producto.nombre }}</h4>
-            <p class="producto-descripcion">{{ producto.descripcion }}</p>
-            <span class="producto-precio">{{ producto.precio }}</span>
-            <span class="producto-precio">{{ producto.marca }}</span>
-            <a href="{% url 'producto' id=producto.id %}">Ver detalles</a>
-          </div>
-        </div>
-        {% empty %}
-        <p>No hay productos disponibles en este momento.</p>
-        {% endfor %}
-      </section>
+<div class="container my-4">
+    <h2 class="text-center">Productos de la Marca: {{ marca.nombre }}</h2>
+    <div class="row">
+        <aside class="col-md-3">
+            <h5>Buscar Producto</h5>
+            <input type="text" class="form-control" id="busqueda-producto" placeholder="Buscar por nombre" oninput="filtrarProductos()">
+
+            <div id="rango-precio"></div>
+            <p>Rango de precio seleccionado: $<span id="precio-minimo"></span> - $<span id="precio-maximo"></span></p>
+
+            <button id="sortAscBtn" class="btn btn-primary" onclick="ordenarProductos('asc')">Ordenar de Menor a Mayor</button>
+            <button id="sortDescBtn" class="btn btn-primary" onclick="ordenarProductos('desc')">Ordenar de Mayor a Menor</button>
+        </aside>
+
+        <section class="col-md-9 productos-container">
+            {% for producto in productos %}
+            <div class="producto-card">
+                <img src="{{ producto.imagen_url }}" alt="{{ producto.nombre }}" class="producto-imagen">
+                <div class="producto-info">
+                    <h4 class="producto-nombre">{{ producto.nombre }}</h4>
+                    <p class="producto-descripcion">{{ producto.descripcion }}</p>
+                    <span class="producto-precio">{{ producto.precio }}</span>
+                    <span class="producto-precio">{{ producto.marca }}</span>
+                    <a href="{% url 'producto' id=producto.id %}">Ver detalles</a>
+                </div>
+            </div>
+            {% empty %}
+            <p>No hay productos disponibles en este momento.</p>
+            {% endfor %}
+        </section>
+    </div>
+</div>
 {% endblock %}
+
 {% block javascript %}
+<script src="{% static 'app/js/menu.js' %}"></script>
 {% endblock %}

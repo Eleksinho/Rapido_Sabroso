@@ -11,11 +11,12 @@
 {% block content %}
 <section class="marcas-container container">
   <h2 class="text-center my-4">Marcas Disponibles</h2>
-  <div id="marcaCarrusel" class="marca-cards-container d-flex overflow-auto" >
+  <div id="marcaCarrusel" class="marca-cards-container d-flex overflow-auto">
     <!-- Contenedor de las cartas en fila -->
-    <div class="marca-cards-inner d-flex" >
-      {% for marca in marcas %} 
-      <a href="{% url 'marca' marca=marca.id %}" style="background-color:black;" class="marca-card text-center mx-3 p-3">
+    <div class="marca-cards-inner d-flex">
+      {% for marca in marcas %}
+      <a href="{% url 'marca' marca=marca.id %}" style="background-color:black;"
+        class="marca-card text-center mx-3 p-3">
         <div class="">
           <!-- Aquí se sigue mostrando la imagen que proviene de la URL -->
           <img class="img-fluid marca-logo" src="{{ marca.logo_url }}" alt="{{ marca.nombre }}">
@@ -29,19 +30,22 @@
 <div class="container">
   <div class="row">
     <!-- Filtros a la izquierda -->
-   <aside class="col-md-3">
+    <aside class="col-md-3">
       <h5>Buscar Producto</h5>
-      <input type="text" class="form-control" id="busqueda-producto" placeholder="Buscar por nombre" oninput="filtrarProductos()">
-      
-    <!-- Cambia esta parte en el bloque de contenido de tu plantilla -->
-<div id="rango-precio"></div>
-<p>Rango de precio seleccionado: $<span id="precio-minimo"></span> - $<span id="precio-maximo"></span></p>
+      <input type="text" class="form-control" id="busqueda-producto" placeholder="Buscar por nombre"
+        oninput="filtrarProductos()">
 
-      
-<button id="sortAscBtn" class="btn btn-primary" onclick="ordenarProductos('asc')">Ordenar de Menor a Mayor</button>
-<button id="sortDescBtn" class="btn btn-primary" onclick="ordenarProductos('desc')">Ordenar de Mayor a Menor</button>
- 
-</aside>
+      <!-- Cambia esta parte en el bloque de contenido de tu plantilla -->
+      <div id="rango-precio"></div>
+      <p>Rango de precio seleccionado: $<span id="precio-minimo"></span> - $<span id="precio-maximo"></span></p>
+
+
+      <button id="sortAscBtn" class="btn btn-primary" onclick="ordenarProductos('asc')">Ordenar de Menor a
+        Mayor</button>
+      <button id="sortDescBtn" class="btn btn-primary" onclick="ordenarProductos('desc')">Ordenar de Mayor a
+        Menor</button>
+
+    </aside>
 
     <!-- Productos a la derecha -->
     <section class="col-md-9 productos-container" id="productos-container">
@@ -62,108 +66,18 @@
       </div>
       {% endfor %}
     </section>
-    
-    
+    <button id="cargar-mas" style="display: none;">Cargar más productos</button>
+
+
   </div>
 </div>
+<!-- AQUI IMPORTO EL JAVASCRIPT -->
+<script src="app/js/menu.js"></script>
 {% endblock %}
-
+<!-- MOVI TODO EL JAVASCRIPT A MENU.JS -->
 {% block javascript %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.1/nouislider.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.1/nouislider.min.js"></script>
-
-<script>
-var slider = document.getElementById('rango-precio');
-
-
-
-noUiSlider.create(slider, {
-    start: [0, 50000], // Rango inicial
-    connect: true,
-    range: {
-        'min': 0,
-        'max': 50000
-    },
-    step: 1000,
-    tooltips: [true, true], // Activar tooltips para ambos valores
-    format: {
-        to: (value) => value.toLocaleString(),
-        from: (value) => Number(value.replace(',', ''))
-    }
-});
-
-// Personalizar los tooltips
-slider.noUiSlider.on('update', function(values, handle) {
-    if (handle === 0) {
-        document.getElementById('precio-minimo').innerText = values[0]; // Tooltip de precio mínimo
-    } else {
-        document.getElementById('precio-maximo').innerText = values[1]; // Tooltip de precio máximo
-    }
-    filtrarProductos();
-});
-
-// Función para buscar productos por nombre y filtrar por precio
-function filtrarProductos() {
-    // Obtener el valor de búsqueda
-    const busqueda = document.getElementById('busqueda-producto').value.toLowerCase();
-    
-    // Obtener valores del slider transformados a número
-    const precioMinimo = parseFloat(slider.noUiSlider.get()[0].replace(/\D/g, '')) || 0;
-    const precioMaximo = parseFloat(slider.noUiSlider.get()[1].replace(/\D/g, '')) || Infinity;
-
-    // Seleccionar todos los productos
-    const productos = document.querySelectorAll('.producto-card');
-
-    productos.forEach(producto => {
-        // Obtener el nombre del producto y hacerlo minúsculas para la comparación
-        const nombreProducto = producto.querySelector('.producto-nombre').innerText.toLowerCase();
-        
-        // Obtener el precio del producto, remover símbolo $ y puntos/comas
-        const precioTexto = producto.querySelector('.producto-precio').innerText
-                            .replace('$', '')        // Eliminar el símbolo $
-                            .replace(/\./g, '')      // Eliminar puntos (separadores de miles)
-                            .replace(',', '.')       // Reemplazar comas por puntos si son decimales
-                            .trim();                 // Remover espacios adicionales
-        
-        const precioProducto = parseFloat(precioTexto) || 0;
-
-        // Comprobar si el producto cumple con la búsqueda por nombre y está dentro del rango de precios
-        const cumpleBusqueda = nombreProducto.includes(busqueda);
-        const cumplePrecio = precioProducto >= precioMinimo && precioProducto <= precioMaximo;
-
-        // Mostrar u ocultar el producto basado en ambos filtros
-        if (cumpleBusqueda && cumplePrecio) {
-            producto.style.display = ''; // Mostrar el producto
-        } else {
-            producto.style.display = 'none'; // Ocultar el producto
-        }
-    });
-}
-document.getElementById('busqueda-producto').addEventListener('input', filtrarProductos);
-
-
-function ordenarProductos(orden) {
-    const productosContainer = document.getElementById('productos-container');
-    const productos = Array.from(productosContainer.querySelectorAll('.producto-card'));
-
-    // Ordenar productos basado en el precio
-    productos.sort((a, b) => {
-        const precioA = parseFloat(a.querySelector('.producto-precio').innerText.replace(/\D/g, '')) || 0;
-        const precioB = parseFloat(b.querySelector('.producto-precio').innerText.replace(/\D/g, '')) || 0;
-
-        return orden === 'asc' ? precioA - precioB : precioB - precioA; // Ascendente o descendente
-    });
-
-    // Limpiar el contenedor de productos
-    productosContainer.innerHTML = '';
-
-    // Añadir los productos ordenados de nuevo al contenedor
-    productos.forEach(producto => {
-        productosContainer.appendChild(producto);
-    });
-}
-
-</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.1/nouislider.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.1/nouislider.min.js"></script>
 <script src="{% static 'app/js/menu.js' %}"></script>

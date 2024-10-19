@@ -269,147 +269,98 @@ footer {
   max-width: 100%; /* Asegura que no se estiren */
   height: auto; /* Mantiene la relación de aspecto */
 }
-* {
-  margin: 0;
-  padding: 0;
+#rango-precio {
+  width: 100%;  /* O ajusta según el diseño */
+  margin: 20px 0;  /* Añadir espacio alrededor */
+}
+/* Estilos para los botones de ordenación */
+.btn {
+  display: inline-block;           /* Hacer que el botón sea un bloque en línea */
+  padding: 10px 15px;            /* Espaciado interno */
+  margin: 5px 0;                 /* Margen superior e inferior */
+  border: none;                  /* Sin borde */
+  border-radius: 5px;           /* Bordes redondeados */
+  color: white;                  /* Color del texto */
+  font-size: 16px;               /* Tamaño de la fuente */
+  cursor: pointer;               /* Cursor en forma de puntero */
+  transition: background-color 0.3s; /* Efecto de transición en el color de fondo */
 }
 
-.cube {
-  position: relative;
-  width: 500px;
-  height: 60px;
-  margin: 5rem auto;
-  transform-style: preserve-3d;
-  perspective: 400px;
+/* Botón de menor a mayor */
+#sortAscBtn {
+  background-color: #007bff;    /* Color de fondo azul */
 }
 
-/* positions */
-.a, .b, .c, .d {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  z-index: 1;
+/* Botón de mayor a menor */
+#sortDescBtn {
+  background-color: #dc3545;    /* Color de fondo rojo */
 }
 
-.a:before, .b:before, .c:before, .d:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+/* Estilo del botón al pasar el mouse (hover) */
+.btn:hover {
+  opacity: 0.9;                  /* Cambiar la opacidad al pasar el mouse */
 }
 
-.b {
-  top: 0;
-  transform: rotateX(75deg) translateY(-60px);
-  transform-origin: 0% 0%;
+/* Estilo específico para el botón de "Agregar al carrito" */
+.boton-agregar-carrito {
+  background-color: #28a745;     /* Color de fondo verde */
+  color: white;                   /* Color del texto */
+  border-radius: 5px;            /* Bordes redondeados */
+  padding: 10px 15px;            /* Espaciado interno */
+  cursor: pointer;                /* Cursor en forma de puntero */
+  border: none;                   /* Sin borde */
+  transition: background-color 0.3s; /* Efecto de transición en el color de fondo */
 }
 
-.c {
-  top: 0;
-  transform: rotateX(75deg);
-  transform-origin: 100% 100%;
+/* Estilo del botón de "Agregar al carrito" al pasar el mouse (hover) */
+.boton-agregar-carrito:hover {
+  background-color: #218838;      /* Color más oscuro al pasar el mouse */
+}
+/* Estilos para la marca del producto */
+/* Estilos para la marca del producto */
+.producto-marca {
+  display: block;                    /* Mostrar como un bloque para que ocupe toda la línea */
+  padding: 10px;                    /* Espaciado interno */
+  background-color: #e2f0d9;        /* Color de fondo verde claro */
+  color: #155724;                    /* Color del texto verde oscuro */
+  font-weight: bold;                /* Texto en negrita */
+  border-radius: 5px;               /* Bordes redondeados */
+  margin-top: 10px;                 /* Margen superior */
+  font-size: 16px;                  /* Tamaño de la fuente más grande */
+  text-align: center;               /* Centrar el texto */
+  transition: background-color 0.3s; /* Efecto de transición en el color de fondo */
 }
 
-.d {
-  transform: translateZ(-60px) translateY(-15px);
+/* Estilo al pasar el mouse (hover) */
+.producto-marca:hover {
+  background-color: #c3e6cb;        /* Color más oscuro al pasar el mouse */
 }
 
-/* colors */
-.a, .b {
-  background: linear-gradient(to bottom, rgba(116,198,43,0.8), rgba(116,198,43,0.8));
+/* Estilos para el enlace "Ver detalles" */
+.ver-detalles {
+  display: inline-block;             /* Mostrar como un bloque en línea */
+  margin-top: 10px;                 /* Margen superior */
+  text-decoration: none;             /* Sin subrayado */
+  color: #007bff;                   /* Color del texto (azul) */
+  font-weight: bold;                /* Texto en negrita */
+  transition: color 0.3s;           /* Efecto de transición en el color */
 }
 
-.c, .d {
-  background: linear-gradient(to bottom, rgba(116,198,43,0.5), rgba(116,198,43,0.5));
+.ver-detalles:hover {
+  color: #0056b3;                   /* Color más oscuro al pasar el mouse */
 }
 
-.c:before {
-  box-shadow: 0px 30px 20px -20px rgba(0, 0, 0, 0.4),
-              0px 40px 15px -15px rgba(0, 0, 0, 0.25);
+/* Estilos para el botón "Agregar al carrito" */
+.boton-agregar-carrito {
+  background-color: #28a745;        /* Color de fondo verde */
+  color: white;                     /* Color del texto blanco */
+  border: none;                     /* Sin borde */
+  padding: 10px 15px;               /* Espaciado interno */
+  border-radius: 5px;               /* Bordes redondeados */
+  cursor: pointer;                  /* Cambiar el cursor al pasar */
+  transition: background-color 0.3s; /* Efecto de transición en el color de fondo */
 }
 
-.a:before, .b:before, .c:before, .d:before {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-.b:after {
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.25));
-}
-
-#slider-range-min {
-  position: absolute;
-  width: 94%;
-  left: 3%;
-  top: 27px;
-  margin: 0;
-  z-index: 999;
-}
-
-.ui-slider {
-  height: 5px;
-  border: none;
-  background: rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 2px 2px rgba(255, 255, 255, 0.25), inset 0px 1px 3px rgba(0, 0, 0, 0.3);
-}
-
-.ui-slider .ui-slider-handle {
-  top: -8px;
-  width: 26px;
-  height: 20px;
-  margin-left: -15px;
-  padding-left: 4px;
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 2px;
-  font-family: 'Anonymous Pro', sans-serif;
-  font-size: 1.2rem;
-  line-height: 20px;
-  color: rgba(0, 0, 0, 0.5);
-  cursor: pointer;
-  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3);
-}
-
-.ui-slider .ui-slider-handle:focus {
-  outline: none;
-}
-
-h1 {
-  font-size: 2.7rem;
-  font-weight: 200;
-  color: rgba(0, 0, 0, 0.6);
-  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.3);
-}
-
-p {
-  font-size: 1.2rem;
-  font-weight: 300;
-  line-height: 1.8rem;
-  color: rgba(0, 0, 0, 0.8);
-}
-
-#amount {
-  display: inline-block;
-  text-align: center;
-  font-family: 'Exo', sans-serif;
-  font-weight: 800;
-  font-size: 4rem;
-  color: #529e0e;
-  background: transparent;
-  border: none;
-}
-
-#content {
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-  padding-top: 5rem;
-  text-align: center;
-}
-
-html, body {
-  height: 100%;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.05));
-  font-family: 'Source Sans Pro', sans-serif;
+.boton-agregar-carrito:hover {
+  background-color: #218838;        /* Color más oscuro al pasar el mouse */
 }
