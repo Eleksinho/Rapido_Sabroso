@@ -29,40 +29,41 @@ def logout_view(request):
     return redirect('vista1')
 
 def menu(request):
+    # Obtén todos los productos, categorías y marcas
     productos = Producto.objects.all()
-    categorias = Categoria.objects.all()  # Obtén todas las categorías
-    marcas = Marca.objects.all()  # Obtén todas las marcas
+    categorias = Categoria.objects.all()  
+    marcas = Marca.objects.all()  
     
+    # Obtener parámetros de la consulta
     precio_min = request.GET.get('precio_min', None)
     precio_max = request.GET.get('precio_max', None)
+    sort_by = request.GET.get('sort', None)  
 
-    # Si se proporcionan ambos valores, filtramos por rango de precios
+    # Filtrar por rango de precios si se proporciona
     if precio_min is not None and precio_max is not None:
         try:
             precio_min = float(precio_min)
             precio_max = float(precio_max)
-
-            # Filtramos los productos que están dentro del rango de precios
-            productos_filtrados = [producto for producto in productos if producto.precio_float and precio_min <= producto.precio_float <= precio_max]
-
+            productos = productos.filter(precio__gte=precio_min, precio__lte=precio_max)
         except ValueError:
-            productos = Producto.objects.all()
-    else:
-        # Si no se proporcionan filtros, mostramos todos los productos
-        productos = Producto.objects.all()
+            pass  # Ignorar si hay un error en los precios
+
+    # Ordenar los productos según el parámetro de ordenamiento
+    if sort_by == 'precio_asc':
+        productos = productos.order_by('precio')
+    elif sort_by == 'precio_desc':
+        productos = productos.order_by('-precio')
 
     # Contexto para la plantilla
     context = {
-        'productos': productos_filtrados if precio_min and precio_max else productos,
-        'marcas': marcas,  # Agrega las marcas al contexto
+        'productos': productos,
+        'marcas': marcas,  
         'categorias': categorias
     }
 
     return render(request, 'service/menu.html', context)
 
 
-
-    
 def productos_por_marca(request, marca):
     # Filtra los productos por el ID de la marca
     productos_filtrados = Producto.objects.filter(marca_id=marca)

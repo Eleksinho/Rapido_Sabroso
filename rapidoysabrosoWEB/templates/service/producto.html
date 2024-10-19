@@ -1,7 +1,10 @@
 {% extends 'service/baseplantillaNav.html' %}
-
+{% load static %}
 {% block title %}Producto {{ producto.nombre }} - RapidoYSabroso{% endblock %}
 
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/css/menu.css' %}">
+{% endblock %}
 
 {% block content %}
     <section class="producto-container">
@@ -10,10 +13,13 @@
             <div class="producto-info">
                 <h4 class="producto-nombre">{{ producto.nombre }}</h4>
                 <p class="producto-descripcion">{{ producto.descripcion }}</p>
-                <span class="producto-precio">${{ producto.precio }}</span>
+                <span class="producto-precio">{{ producto.precio }}</span>
                 <span class="producto-marca">{{ producto.marca }}</span>
                 
             </div>
         </div>
     </section>
+{% endblock %}
+
+{% block javascript %}
 {% endblock %}

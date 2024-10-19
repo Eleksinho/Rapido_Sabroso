@@ -36,3 +36,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // Comienza la animación
     requestAnimationFrame(scrollCarrusel);
 });
+
+
+

@@ -1,8 +1,12 @@
 {% extends 'service/baseplantillaNav.html' %}
 
+{% load static %} 
+
 {% block title %}Marca {{marca}} - RapidoYSabroso{% endblock %}
 
-
+{% block css %}
+<link rel="stylesheet" href="{% static 'app/css/menu.css' %}">
+{% endblock %}
 
 {% block content %}
     <h2 class="text-center my-4">Productos de la Marca: {{ marca.nombre }}</h2>
@@ -23,4 +27,6 @@
         <p>No hay productos disponibles en este momento.</p>
         {% endfor %}
       </section>
+{% endblock %}
+{% block javascript %}
 {% endblock %}
