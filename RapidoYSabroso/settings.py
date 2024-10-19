@@ -26,7 +26,8 @@ SECRET_KEY = 'django-insecure-a@zb1rvp$8sl=5ge9l)32ia(o&wj*jj4*cybp+sp9@ls#907qa
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['camping-goes-dover-attack.trycloudflare.com', '127.0.0.1']
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # Application definition
@@ -129,6 +130,11 @@ STATICFILES_DIRS = [
 
 # La ubicación donde Django recopilará los archivos estáticos para el despliegue
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    'D:/codigo/static',
+]
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Ruta del sistema para almacenar los archivos de medios

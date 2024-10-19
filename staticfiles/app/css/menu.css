@@ -1,0 +1,271 @@
+/* General styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 0;
+}
+
+nav .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+nav .logo a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+nav .nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+nav .nav-links li {
+  margin-left: 20px;
+}
+
+nav .nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+nav .nav-links a:hover {
+  text-decoration: underline;
+}
+
+main {
+  padding: 20px;
+}
+
+footer {
+  background-color: #f1f1f1;
+  padding: 10px;
+  text-align: center;
+}
+
+/* Promo cards styles */
+.promo-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.promo-card {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 30%;
+  text-align: center;
+  padding: 20px;
+  transition: transform 0.3s;
+}
+
+.promo-card:hover {
+  transform: scale(1.05);
+}
+
+.promo-card h3 {
+  margin-top: 15px;
+  font-size: 1.5em;
+}
+
+.promo-card p {
+  margin: 10px 0;
+  color: #666;
+}
+
+.promo-card .promo-btn {
+  background-color: #ff4500;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+.promo-card .promo-btn:hover {
+  background-color: #ff5733;
+}
+
+/* Product grid */
+.productos-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas en lugar de auto-fill */
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+@media (max-width: 1024px) {
+  .productos-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 productos por fila en pantallas medianas */
+  }
+}
+
+@media (max-width: 600px) {
+  .productos-container {
+    grid-template-columns: 1fr; /* 1 producto por fila en pantallas pequeñas */
+  }
+}
+
+/* Individual product card */
+.producto-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.producto-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.producto-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.producto-card h4 {
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.producto-card p {
+  color: #555;
+  margin: 10px 0;
+}
+
+.producto-card .producto-precio {
+  color: #ff4b4b;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/* Additional styles */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.producto-info {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.producto-info h4 {
+  margin: 10px 0;
+  font-size: 1.2em;
+}
+
+.producto-info p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.producto-info .producto-precio {
+  font-weight: bold;
+  color: #ff4b4b;
+  font-size: 1.5em;
+}
+
+/* Estilos para el logo */
+.logo-img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+@media (max-width: 600px) {
+  .logo-img {
+    width: 150px; /* Ajusta el tamaño del logo en móviles */
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+  .logo-img {
+    width: 250px; /* Ajusta el tamaño del logo en tabletas */
+  }
+}
+
+@media (min-width: 1025px) {
+  .logo-img {
+    width: 300px; /* Ajusta el tamaño del logo en pantallas grandes */
+  }
+}
+
+/* Estilos de las tarjetas de marcas */
+.marca-card {
+  max-width: 200px; /* Ancho máximo de la tarjeta */
+  height: 130px;    /* Altura máxima de la tarjeta */
+  display: flex;    /* Usar Flexbox para centrar el contenido */
+  justify-content: center; /* Centra el contenido horizontalmente */
+  align-items: center;     /* Centra el contenido verticalmente */
+  overflow: hidden;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin: 0 auto;
+  background-color: #2b0303; /* Color de fondo claro */
+  border: 1px solid #ddd; /* Borde sutil para separar las tarjetas */
+}
+
+.marca-card img {
+  max-width: 150px;    /* Establece un tamaño fijo para las imágenes */
+  max-height: 150px;   /* Mantiene la altura fija */
+  object-fit: contain; /* Asegura que la imagen se ajuste sin perder su relación de aspecto */
+  object-position: center; /* Centra la imagen dentro del contenedor */
+  margin: 0 auto;
+}
+
+/* Efecto de hover sobre las tarjetas */
+.marca-card:hover {
+  transform: scale(1.05); /* Un pequeño efecto de zoom al pasar el mouse */
+  background-color: #e0e0e0; /* Cambio de color de fondo al pasar el mouse */
+}
+
+/* Ajustes responsivos para pantallas más pequeñas */
+@media (max-width: 600px) {
+  .marca-card {
+    max-width: 150px;
+    height: 150px;
+  }
+
+  .marca-card img {
+    width: 120px; /* Reduce el tamaño en dispositivos más pequeños */
+    height: 120px;
+  }
+}
+
+.carousel-inner .marca-card img {
+  width: 150px !important; /* Tamaño consistente dentro del carrusel */
+  height: 150px !important;
+  object-fit: contain !important;
+  object-position: center !important;
+}
+
+.marca-logo, .producto-imagen {
+  max-width: 100%; /* Asegura que no se estiren */
+  height: auto; /* Mantiene la relación de aspecto */
+}
