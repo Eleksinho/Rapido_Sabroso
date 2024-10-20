@@ -9,10 +9,18 @@ class UrlAdmin(admin.ModelAdmin):
     list_display = ('url', 'last_scraped')
     search_fields = ('url',)
 
+from django.contrib import admin
+from .models import Producto, Marca
+
 @admin.register(Producto)
 class ProductoAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'precio', 'fuente_url')
-    search_fields = ('nombre', 'fuente_url__url')
+    list_display = ('nombre', 'precio', 'marca')
+    search_fields = ('nombre', 'marca__nombre')
+
+@admin.register(Marca)
+class MarcaAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'logo_url')  # Mostrar el nombre y el logo_url
+    search_fields = ('nombre',) 
 
 @admin.register(PageSelector)
 class PageSelectorAdmin(admin.ModelAdmin):

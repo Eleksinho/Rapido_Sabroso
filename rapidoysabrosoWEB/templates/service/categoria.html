@@ -1,8 +1,12 @@
 {% extends 'service/baseplantillaNav.html' %}
 
+{% load static %} 
+
 {% block title %}Productos en la Categoría - {{ categoria }}{% endblock %}
 
-
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/css/menu.css' %}">
+{% endblock %}
 
 {% block content %}
   <h1>Productos en la Categoría: {{ categoria }}</h1>
@@ -25,3 +29,5 @@
   </section>
 {% endblock %}
 
+{% block javascript %}
+{% endblock %}

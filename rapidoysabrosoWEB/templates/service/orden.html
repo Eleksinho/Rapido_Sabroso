@@ -1,0 +1,76 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orden de Compra</title>
+    <link rel="stylesheet" href="{% static 'app/css/producto.css' %}">
+</head>
+<body>
+<div class="wrap cf">
+  <h1 class="projTitle">RAPIDO<span>Y</span>SABROSO</h1>
+  <div class="heading cf">
+    <h1>Mi carrito</h1>
+    <a href="{% url 'menu' %}" class="continue">Continuar comprando</a>
+  </div>
+  <div class="cart">
+    <ul class="cartWrap">
+        {% for item in productos_en_orden %}
+        <li class="items {% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+          <div class="infoWrap"> 
+            <div class="cartSection">
+              <img src="{{ item.producto.imagen_url }}" alt="" class="itemImg" />
+              <p class="itemNumber">{{ item.producto.id }}</p>
+              <h3>{{ item.producto.nombre }}</h3>
+              
+              <!-- Mostrar la cantidad de productos y el precio unitario -->
+              <p>{{ item.cantidad }} x {{ item.producto.precio }}</p>
+              
+              <!-- Mostrar el subtotal por este producto (cantidad * precio) -->
+              <p>Subtotal: ${{ item.cantidad|floatformat:2 }}</p>
+              
+              <p class="stockStatus">{% if item.producto.stock > 0 %}In Stock{% else %}Out of Stock{% endif %}</p>
+            </div>  
+            
+            <div class="prodTotal cartSection">
+              <!-- Mostrar el subtotal en esta sección también si es necesario -->
+              <p>{{ item.subtotal }}</p>
+            </div>
+            
+            <div class="cartSection removeWrap">
+              <form action="{% url 'eliminar_de_orden' item.producto.id %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="remove">x</button>
+              </form>
+            </div>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+      
+  </div>
+  
+  <div class="promoCode">
+    <label for="promo">Tienes con cupón?</label>
+    <input type="text" name="promo" placeholder="Enter Code" />
+    <a href="#" class="btn"></a>
+  </div>
+  
+  <div class="subtotal cf">
+    <ul>
+      <li class="totalRow"><span class="label">Subtotal</span><span class="value">{{ orden.subtotal }}</span></li>
+      <li class="totalRow"><span class="label">Shipping</span><span class="value">{{ orden.envio }}</span></li>
+      <li class="totalRow"><span class="label">Tax</span><span class="value">{{ orden.impuesto }}</span></li>
+      <li class="totalRow final"><span class="label">Total</span><span class="value">${{ orden.total }}</span></li>
+      <li class="totalRow"><a href="#" class="btn continue">Checkout</a></li>
+    </ul>
+  </div>
+</div>
+
+{% block javascript %}
+<script src="{% static 'app/js/orden.js' %}"></script>
+{% endblock %}
+</body>
+</html>

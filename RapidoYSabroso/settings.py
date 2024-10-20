@@ -26,7 +26,8 @@ SECRET_KEY = 'django-insecure-a@zb1rvp$8sl=5ge9l)32ia(o&wj*jj4*cybp+sp9@ls#907qa
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['camping-goes-dover-attack.trycloudflare.com', '127.0.0.1']
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # Application definition
@@ -118,11 +119,28 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = '/static/'  # URL pública para archivos estáticos
+import os
+
+# settings.py
+
+# Directorio donde se encuentran los archivos estáticos adicionales
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # 'static' es la carpeta que contiene archivos estáticos como CSS, JS, etc.
+]
+
+# La ubicación donde Django recopilará los archivos estáticos para el despliegue
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    'D:/codigo/static',
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Ruta del sistema para almacenar los archivos de medios
 MEDIA_URL = '/media/'  # URL pública que apunta a la carpeta de medios
 # Carpeta donde se recopilarán los archivos estáticos
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

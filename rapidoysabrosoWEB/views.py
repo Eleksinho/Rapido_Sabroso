@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect , get_object_or_404
 from django.urls import path, include
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .models import Producto,  Categoria   # Asegúrate de importar el modelo Producto
+from .models import *
 
-# Vista de autenticación
+
+
 def vista1(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -28,24 +29,52 @@ def logout_view(request):
     return redirect('vista1')
 
 def menu(request):
+    # Obtén todos los productos, categorías y marcas
     productos = Producto.objects.all()
-    categorias = Categoria.objects.all()
-    marcas_unicas = Producto.objects.values_list('marca', flat=True).distinct()
+    categorias = Categoria.objects.all()  
+    marcas = Marca.objects.all()  
+    
+    # Obtener parámetros de la consulta
+    precio_min = request.GET.get('precio_min', None)
+    precio_max = request.GET.get('precio_max', None)
+    sort_by = request.GET.get('sort', None)  
+
+    # Filtrar por rango de precios si se proporciona
+    if precio_min is not None and precio_max is not None:
+        try:
+            precio_min = float(precio_min)
+            precio_max = float(precio_max)
+            productos = productos.filter(precio__gte=precio_min, precio__lte=precio_max)
+        except ValueError:
+            pass  # Ignorar si hay un error en los precios
+
+    # Ordenar los productos según el parámetro de ordenamiento
+    if sort_by == 'precio_asc':
+        productos = productos.order_by('precio')
+    elif sort_by == 'precio_desc':
+        productos = productos.order_by('-precio')
+
+    # Contexto para la plantilla
     context = {
         'productos': productos,
-        'marcas_unicas': marcas_unicas,
+        'marcas': marcas,  
         'categorias': categorias
     }
+
     return render(request, 'service/menu.html', context)
 
-    
-def productos_por_marca(request, marca):
-    # Filtrar los productos por la marca seleccionada
-    productos_filtrados = Producto.objects.filter(marca=marca)
-    return render(request, 'service/marca.html', {'productos': productos_filtrados, 'marca': marca})
 
-from django.shortcuts import render, get_object_or_404
-from .models import Producto, Categoria
+def productos_por_marca(request, marca):
+    # Filtra los productos por el ID de la marca
+    productos_filtrados = Producto.objects.filter(marca_id=marca)
+    # Obtén el objeto Marca para mostrar más detalles si es necesario
+    marca_obj = Marca.objects.get(id=marca)
+    
+    return render(request, 'service/marca.html', {'productos': productos_filtrados, 'marca': marca_obj})
+
+
+
+
 
 def categorias(request, categoria):
     categorias = Categoria.objects.all()
@@ -67,5 +96,66 @@ def categorias(request, categoria):
 def producto(request, id):
     categorias = Categoria.objects.all()
     producto = get_object_or_404(Producto, id=id)
-    return render(request, 'service/producto.html', {'producto': producto})
+    context = {
+        'producto': producto,
+        'categorias': categorias 
+    }
+    return render(request, 'service/producto.html', context )
+
+
+
+
+
+
+def agregar_a_orden(request, producto_id):
+    
+    orden, creada = Orden.objects.get_or_create(id=request.session.get('orden_id'))
+
+    # Guardamos la id de la orden en la sesión
+    request.session['orden_id'] = orden.id
+
+    # Obtenemos el producto por su ID
+    producto = get_object_or_404(Producto, id=producto_id)
+
+    # Agregamos el producto a la orden o aumentamos la cantidad si ya está
+    orden_producto, creado = OrdenProducto.objects.get_or_create(orden=orden, producto=producto)
+    if not creado:
+        orden_producto.cantidad += 1
+    orden_producto.save()
+
+    # Calcular el total de la orden, realizando la conversión en una línea
+    total = sum(float(item.producto.precio.replace('$', '').replace('.', '').replace(',', '.')) * int(item.cantidad) for item in orden.ordenproducto_set.all())
+    
+    # Guardar el total en la orden
+    orden.total = total
+    orden.save()
+
+    return redirect('ver_orden')
+
+
+def eliminar_de_orden(request, producto_id):
+    orden_id = request.session.get('orden_id')
+    if orden_id:
+        orden = get_object_or_404(Orden, id=orden_id)
+        orden_producto = orden.ordenproducto_set.filter(producto__id=producto_id).first()
+        
+        if orden_producto:
+            orden_producto.delete()
+            
+            # Recalcular el total
+            total = sum(float(item.producto.precio.replace('$', '').replace('.', '').replace(',', '.')) * item.cantidad for item in orden.ordenproducto_set.all())
+            orden.total = total
+            orden.save()
+
+    return redirect('ver_orden')
+
+
+
+
+def ver_orden(request):
+    orden = Orden.objects.get(id=request.session.get('orden_id'))
+    productos_en_orden = orden.ordenproducto_set.all()
+    return render(request, 'service/orden.html', {'orden': orden, 'productos_en_orden': productos_en_orden})
+
+
 
