@@ -4,6 +4,7 @@ from .views import *
 urlpatterns = [
     path('', vista1, name="vista1"),
     path('menu', menu, name="menu"),
+    path('menuver', menuver, name="menuver"),
     path('logout/', logout_view, name='logout'),
     path('marca/<int:marca>/', productos_por_marca, name='marca'), # Cambia str por int para el ID
     path('categoria/<str:categoria>/', categorias, name='categoria'),
@@ -14,4 +15,3 @@ urlpatterns = [
 
     
 ]
-

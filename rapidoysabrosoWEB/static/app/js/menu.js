@@ -55,6 +55,7 @@ noUiSlider.create(slider, {
 });
 
 // Función debounce
+// Reutiliza la función debounce
 function debounce(func, wait) {
     let timeout;
     return function (...args) {
@@ -64,7 +65,7 @@ function debounce(func, wait) {
 }
 
 // Función para buscar productos por nombre y filtrar por precio
-const filtrarProductos = debounce(function() {
+const filtrarProductos = function() {
     // Obtener el valor de búsqueda
     const busqueda = document.getElementById('busqueda-producto').value.toLowerCase();
     
@@ -99,7 +100,10 @@ const filtrarProductos = debounce(function() {
             producto.style.display = 'none'; // Ocultar el producto
         }
     });
-}, 300); // Espera 300 ms después del último movimiento del slider
+};
+
+// Evento para el campo de búsqueda con debounce aplicado
+document.getElementById('busqueda-producto').addEventListener('input', debounce(filtrarProductos, 300));
 
 // Personalizar los tooltips del slider
 slider.noUiSlider.on('update', function(values, handle) {
@@ -110,6 +114,7 @@ slider.noUiSlider.on('update', function(values, handle) {
     }
     filtrarProductos(); // Llama a la función filtradora
 });
+
 
 // Evento para el campo de búsqueda
 document.getElementById('busqueda-producto').addEventListener('input', filtrarProductos);

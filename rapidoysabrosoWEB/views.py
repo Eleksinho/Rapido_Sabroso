@@ -21,8 +21,8 @@ def vista1(request):
     
     return render(request, 'service/vista1.html')
 
-def menu(request):
-    return render(request, 'service/menu.html')
+def menuver(request):
+    return render(request, 'service/menu2.0.html')
 
 def logout_view(request):
     logout(request)
@@ -40,19 +40,7 @@ def menu(request):
     sort_by = request.GET.get('sort', None)  
 
     # Filtrar por rango de precios si se proporciona
-    if precio_min is not None and precio_max is not None:
-        try:
-            precio_min = float(precio_min)
-            precio_max = float(precio_max)
-            productos = productos.filter(precio__gte=precio_min, precio__lte=precio_max)
-        except ValueError:
-            pass  # Ignorar si hay un error en los precios
-
-    # Ordenar los productos según el parámetro de ordenamiento
-    if sort_by == 'precio_asc':
-        productos = productos.order_by('precio')
-    elif sort_by == 'precio_desc':
-        productos = productos.order_by('-precio')
+   
 
     # Contexto para la plantilla
     context = {

@@ -27,26 +27,24 @@
   </div>
 </section>
 
+<aside class="col-md-3" style="position: sticky; top: 10%; max-width: 250px;">
+  <div class="card p-3">
+    <h5>Buscar Producto</h5>
+    <input type="text" class="form-control mb-3" id="busqueda-producto" placeholder="Buscar por nombre" oninput="filtrarProductos()">
+    
+    <div id="rango-precio"></div>
+    <p>Rango de precio seleccionado: $<span id="precio-minimo"></span> - $<span id="precio-maximo"></span></p>
+
+    <button id="sortAscBtn" class="btn btn-primary btn-block mb-2" onclick="ordenarProductos('asc')">Menor a Mayor</button>
+    <button id="sortDescBtn" class="btn btn-primary btn-block" onclick="ordenarProductos('desc')">Mayor a Menor</button>
+  </div>
+</aside>
+
+
 <div class="container">
   <div class="row">
     <!-- Filtros a la izquierda -->
-    <aside class="col-md-3">
-      <h5>Buscar Producto</h5>
-      <input type="text" class="form-control" id="busqueda-producto" placeholder="Buscar por nombre"
-        oninput="filtrarProductos()">
-
-      <!-- Cambia esta parte en el bloque de contenido de tu plantilla -->
-      <div id="rango-precio"></div>
-      <p>Rango de precio seleccionado: $<span id="precio-minimo"></span> - $<span id="precio-maximo"></span></p>
-
-
-      <button id="sortAscBtn" class="btn btn-primary" onclick="ordenarProductos('asc')">Ordenar de Menor a
-        Mayor</button>
-      <button id="sortDescBtn" class="btn btn-primary" onclick="ordenarProductos('desc')">Ordenar de Mayor a
-        Menor</button>
-
-    </aside>
-
+   
     <!-- Productos a la derecha -->
     <section class="col-md-9 productos-container" id="productos-container">
       {% for producto in productos %}
@@ -66,11 +64,9 @@
       </div>
       {% endfor %}
     </section>
-    <button id="cargar-mas" style="display: none;">Cargar más productos</button>
   </div>
 </div>
-<!-- AQUI IMPORTO EL JAVASCRIPT -->
-<script src="app/js/menu.js"></script>
+
 {% endblock %}
 <!-- MOVI TODO EL JAVASCRIPT A MENU.JS -->
 {% block javascript %}
@@ -79,5 +75,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.1/nouislider.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.1/nouislider.min.js"></script>
 <script src="{% static 'app/js/menu.js' %}"></script>
-
+<script>
+  
+</script>
 {% endblock %}
