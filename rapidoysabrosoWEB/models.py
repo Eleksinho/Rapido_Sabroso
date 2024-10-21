@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from django.contrib.auth.models import User
 # Modelo para almacenar las URLs que se van a scrapear
 class Url(models.Model):
     url = models.URLField(unique=True)  # URL que vas a scrapear
@@ -69,3 +70,25 @@ class OrdenProducto(models.Model):
 
     def subtotal(self):
         return self.cantidad * self.producto.precio
+    
+class Profile(models.Model):
+    USER_LEVEL_CHOICES = (
+        ('usuario', 'Usuario'),
+        ('moderador', 'Moderador'),
+        ('administrador', 'Administrador'),
+    )
+    
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(max_length=500, blank=True)
+    location = models.CharField(max_length=30, blank=True)
+    birth_date = models.DateField(null=True, blank=True)
+    
+    # Agregamos el nuevo campo para los niveles de usuario
+    user_level = models.CharField(
+        max_length=13,
+        choices=USER_LEVEL_CHOICES,
+        default='usuario',  # Nivel predeterminado
+    )
+
+    def __str__(self):
+        return f'{self.user.username} - {self.user_level}'

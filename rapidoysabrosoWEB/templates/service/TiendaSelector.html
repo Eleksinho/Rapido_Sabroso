@@ -1,0 +1,43 @@
+{% extends 'service/baseplantillaNav.html' %}
+{% load static %}
+
+{% block title %}Tienda Selector - RapidoYSabroso {% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'app/css/RegistroTienda.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h2>Lista de selectores para la tienda:</h2>
+    
+    <table class="table">
+      <thead>
+        <tr>
+        <th>Url</th>
+          <th>Producto</th>
+          <th>Precio</th>
+          <th>Descripción</th>
+          <th>Imagen</th>
+          <th>Logo</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for selector in selectores %}
+          <tr>
+            <td>{{ selector.url }}</td>
+            <td>{{ selector.product_selector }}</td>
+            <td>{{ selector.price_selector }}</td>
+            <td>{{ selector.description_selector }}</td>
+            <td>{{ selector.image_selector }}</td>
+            <td>{{ selector.logo_selector }}</td>
+            <td>
+              <a href="{% url 'SelectorTienda' selector.id %}" class="btn btn-primary">Editar</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

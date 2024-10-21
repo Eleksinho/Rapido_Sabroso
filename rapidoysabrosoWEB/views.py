@@ -3,26 +3,74 @@ from django.urls import path, include
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import *
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.http import HttpResponse
+from django.core.management import call_command
+from django.db import connection
+from threading import Thread
+
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from .models import Profile
+
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .Forms import ProfileForm
+
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Profile
+from .Forms import ProfileForm, SelectorForm
+
+@login_required
+def profile_view(request):
+    # Obtén el perfil del usuario actual
+    profile = Profile.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        # Crea un formulario para el perfil con los datos del POST
+        form = ProfileForm(request.POST, instance=profile)
+        
+        if form.is_valid():
+            # Guarda los cambios en el perfil
+            form.save()  
+
+            # Actualiza el usuario
+            user = request.user
+            user.first_name = request.POST.get('first_name')
+            user.last_name = request.POST.get('last_name')
+            user.email = request.POST.get('email')
+            user.set_password(request.POST.get('password'))  # Actualiza la contraseña si se proporciona
+            user.save()  # Guarda los cambios en el usuario
+            
+            return redirect('profile')  # Redirige al perfil después de guardar
+    else:
+        form = ProfileForm(instance=profile)  # Carga el perfil existente en el formulario
+
+    return render(request, 'registration/profile.html', {'form': form})
 
 
 
-def vista1(request):
+
+def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        
-        user = authenticate(username=username, password=password)
+
+        user = authenticate(request, username=username, password=password)
+
         if user is not None:
             login(request, user)
-            return redirect('menu') 
+            messages.success(request, 'Inicio de sesión exitoso.')
+            return redirect('menu')  # Cambia 'menu' por la URL de redirección deseada
         else:
-            error_message = 'Usuario o contraseña incorrectos.'
-            return render(request, 'service/vista1.html', {'error_message': error_message})
-    
-    return render(request, 'service/vista1.html')
+            messages.error(request, 'Usuario o contraseña incorrectos.')
+            return render(request, 'service/login.html')  # Asegúrate de que esta plantilla exista
 
-def menuver(request):
-    return render(request, 'service/menu2.0.html')
+    return render(request, 'service/login.html')
 
 def logout_view(request):
     logout(request)
@@ -145,5 +193,75 @@ def ver_orden(request):
     productos_en_orden = orden.ordenproducto_set.all()
     return render(request, 'service/orden.html', {'orden': orden, 'productos_en_orden': productos_en_orden})
 
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(' service/vista1')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/register.html', {'form': form})
 
 
+
+def TiendaNueva(request):
+    if request.method == 'POST':
+        url = request.POST.get('url')
+        if url:
+            url_instance, created = Url.objects.get_or_create(url=url)
+            if created:
+                # Ejecuta el scraping en un hilo para evitar bloquear la vista
+                thread = Thread(target=ejecutar_scraping)
+                thread.start()
+                return redirect('menu')  
+            else:
+                return HttpResponse("Esta URL ya está registrada.")
+        else:
+            return HttpResponse("Por favor, ingrese una URL válida.")
+    else:
+        return render(request, 'service/RegistroTienda.html')
+    
+
+def TiendaSelector(request):
+    # Obtener todas las URLs y sus selectores
+    urls = Url.objects.all()  # Obtén todas las URLs
+    selectores = PageSelector.objects.all()  # Obtener todos los selectores
+
+    context = {
+        'urls': urls,
+        'selectores': selectores
+    }
+    return render(request, 'service/TiendaSelector.html', context)
+
+
+
+def ejecutar_scraping():
+    try:
+        call_command('scrape_urls')
+        connection.close() 
+        pass 
+    except Exception as e:
+        print(f"Error en el scraping: {e}")
+
+from django.db import transaction
+
+def SelectorTienda(request, selector_id):
+    selector = get_object_or_404(PageSelector, id=selector_id)
+
+    if request.method == 'POST':
+        with transaction.atomic():
+            form = SelectorForm(request.POST, instance=selector)
+            if form.is_valid():
+                form.save()
+                thread = Thread(target=ejecutar_scraping)
+                thread.start()
+                return redirect('TiendaSelector')
+    else:
+        form = SelectorForm(instance=selector)
+
+    context = {
+        'form': form,
+        'selector': selector
+    }
+    return render(request, 'service/SelectorTienda.html', context)
