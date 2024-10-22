@@ -1,48 +1,53 @@
 document.addEventListener("DOMContentLoaded", function() {
     const carrusel = document.getElementById("marcaCarrusel");
-    const carruselInner = carrusel.querySelector(".marca-cards-inner");
+    const carruselInner = carrusel.querySelector(".marca-cards-inner");  // Asegúrate de que esta clase sea correcta
     let scrollAmount = 0;
-    const scrollStep = 0.2;
-    let isPaused = false;
+    const scrollStep = 0.2;  // Disminuye este valor para hacerlo más lento
+    let isPaused = false;  // Bandera para pausar el movimiento
 
     function scrollCarrusel() {
         const maxScroll = carruselInner.scrollWidth - carrusel.clientWidth;
 
-        if (!isPaused) {
+        if (!isPaused) {  // Solo mueve el carrusel si no está pausado
             if (scrollAmount < maxScroll) {
                 scrollAmount += scrollStep;
                 carrusel.scrollLeft = scrollAmount;
             } else {
+                // Vuelve al principio cuando llega al final
                 scrollAmount = 0;
                 carrusel.scrollLeft = scrollAmount;
             }
         }
+
+        // Solicita el siguiente cuadro de animación
         requestAnimationFrame(scrollCarrusel);
     }
 
+    // Pausar el carrusel al pasar el mouse
     carrusel.addEventListener("mouseenter", function() {
         isPaused = true;
     });
 
+    // Reanudar el carrusel al quitar el mouse
     carrusel.addEventListener("mouseleave", function() {
         isPaused = false;
     });
 
+    // Comienza la animación
     requestAnimationFrame(scrollCarrusel);
 });
 
-// Configuración del slider de rango de precios
 var slider = document.getElementById('rango-precio');
 
 noUiSlider.create(slider, {
-    start: [0, 50000],
+    start: [0, 50000], // Rango inicial
     connect: true,
     range: {
         'min': 0,
         'max': 50000
     },
     step: 1000,
-    tooltips: [true, true],
+    tooltips: [true, true], // Activar tooltips para ambos valores
     format: {
         to: (value) => value.toLocaleString(),
         from: (value) => Number(value.replace(',', ''))
@@ -50,6 +55,7 @@ noUiSlider.create(slider, {
 });
 
 // Función debounce
+// Reutiliza la función debounce
 function debounce(func, wait) {
     let timeout;
     return function (...args) {
@@ -58,35 +64,42 @@ function debounce(func, wait) {
     };
 }
 
-// Función para filtrar productos por nombre y precio
+// Función para buscar productos por nombre y filtrar por precio
 const filtrarProductos = function() {
+    // Obtener el valor de búsqueda
     const busqueda = document.getElementById('busqueda-producto').value.toLowerCase();
+    
+    // Obtener valores del slider transformados a número
     const precioMinimo = parseFloat(slider.noUiSlider.get()[0].replace(/\D/g, '')) || 0;
     const precioMaximo = parseFloat(slider.noUiSlider.get()[1].replace(/\D/g, '')) || Infinity;
+
+    // Seleccionar todos los productos
     const productos = document.querySelectorAll('.producto-card');
 
-    const productosFiltrados = Array.from(productos).filter(producto => {
+    productos.forEach(producto => {
+        // Obtener el nombre del producto y hacerlo minúsculas para la comparación
         const nombreProducto = producto.querySelector('.producto-nombre').innerText.toLowerCase();
+        
+        // Obtener el precio del producto, remover símbolo $ y puntos/comas
         const precioTexto = producto.querySelector('.producto-precio').innerText
-                            .replace('$', '').replace(/\./g, '').replace(',', '.').trim();
+                            .replace('$', '')        // Eliminar el símbolo $
+                            .replace(/\./g, '')      // Eliminar puntos (separadores de miles)
+                            .replace(',', '.')       // Reemplazar comas por puntos si son decimales
+                            .trim();                 // Remover espacios adicionales
+        
         const precioProducto = parseFloat(precioTexto) || 0;
+
+        // Comprobar si el producto cumple con la búsqueda por nombre y está dentro del rango de precios
         const cumpleBusqueda = nombreProducto.includes(busqueda);
         const cumplePrecio = precioProducto >= precioMinimo && precioProducto <= precioMaximo;
-        return cumpleBusqueda && cumplePrecio;
+
+        // Mostrar u ocultar el producto basado en ambos filtros
+        if (cumpleBusqueda && cumplePrecio) {
+            producto.style.display = ''; // Mostrar el producto
+        } else {
+            producto.style.display = 'none'; // Ocultar el producto
+        }
     });
-
-    const productosContainer = document.getElementById('productos-container');
-    productosContainer.innerHTML = ''; // Limpiar el contenedor
-
-    // Crear una nueva fila para los productos filtrados
-    const fila = document.createElement('div');
-    fila.className = 'row'; // Aseguramos que la estructura de fila se mantenga
-
-    productosFiltrados.forEach(producto => {
-        fila.appendChild(producto.parentElement); // Agregar la columna dentro de la fila
-    });
-
-    productosContainer.appendChild(fila); // Insertar la fila en el contenedor
 };
 
 // Evento para el campo de búsqueda con debounce aplicado
@@ -95,34 +108,34 @@ document.getElementById('busqueda-producto').addEventListener('input', debounce(
 // Personalizar los tooltips del slider
 slider.noUiSlider.on('update', function(values, handle) {
     if (handle === 0) {
-        document.getElementById('precio-minimo').innerText = values[0];
+        document.getElementById('precio-minimo').innerText = values[0]; // Tooltip de precio mínimo
     } else {
-        document.getElementById('precio-maximo').innerText = values[1];
+        document.getElementById('precio-maximo').innerText = values[1]; // Tooltip de precio máximo
     }
     filtrarProductos(); // Llama a la función filtradora
 });
 
-// Función para ordenar productos por precio
+
+// Evento para el campo de búsqueda
+document.getElementById('busqueda-producto').addEventListener('input', filtrarProductos);
+
 function ordenarProductos(orden) {
     const productosContainer = document.getElementById('productos-container');
     const productos = Array.from(productosContainer.querySelectorAll('.producto-card'));
 
+    // Ordenar productos basado en el precio
     productos.sort((a, b) => {
         const precioA = parseFloat(a.querySelector('.producto-precio').innerText.replace(/\D/g, '')) || 0;
         const precioB = parseFloat(b.querySelector('.producto-precio').innerText.replace(/\D/g, '')) || 0;
 
-        return orden === 'asc' ? precioA - precioB : precioB - precioA;
+        return orden === 'asc' ? precioA - precioB : precioB - precioA; // Ascendente o descendente
     });
 
-    productosContainer.innerHTML = ''; // Limpiar el contenedor
+    // Limpiar el contenedor de productos
+    productosContainer.innerHTML = '';
 
-    // Crear un nuevo contenedor de fila (row)
-    const fila = document.createElement('div');
-    fila.className = 'row'; // Clase de Bootstrap
-
+    // Añadir los productos ordenados de nuevo al contenedor
     productos.forEach(producto => {
-        fila.appendChild(producto.parentElement);  // Agregar la columna con la tarjeta dentro de la fila
+        productosContainer.appendChild(producto);
     });
-
-    productosContainer.appendChild(fila);
-} 
+}
