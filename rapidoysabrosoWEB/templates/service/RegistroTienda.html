@@ -1,34 +1,58 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'app/css/RegistroTienda.css' %}">
-<div class="container">
-    <div class="row">
-      <div class="col-lg-3 col-md-2"></div>
-      <div class="col-lg-6 col-md-8 login-box">
-        <div class="col-lg-12 login-key">
-          <i class="fa fa-link" aria-hidden="true"></i>
-        </div>
-        <div class="col-lg-12 login-title">
-          REGISTRO DE TIENDA
-        </div>
+<header class="top-header">
   
-        <div class="col-lg-12 login-form">
-          <div class="col-lg-12 login-form">
-            <form method="POST">
+</header>
+
+<div id="container" class="text-center mb-3">
+  <a href="{% url 'menu' %}" class="learn-more">
+    <span class="circle" aria-hidden="true">
+      <span class="icon arrow"></span>
+    </span>
+    <span class="button-text">Volver al menu </span>
+  </a>
+</div>
+
+<!--dust particle-->
+<div>
+  <div class="starsec"></div>
+  <div class="starthird"></div>
+  <div class="starfourth"></div>
+  <div class="starfifth"></div>
+</div>
+<!--Dust particle end-->
+
+<!-- Main container -->
+<div class="container text-center text-dark d-flex justify-content-center align-items-center vh-90">
+  
+  <div class="row">
+    <div class="col-lg-6 d-block mx-auto">
+      <div class="row">
+        <div class="col-xl-12 col-md-12 col-md-12">
+          <div class="card">
+            <div class="card-body wow-bg" id="formBg">
+              <h2 class="colorboard text-center">Registro de Tienda</h2>
+              <h4 class="colorboard text-center">Ingresa la URL de la tienda</h4>
+
+              <form method="POST">
                 {% csrf_token %}
-                <!-- Campos del formulario -->
-                <div class="form-group">
-                    <label class="form-control-label">URL DE LA TIENDA</label>
-                    <input type="url" class="form-control" name="url" placeholder="https://ejemplo.com" required>
+                <div class="input-group mb-3">
+                  <input type="url" class="form-control textbox-dg" name="url" placeholder="https://ejemplo.com" required>
                 </div>
-                <!-- Otros campos si son necesarios -->
-                <div class="col-lg-6 login-btm login-button">
-                    <button type="submit" class="btn btn-outline-primary">REGISTRAR</button>
+
+                <div class="row">
+                  <div class="col-12">
+                    <button type="submit" class="btn btn-animated btn-block logn-btn">Registrar</button>
+                  </div>
                 </div>
-            </form>
+              </form>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-2"></div>
     </div>
   </div>
-  
+</div>
+
+
+

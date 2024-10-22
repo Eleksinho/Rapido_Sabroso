@@ -7,6 +7,12 @@ body {
   background-color: #1c1b1a;
 }
 
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
 nav .container {
   display: flex;
   justify-content: space-between;
@@ -126,6 +132,9 @@ footer {
   padding: 20px;
   text-align: center;
   transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .producto-card:hover {
@@ -150,38 +159,10 @@ footer {
   margin: 10px 0;
 }
 
-.producto-card .producto-precio {
+.producto-precio {
   color: #ff4b4b;
   font-weight: bold;
   font-size: 20px;
-}
-
-/* Additional styles */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.producto-info {
-  margin-top: 10px;
-  text-align: center;
-}
-
-.producto-info h4 {
-  margin: 10px 0;
-  font-size: 1.2em;
-}
-
-.producto-info p {
-  margin: 5px 0;
-  color: #666;
-}
-
-.producto-info .producto-precio {
-  font-weight: bold;
-  color: #ff4b4b;
-  font-size: 1.5em;
 }
 
 /* Estilos para el logo */
@@ -253,6 +234,7 @@ footer {
   }
 }
 
+/* Consistencia dentro del carrusel */
 .carousel-inner .marca-card img {
   width: 150px !important; /* Tamaño consistente dentro del carrusel */
   height: 150px !important;
@@ -264,103 +246,128 @@ footer {
   max-width: 100%; /* Asegura que no se estiren */
   height: auto; /* Mantiene la relación de aspecto */
 }
+
 #rango-precio {
   width: 100%;  /* O ajusta según el diseño */
   margin: 20px 0;  /* Añadir espacio alrededor */
 }
+
 /* Estilos para los botones de ordenación */
 .btn {
-  display: inline-block;           /* Hacer que el botón sea un bloque en línea */
-  padding: 10px 15px;            /* Espaciado interno */
-  margin: 5px 0;                 /* Margen superior e inferior */
-  border: none;                  /* Sin borde */
-  border-radius: 5px;           /* Bordes redondeados */
-  color: white;                  /* Color del texto */
-  font-size: 16px;               /* Tamaño de la fuente */
-  cursor: pointer;               /* Cursor en forma de puntero */
+  display: inline-block; /* Hacer que el botón sea un bloque en línea */
+  padding: 10px 15px; /* Espaciado interno */
+  margin: 5px 0; /* Margen superior e inferior */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Bordes redondeados */
+  color: white; /* Color del texto */
+  font-size: 16px; /* Tamaño de la fuente */
+  cursor: pointer; /* Cursor en forma de puntero */
   transition: background-color 0.3s; /* Efecto de transición en el color de fondo */
 }
 
-/* Botón de menor a mayor */
+/* Botones de ordenación */
 #sortAscBtn {
-  background-color: #007bff;    /* Color de fondo azul */
+  background-color: #007bff; /* Color de fondo azul */
 }
 
-/* Botón de mayor a menor */
 #sortDescBtn {
-  background-color: #dc3545;    /* Color de fondo rojo */
+  background-color: #dc3545; /* Color de fondo rojo */
 }
 
 /* Estilo del botón al pasar el mouse (hover) */
 .btn:hover {
-  opacity: 0.9;                  /* Cambiar la opacidad al pasar el mouse */
+  opacity: 0.9; /* Cambiar la opacidad al pasar el mouse */
 }
 
 /* Estilo específico para el botón de "Agregar al carrito" */
 .boton-agregar-carrito {
-  background-color: #28a745;     /* Color de fondo verde */
-  color: white;                   /* Color del texto */
-  border-radius: 5px;            /* Bordes redondeados */
-  padding: 10px 15px;            /* Espaciado interno */
-  cursor: pointer;                /* Cursor en forma de puntero */
-  border: none;                   /* Sin borde */
+  background-color: #28a745; /* Color de fondo verde */
+  color: white; /* Color del texto */
+  border: none; /* Sin borde */
+  padding: 10px 15px; /* Espaciado interno */
+  border-radius: 5px; /* Bordes redondeados */
+  cursor: pointer; /* Cambiar el cursor al pasar */
   transition: background-color 0.3s; /* Efecto de transición en el color de fondo */
 }
 
-/* Estilo del botón de "Agregar al carrito" al pasar el mouse (hover) */
 .boton-agregar-carrito:hover {
-  background-color: #218838;      /* Color más oscuro al pasar el mouse */
+  background-color: #218838; /* Color más oscuro al pasar el mouse */
 }
-/* Estilos para la marca del producto */
+
 /* Estilos para la marca del producto */
 .producto-marca {
-  display: block;                    /* Mostrar como un bloque para que ocupe toda la línea */
-  padding: 10px;                    /* Espaciado interno */
-  background-color: #e2f0d9;        /* Color de fondo verde claro */
-  color: #155724;                    /* Color del texto verde oscuro */
-  font-weight: bold;                /* Texto en negrita */
-  border-radius: 5px;               /* Bordes redondeados */
-  margin-top: 10px;                 /* Margen superior */
-  font-size: 16px;                  /* Tamaño de la fuente más grande */
-  text-align: center;               /* Centrar el texto */
-  transition: background-color 0.3s; /* Efecto de transición en el color de fondo */
+  display: block; /* Mostrar como un bloque para que ocupe toda la línea */
+  padding: 10px; /* Espaciado interno */
+  background-color: #fff; /* Color de fondo blanco */
+  border-radius: 5px; /* Bordes redondeados */
+  margin: 10px 0; /* Margen superior e inferior */
+}
+.slider-container {
+  margin: 20px 0; /* Ajusta el margen superior e inferior según sea necesario */
 }
 
-/* Estilo al pasar el mouse (hover) */
-.producto-marca:hover {
-  background-color: #c3e6cb;        /* Color más oscuro al pasar el mouse */
+.carousel-inner img {
+  width: 100%; /* Asegúrate de que las imágenes ocupen el 100% del ancho del contenedor */
+  height: auto; /* Mantén la proporción de las imágenes */
 }
 
-/* Estilos para el enlace "Ver detalles" */
-.ver-detalles {
-  display: inline-block;             /* Mostrar como un bloque en línea */
-  margin-top: 10px;                 /* Margen superior */
-  text-decoration: none;             /* Sin subrayado */
-  color: #007bff;                   /* Color del texto (azul) */
-  font-weight: bold;                /* Texto en negrita */
-  transition: color 0.3s;           /* Efecto de transición en el color */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: rgba(0, 0, 0, 0.5); /* Color de fondo para los controles */
+  border-radius: 50%; /* Forma redondeada para los controles */
 }
 
-.ver-detalles:hover {
-  color: #0056b3;                   /* Color más oscuro al pasar el mouse */
+/* Estilo para el aside */
+.card {
+  background-color: #f8f9fa; /* Fondo claro para el card */
+  border: 1px solid #007bff; /* Borde azul */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
 }
 
-/* Estilos para el botón "Agregar al carrito" */
-.boton-agregar-carrito {
-  background-color: #28a745;        /* Color de fondo verde */
-  color: white;                     /* Color del texto blanco */
-  border: none;                     /* Sin borde */
-  padding: 10px 15px;               /* Espaciado interno */
-  border-radius: 5px;               /* Bordes redondeados */
-  cursor: pointer;                  /* Cambiar el cursor al pasar */
-  transition: background-color 0.3s; /* Efecto de transición en el color de fondo */
+/* Títulos dentro del card */
+.card h5 {
+  font-size: 1.5rem; /* Tamaño de fuente del título */
+  color: #007bff; /* Color del texto del título */
+  margin-bottom: 15px; /* Margen inferior para separación */
 }
 
-.boton-agregar-carrito:hover {
-  background-color: #218838;        /* Color más oscuro al pasar el mouse */
+/* Estilo para el input de búsqueda */
+.form-control {
+  border: 1px solid #007bff; /* Borde azul */
+  border-radius: 5px; /* Bordes redondeados */
+  margin-bottom: 15px; /* Margen inferior para separación */
 }
-aside.col-md-3 {
-  position: sticky;
-  top: 10%;
-  max-width: 250px;
+
+/* Espacio para el slider de precios */
+#rango-precio {
+  margin-bottom: 15px; /* Margen inferior para separación */
+}
+
+/* Estilo personalizado para los botones */
+.boton-ordenar {
+  display: block; /* Hacer que el botón ocupe todo el ancho */
+  width: 100%; /* Ancho completo */
+  padding: 10px; /* Espaciado interno */
+  font-size: 1rem; /* Tamaño de fuente */
+  color: #fff; /* Color del texto */
+  background-color: #007bff; /* Color de fondo azul */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Bordes redondeados */
+  transition: background-color 0.3s, transform 0.3s; /* Transición suave */
+  cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+}
+
+.boton-ordenar:hover {
+  background-color: #0056b3; /* Color al pasar el mouse */
+}
+
+.boton-ordenar:active {
+  background-color: #004494; /* Color al hacer clic */
+  transform: scale(0.98); /* Efecto de "aplastar" el botón */
+}
+
+/* Espaciado superior para los botones */
+.boton-ordenar:not(:last-child) {
+  margin-bottom: 10px; /* Espaciado inferior para el primer botón */
 }

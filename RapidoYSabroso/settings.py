@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-a@zb1rvp$8sl=5ge9l)32ia(o&wj*jj4*cybp+sp9@ls#907qa
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['camping-goes-dover-attack.trycloudflare.com', '127.0.0.1']
+ALLOWED_HOSTS = ['camping-goes-dover-attack.trycloudflare.com', '127.0.0.1', 'localhost']
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 

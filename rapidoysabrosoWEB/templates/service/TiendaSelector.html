@@ -1,43 +1,45 @@
 {% extends 'service/baseplantillaNav.html' %}
 {% load static %}
 
-{% block title %}Tienda Selector - RapidoYSabroso {% endblock %}
+{% block title %}Tienda Selector - RapidoYSabroso{% endblock %}
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'app/css/RegistroTienda.css' %}">
 {% endblock %}
 
 {% block content %}
-  <div class="container">
-    <h2>Lista de selectores para la tienda:</h2>
+  <div class="container-fluid mt-4">  <!-- Usamos container-fluid para ocupar todo el ancho -->
+    <h2 class="text-center mb-4">Lista de selectores para la tienda:</h2>
     
-    <table class="table">
-      <thead>
-        <tr>
-        <th>Url</th>
-          <th>Producto</th>
-          <th>Precio</th>
-          <th>Descripción</th>
-          <th>Imagen</th>
-          <th>Logo</th>
-          <th>Acción</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for selector in selectores %}
+    <div class="table-responsive"> <!-- Hacemos la tabla responsiva -->
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
           <tr>
-            <td>{{ selector.url }}</td>
-            <td>{{ selector.product_selector }}</td>
-            <td>{{ selector.price_selector }}</td>
-            <td>{{ selector.description_selector }}</td>
-            <td>{{ selector.image_selector }}</td>
-            <td>{{ selector.logo_selector }}</td>
-            <td>
-              <a href="{% url 'SelectorTienda' selector.id %}" class="btn btn-primary">Editar</a>
-            </td>
+            <th>URL</th>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Descripción</th>
+            <th>Imagen</th>
+            <th>Logo</th>
+            <th>Acción</th>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {% for selector in selectores %}
+            <tr>
+              <td>{{ selector.url }}</td>
+              <td>{{ selector.product_selector }}</td>
+              <td>{{ selector.price_selector }}</td>
+              <td>{{ selector.description_selector }}</td>
+              <td>{{ selector.image_selector }}</td>
+              <td>{{ selector.logo_selector }}</td>
+              <td>
+                <a href="{% url 'SelectorTienda' selector.id %}" class="btn btn-primary btn-sm">Editar</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 {% endblock %}

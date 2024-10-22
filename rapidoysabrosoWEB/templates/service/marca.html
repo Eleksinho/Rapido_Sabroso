@@ -12,16 +12,18 @@
 <div class="container my-4">
     <h2 class="text-center">Productos de la Marca: {{ marca.nombre }}</h2>
     <div class="row">
-        <aside class="col-md-3">
-            <h5>Buscar Producto</h5>
-            <input type="text" class="form-control" id="busqueda-producto" placeholder="Buscar por nombre" oninput="filtrarProductos()">
-
-            <div id="rango-precio"></div>
-            <p>Rango de precio seleccionado: $<span id="precio-minimo"></span> - $<span id="precio-maximo"></span></p>
-
-            <button id="sortAscBtn" class="btn btn-primary" onclick="ordenarProductos('asc')">Ordenar de Menor a Mayor</button>
-            <button id="sortDescBtn" class="btn btn-primary" onclick="ordenarProductos('desc')">Ordenar de Mayor a Menor</button>
-        </aside>
+        <aside class="col-md-3" style="position: sticky; top: 10%; max-width: 250px;">
+            <div class="card p-3">
+              <h5>Buscar Producto</h5>
+              <input type="text" class="form-control mb-3" id="busqueda-producto" placeholder="Buscar por nombre" oninput="filtrarProductos()">
+        
+              <div id="rango-precio" class="mb-3"></div> <!-- Slider de precios -->
+              <p>Rango de precio seleccionado: $<span id="precio-minimo"></span> - $<span id="precio-maximo"></span></p>
+        
+              <button id="sortAscBtn" class="boton-ordenar mb-2" onclick="ordenarProductos('asc')">Menor a Mayor</button>
+              <button id="sortDescBtn" class="boton-ordenar" onclick="ordenarProductos('desc')">Mayor a Menor</button>
+            </div>
+          </aside>
 
         <section class="col-md-9 productos-container">
             {% for producto in productos %}

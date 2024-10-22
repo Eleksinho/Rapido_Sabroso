@@ -14,50 +14,64 @@
 </head>
 <body>
 
-<header>
-  <nav class="navbar navbar-expand-custom navbar-mainbg">
-    <div class="container">
-      <!-- Logo y nombre -->
-      <a class="navbar-brand navbar-logo d-flex align-items-center" href="{% url 'menu' %}">
-        <!-- <img src="{% static 'imagenes/DALL·E-2024-10-09-17.35 (1).png' %}" alt="Logo" class="logo-img"> -->
-        <span class="ml-2">RapidoYSabroso</span>
-      </a>
-
-      <!-- Botón de hamburguesa para dispositivos móviles -->
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <i class="fas fa-bars text-white"></i>
-      </button>
-
-      <!-- Elementos del menú -->
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ml-auto">
-          <div class="hori-selector">
-            <div class="left"></div>
-            <div class="right"></div>
-          </div>
-          <li class="nav-item active">
-            <!-- Aquí se añade el trigger del modal -->
-            <a class="nav-link" href="#" data-toggle="modal" data-target="#categoriaModal">
-              <i class="far fa-clone"></i>Categoría
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#"><i class="far fa-calendar-alt"></i>Mapa</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'profile' %}"><i class="far fa-chart-bar"></i>Perfil</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#"><i class="far fa-copy"></i>Configuración</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i>Cerrar Sesión</a>
-          </li>
-        </ul>
+  <header>
+    <nav class="navbar navbar-expand-custom navbar-mainbg">
+      <div class="container">
+        <!-- Logo y nombre -->
+        <a class="navbar-brand navbar-logo d-flex align-items-center" href="{% url 'menu' %}">
+          <span class="ml-2">RapidoYSabroso</span>
+        </a>
+  
+        <!-- Botón de hamburguesa para dispositivos móviles -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="fas fa-bars text-white"></i>
+        </button>
+  
+        <!-- Elementos del menú -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
+            <div class="hori-selector">
+              <div class="left"></div>
+              <div class="right"></div>
+            </div>
+  
+            <!-- Opciones comunes -->
+            <li class="nav-item active">
+              <!-- Aquí se añade el trigger del modal -->
+              <a class="nav-link" href="#" data-toggle="modal" data-target="#categoriaModal">
+                <i class="far fa-clone"></i>Categoría
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"><i class="far fa-calendar-alt"></i>Mapa</a>
+            </li>
+  
+            <!-- Opciones para usuarios autenticados -->
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'profile' %}"><i class="far fa-chart-bar"></i>Perfil</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"><i class="far fa-copy"></i>Configuración</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}"><i class="fas fa-sign-out-alt"></i>Cerrar Sesión</a>
+            </li>
+            {% else %}
+            <!-- Opciones para usuarios no autenticados -->
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i>Iniciar Sesión</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'register' %}"><i class="fas fa-user-plus"></i>Registrarse</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav>
-</header>
+    </nav>
+  </header>
+  
 
 <!-- Modal para las categorías -->
 <div class="modal fade" id="categoriaModal" tabindex="-1" aria-labelledby="categoriaModalLabel" aria-hidden="true">

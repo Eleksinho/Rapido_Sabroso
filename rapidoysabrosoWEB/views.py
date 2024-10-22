@@ -74,7 +74,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('vista1')
+    return redirect('login')
 
 def menu(request):
     # Obtén todos los productos, categorías y marcas
@@ -198,7 +198,7 @@ def register(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(' service/vista1')
+            return redirect(' service/login')
     else:
         form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})

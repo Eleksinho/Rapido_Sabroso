@@ -2,7 +2,7 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('', login_view, name="vista1"),
+    path('', login_view, name="login"),
     path('menu', menu, name="menu"),
     path('logout/', logout_view, name='logout'),
     path('marca/<int:marca>/', productos_por_marca, name='marca'), # Cambia str por int para el ID

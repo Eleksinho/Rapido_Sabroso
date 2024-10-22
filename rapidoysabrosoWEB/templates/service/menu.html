@@ -6,6 +6,7 @@
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'app/css/menu.css' %}">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 {% endblock %}
 
 {% block content %}
@@ -27,25 +28,22 @@
   </div>
 </section>
 
-<aside class="col-md-3" style="position: sticky; top: 10%; max-width: 250px;">
-  <div class="card p-3">
-    <h5>Buscar Producto</h5>
-    <input type="text" class="form-control mb-3" id="busqueda-producto" placeholder="Buscar por nombre" oninput="filtrarProductos()">
-    
-    <div id="rango-precio"></div>
-    <p>Rango de precio seleccionado: $<span id="precio-minimo"></span> - $<span id="precio-maximo"></span></p>
-
-    <button id="sortAscBtn" class="btn btn-primary btn-block mb-2" onclick="ordenarProductos('asc')">Menor a Mayor</button>
-    <button id="sortDescBtn" class="btn btn-primary btn-block" onclick="ordenarProductos('desc')">Mayor a Menor</button>
-  </div>
-</aside>
-
 
 <div class="container">
   <div class="row">
-    <!-- Filtros a la izquierda -->
-   
-    <!-- Productos a la derecha -->
+    <aside class="col-md-3" style="position: sticky; top: 10%; max-width: 250px;">
+      <div class="card p-3">
+        <h5>Buscar Producto</h5>
+        <input type="text" class="form-control mb-3" id="busqueda-producto" placeholder="Buscar por nombre" oninput="filtrarProductos()">
+  
+        <div id="rango-precio" class="mb-3"></div> <!-- Slider de precios -->
+        <p>Rango de precio seleccionado: $<span id="precio-minimo"></span> - $<span id="precio-maximo"></span></p>
+  
+        <button id="sortAscBtn" class="boton-ordenar mb-2" onclick="ordenarProductos('asc')">Menor a Mayor</button>
+        <button id="sortDescBtn" class="boton-ordenar" onclick="ordenarProductos('desc')">Mayor a Menor</button>
+      </div>
+    </aside>
+
     <section class="col-md-9 productos-container" id="productos-container">
       {% for producto in productos %}
       <div class="producto-card">
@@ -68,14 +66,12 @@
 </div>
 
 {% endblock %}
-<!-- MOVI TODO EL JAVASCRIPT A MENU.JS -->
+
 {% block javascript %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.1/nouislider.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.1/nouislider.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.1/nouislider.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.1/nouislider.min.js"></script>
 <script src="{% static 'app/js/menu.js' %}"></script>
-<script>
-  
-</script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock %}
