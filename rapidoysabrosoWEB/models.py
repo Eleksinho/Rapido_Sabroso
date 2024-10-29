@@ -92,3 +92,13 @@ class Profile(models.Model):
 
     def __str__(self):
         return f'{self.user.username} - {self.user_level}'
+    
+# En tu models.py
+
+class HistorialPrecio(models.Model):
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)  # Relación con el producto
+    precio = models.CharField(max_length=50)  # Precio scrapeado
+    fecha = models.DateField(auto_now_add=True)  # Fecha de scraping
+
+    def __str__(self):
+        return f"{self.producto.nombre} - {self.precio} ({self.fecha})"

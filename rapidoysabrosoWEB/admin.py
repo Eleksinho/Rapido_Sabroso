@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Url, Producto, PageSelector, Categoria, Marca, Profile
+from .models import Url, Producto, PageSelector, Categoria, Marca, Profile, HistorialPrecio
 
 # Admin para el modelo Url
 @admin.register(Url)
@@ -36,3 +36,9 @@ class CategoriaAdmin(admin.ModelAdmin):
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'user_level', 'bio', 'location', 'birth_date')  # Campos que deseas mostrar en la lista
     search_fields = ('user__username', 'user__email')  # Campos para buscar
+
+@admin.register(HistorialPrecio)
+class HistorialPrecioAdmin(admin.ModelAdmin):
+    list_display = ('producto', 'precio', 'fecha')
+    list_filter = ('fecha', 'producto')
+    search_fields = ('producto__nombre',)

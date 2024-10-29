@@ -129,17 +129,33 @@ def categorias(request, categoria):
     }
     return render(request, 'service/categoria.html', context)
 
+from django.shortcuts import render, get_object_or_404
+from .models import Producto, HistorialPrecio, Categoria
+
+# views.py
+import json
+from django.shortcuts import render, get_object_or_404
+from .models import Producto, HistorialPrecio, Categoria
+
 def producto(request, id):
     categorias = Categoria.objects.all()
     producto = get_object_or_404(Producto, id=id)
+    historial_precios = HistorialPrecio.objects.filter(producto=producto).order_by('fecha')
+
+    # Serializa los datos a formato JSON
+    fechas = list(historial_precios.values_list('fecha', flat=True))
+    precios = list(historial_precios.values_list('precio', flat=True))
+
+    # Convertir precios a float para el gráfico
+    precios_float = [float(precio.replace('$', '').replace(',', '')) for precio in precios]
+
     context = {
         'producto': producto,
-        'categorias': categorias 
+        'categorias': categorias,
+        'fechas': json.dumps(fechas),  # Convertir a JSON
+        'precios': json.dumps(precios_float),  # Convertir precios a JSON
     }
-    return render(request, 'service/producto.html', context )
-
-
-
+    return render(request, 'service/producto.html', context)
 
 
 
@@ -205,22 +221,24 @@ def register(request):
 
 
 
+
+
 def TiendaNueva(request):
     if request.method == 'POST':
         url = request.POST.get('url')
         if url:
             url_instance, created = Url.objects.get_or_create(url=url)
             if created:
-                # Ejecuta el scraping en un hilo para evitar bloquear la vista
-                thread = Thread(target=ejecutar_scraping)
-                thread.start()
-                return redirect('menu')  
+                # Llama al comando de Django para ejecutar el scraping
+                call_command('scrape_urls')
+                return redirect('menu')
             else:
                 return HttpResponse("Esta URL ya está registrada.")
         else:
             return HttpResponse("Por favor, ingrese una URL válida.")
     else:
         return render(request, 'service/RegistroTienda.html')
+
     
 
 def TiendaSelector(request):
@@ -236,13 +254,7 @@ def TiendaSelector(request):
 
 
 
-def ejecutar_scraping():
-    try:
-        call_command('scrape_urls')
-        connection.close() 
-        pass 
-    except Exception as e:
-        print(f"Error en el scraping: {e}")
+
 
 from django.db import transaction
 

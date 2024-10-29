@@ -2,35 +2,43 @@
 {% load static %}
 {% block title %}Producto {{ producto.nombre }} - RapidoYSabroso{% endblock %}
 {% block css %}
-
+<link rel="stylesheet" type="text/css" href="{% static 'app/css/detallepr.css' %}">
 {% endblock %}
 
 {% block content %}
-
-
-<link rel="stylesheet" type="text/css" href="{% static 'app/css/detallepr.css' %}">
-    <section class="producto-container">
-        <div class="container">
-            <div class="card">
-                <div class="first-card"><img src="{{ producto.imagen_url }}" alt="{{ producto.nombre }}">
-                    <h4>{{ producto.nombre }}</h4>
-                    <p>{{ producto.descripcion }}</p>
-                    <span>{{ producto.precio }}</span>
-                    <span>{{ producto.marca }}</span>
-                    <form action="{% url 'agregar_a_orden' producto.id %}" method="POST">
-                        {% csrf_token %}
-                        <button type="submit" class="boton-agregar-carrito">Agregar al carrito</button>
-                      </form>
-                </div>
-                <div class="back-card"></div>
-                <div class="thid-card"></div>
-                
-               
+<section class="producto-container">
+    <div class="container">
+        <div class="card">
+            <div class="first-card">
+                <img src="{{ producto.imagen_url }}" alt="{{ producto.nombre }}">
+                <h4>{{ producto.nombre }}</h4>
+                <p>{{ producto.descripcion }}</p>
+                <span class="producto-precio">{{ producto.precio }}</span>
+                <span>{{ producto.marca }}</span>
+                <form action="{% url 'agregar_a_orden' producto.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="boton-agregar-carrito">Agregar al carrito</button>
+                </form>
             </div>
-           
+            <div class="back-card"></div>
+            <div class="thid-card"></div>
         </div>
-    </section>
+    </div>
 
+    <!-- Contenedor para el gráfico -->
+    <h2>Historial de Precios</h2>
+    <canvas id="historial-precios-chart" width="400" height="200"></canvas>
+    
+    <!-- Pasar los datos de precios y fechas a JavaScript -->
+    <script type="application/json" id="fechas-data">{{ fechas|escapejs }}</script>
+    <script type="application/json" id="precios-data">{{ precios|escapejs }}</script>
+</section>
 {% endblock %}
+
 {% block javascript %}
+<!-- Cargar Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Cargar tu archivo de historial de precios -->
+<script src="{% static 'app/js/historial_precios.js' %}"></script>
 {% endblock %}
