@@ -1,4 +1,12 @@
+p{
+ color:#00ffaaed;
+}
+
+.container{
+  margin-top: 10px;
+}
 .form-control {
+ 
   width: 100%; /* Asegura que el input ocupe el 100% de su contenedor */
   padding: 12px; /* Aumenta el padding para un aspecto más espacioso */
   border: 1px solid #14edaa; /* Estilo de borde más acorde al tema */
@@ -70,8 +78,9 @@ label {
 
 
 /* Centrar el contenedor */
-.vh-90 {
-  height: 90vh; /* Altura de toda la ventana */
+.vh-150 {
+  height: 150vh;
+  width: 100vh; /* Altura de toda la ventana */
 }
 
 .container {

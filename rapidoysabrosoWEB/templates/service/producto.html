@@ -1,6 +1,7 @@
 {% extends 'service/baseplantillaNav.html' %}
 {% load static %}
 {% block title %}Producto {{ producto.nombre }} - RapidoYSabroso{% endblock %}
+
 {% block css %}
 <link rel="stylesheet" type="text/css" href="{% static 'app/css/detallepr.css' %}">
 {% endblock %}
@@ -21,24 +22,28 @@
                 </form>
             </div>
             <div class="back-card"></div>
-            <div class="thid-card"></div>
+            <div class="third-card"></div>
         </div>
     </div>
 
     <!-- Contenedor para el gráfico -->
-    <h2>Historial de Precios</h2>
-    <canvas id="historial-precios-chart" width="400" height="200"></canvas>
+    <div class="container">
+        <div style="max-width: 600px; height: 400px; margin: auto;">
+            <h2>Historial de Precios</h2>
+            <svg id="historial-precios-chart" width="600" height="400"></svg>
+        </div>
+    </div>
     
     <!-- Pasar los datos de precios y fechas a JavaScript -->
-    <script type="application/json" id="fechas-data">{{ fechas|escapejs }}</script>
-    <script type="application/json" id="precios-data">{{ precios|escapejs }}</script>
+    <script type="application/json" id="fechas-data">{{ fechas|safe }}</script>
+    <script type="application/json" id="precios-data">{{ precios|safe }}</script>
 </section>
 {% endblock %}
 
 {% block javascript %}
-<!-- Cargar Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Cargar D3.js -->
 
-<!-- Cargar tu archivo de historial de precios -->
-<script src="{% static 'app/js/historial_precios.js' %}"></script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="{% static 'app/js/detalle.js' %}"></script>
+
 {% endblock %}

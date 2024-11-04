@@ -1,29 +1,13 @@
 {% load static %}
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="{% static 'app/css/RegistroTienda.css' %}">
-<header class="top-header">
-</header>
 
-<div id="container" class="text-center mb-3">
-  <a href="{% url 'menu' %}" class="learn-more">
-    <span class="circle" aria-hidden="true">
-      <span class="icon arrow"></span>
-    </span>
-    <span class="button-text">Volver al menú</span>
-  </a>
-</div>
+<header class="top-header"></header>
 
-<!--dust particle-->
-<div>
-  <div class="starsec"></div>
-  <div class="starthird"></div>
-  <div class="starfourth"></div>
-  <div class="starfifth"></div>
-</div>
-<!--Dust particle end-->
 
-<!-- Main container -->
-<div class="container text-center text-dark d-flex justify-content-center align-items-center vh-90">
-  <div class="row">
+
+<div class="container text-dark d-flex justify-content-center align-items-center vh-100">
+  <div class="row w-100">
     <div class="col-lg-6 d-block mx-auto">
       <div class="row">
         <div class="col-xl-12 col-md-12 col-md-12">
@@ -34,13 +18,16 @@
 
               <form method="POST">
                 {% csrf_token %}
-                <div class="mb-3">  <!-- Cambié input-group a div mb-3 -->
+                <div class="mb-3">
                   {{ form.as_p }}
                 </div>
 
                 <div class="row">
-                  <div class="col-12">
-                    <button type="submit" class="btn btn-animated btn-block logn-btn">Guardar Cambios</button>
+                  <div class="col-6">
+                    <button type="submit" name="preview" class="btn btn-secondary btn-block">Previsualizar</button>
+                  </div>
+                  <div class="col-6">
+                    <button type="submit" name="save" class="btn btn-primary btn-block">Guardar y Ejecutar Scraping</button>
                   </div>
                 </div>
               </form>
@@ -49,5 +36,33 @@
         </div>
       </div>
     </div>
+
+    <div class="col-lg-6 d-block mx-auto">
+      {% if producto_preview %}
+        <div class="mt-4">
+          <h3 class="colorboard text-center">Vista Previa del Producto</h3>
+          <div class="card">
+            <div class="card-body wow-bg" id="formBg" >
+              <p class="colorboard"><strong>Nombre:</strong> {{ producto_preview.nombre }}</p>
+              <p class="colorboard"><strong>Precio:</strong> {{ producto_preview.precio }}</p>
+              <p class="colorboard"><strong>descripcion:</strong> {{ producto_preview.descripcion }}</p>
+              <p class="colorboard"><strong>Imagen:</strong></p>
+              <img src="{{ producto_preview.imagen_url }}" alt="Imagen del Producto" class="img-fluid">
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
   </div>
+</div>
+
+
+<div class="fixed-bottom text-left mb-3 mr-3">
+  <a href="{% url 'menu' %}" class="learn-more btn btn-secondary">
+    <span class="circle" aria-hidden="true">
+      <span class="icon arrow"></span>
+    </span>
+    <span class="button-text">Volver al menú</span>
+  </a>
+</div>
 </div>

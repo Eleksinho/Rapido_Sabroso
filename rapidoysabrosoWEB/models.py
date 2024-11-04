@@ -99,6 +99,14 @@ class HistorialPrecio(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)  # Relación con el producto
     precio = models.CharField(max_length=50)  # Precio scrapeado
     fecha = models.DateField(auto_now_add=True)  # Fecha de scraping
+    @property
+    def precio_float(self):
+        """Convierte el precio en CharField a un número flotante."""
+        try:
+            # Elimina el símbolo '$' y las comas antes de convertirlo
+            return float(self.precio.replace('$', '').replace(',', ''))
+        except ValueError:
+            return None
 
     def __str__(self):
         return f"{self.producto.nombre} - {self.precio} ({self.fecha})"

@@ -58,30 +58,30 @@ class Command(BaseCommand):
         today = datetime.now().date()
 
         for url_obj in urls:
-            # Verificar si la URL ya fue scrapeada hoy para todos los productos
+            # Verificar si la URL ya fue scrapeada hoy
             if HistorialPrecio.objects.filter(producto__fuente_url=url_obj, fecha=today).exists():
-                self.stdout.write(self.style.WARNING(f"{url_obj.url} ya fue scrapeada hoy. Se omite."))
+                print(f"{url_obj.url} ya fue scrapeada hoy. Se omite.")
                 continue  # Omitir esta URL y pasar a la siguiente
 
             url = url_obj.url
-            self.stdout.write(f"Scraping {url}...")
+            print(f"Scraping {url}...")
 
             try:
                 selectors = PageSelector.objects.get(url=url_obj)
             except PageSelector.DoesNotExist:
-                self.stdout.write(self.style.ERROR(f"No se encontraron selectores para {url}. Usando selectores por defecto."))
+                print(f"No se encontraron selectores para {url}. Usando selectores por defecto.")
                 selectors = None
 
             try:
                 response = requests.get(url)
                 response.raise_for_status()
             except requests.RequestException as e:
-                self.stdout.write(self.style.ERROR(f"Error al acceder a {url}: {e}"))
+                print(f"Error al acceder a {url}: {e}")
                 continue
 
             tree = html.fromstring(response.content)
 
-            # Obtener productos, precios, descripciones e imágenes usando selectores
+            # Obtener productos, precios, descripciones e imágenes
             productos = tree.xpath(DEFAULT_SELECTORS['producto'])
             precios = tree.xpath(DEFAULT_SELECTORS['precio'])
             descripciones = tree.xpath(DEFAULT_SELECTORS['descripcion']) if DEFAULT_SELECTORS['descripcion'] else []

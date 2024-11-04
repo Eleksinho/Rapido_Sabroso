@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Dashboard - RapidoYSabroso{% endblock %}</title>
   {% block css %}
-  
   {% endblock %}
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="{% static 'app/css/navbar.css' %}">
@@ -17,27 +16,19 @@
   <header>
     <nav class="navbar navbar-expand-custom navbar-mainbg">
       <div class="container">
-        <!-- Logo y nombre -->
         <a class="navbar-brand navbar-logo d-flex align-items-center" href="{% url 'menu' %}">
           <span class="ml-2">RapidoYSabroso</span>
         </a>
-  
-        <!-- Botón de hamburguesa para dispositivos móviles -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <i class="fas fa-bars text-white"></i>
         </button>
-  
-        <!-- Elementos del menú -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ml-auto">
             <div class="hori-selector">
               <div class="left"></div>
               <div class="right"></div>
             </div>
-  
-            <!-- Opciones comunes -->
             <li class="nav-item active">
-              <!-- Aquí se añade el trigger del modal -->
               <a class="nav-link" href="#" data-toggle="modal" data-target="#categoriaModal">
                 <i class="far fa-clone"></i>Categoría
               </a>
@@ -45,8 +36,6 @@
             <li class="nav-item">
               <a class="nav-link" href="#"><i class="far fa-calendar-alt"></i>Mapa</a>
             </li>
-  
-            <!-- Opciones para usuarios autenticados -->
             {% if user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'profile' %}"><i class="far fa-chart-bar"></i>Perfil</a>
@@ -58,7 +47,6 @@
               <a class="nav-link" href="{% url 'login' %}"><i class="fas fa-sign-out-alt"></i>Cerrar Sesión</a>
             </li>
             {% else %}
-            <!-- Opciones para usuarios no autenticados -->
             <li class="nav-item">
               <a class="nav-link" href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i>Iniciar Sesión</a>
             </li>
@@ -71,48 +59,44 @@
       </div>
     </nav>
   </header>
-  
 
-<!-- Modal para las categorías -->
-<div class="modal fade" id="categoriaModal" tabindex="-1" aria-labelledby="categoriaModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="categoriaModalLabel">Selecciona una Categoría</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <ul class="list-group">
-          <li class="list-group-item"><a href="{% url 'categoria' 'Todas' %}">Todas las Categorías</a></li>
-          {% for categoria in categorias %}
-          <li class="list-group-item"><a href="{% url 'categoria' categoria.nombre %}">{{ categoria.nombre }}</a></li>
-          {% endfor %}
-        </ul>
+  <div class="modal fade" id="categoriaModal" tabindex="-1" aria-labelledby="categoriaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="categoriaModalLabel">Selecciona una Categoría</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <ul class="list-group">
+            <li class="list-group-item"><a href="{% url 'categoria' 'Todas' %}">Todas las Categorías</a></li>
+            {% for categoria in categorias %}
+            <li class="list-group-item"><a href="{% url 'categoria' categoria.nombre %}">{{ categoria.nombre }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<main>
-  {% block content %}
-  <!-- Aquí se cargará el contenido de cada vista que extienda esta plantilla -->
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <footer>
+    <p>&copy; 2024 RapidoYSabroso. Todos los derechos reservados.</p>
+  </footer>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  {% block javascript %}
+  <script src="{% static 'app/js/menu.js' %}"></script>
+  <script src="{% static 'app/js/navbar.js' %}"></script>
   {% endblock %}
-</main>
-
-<footer>
-  <p>&copy; 2024 RapidoYSabroso. Todos los derechos reservados.</p>
-</footer>
-
-<!-- Scripts necesarios para el funcionamiento de Bootstrap -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="app/js/menu.js"></script>
-<script src="{% static 'app/js/navbar.js' %}"></script>
-{% block javascript %}
-{% endblock %}
 
 </body>
 </html>
