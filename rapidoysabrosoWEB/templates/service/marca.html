@@ -1,8 +1,10 @@
 {% extends 'service/baseplantillaNav.html' %}
 
-{% load static %} 
+{% load static %}
 
-{% block title %}Marca {{marca}} - RapidoYSabroso{% endblock %}
+{% block title %}
+Marca {{ marca }} - RapidoYSabroso
+{% endblock %}
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'app/css/menu.css' %}">
@@ -12,40 +14,47 @@
 <div class="container my-4">
     <h2 class="text-center">Productos de la Marca: {{ marca.nombre }}</h2>
     <div class="row">
-        <aside class="col-md-3" style="position: sticky; top: 10%; max-width: 250px;">
-            <div class="card p-3">
-              <h5>Buscar Producto</h5>
-              <input type="text" class="form-control mb-3" id="busqueda-producto" placeholder="Buscar por nombre" oninput="filtrarProductos()">
-        
-              <div id="rango-precio" class="mb-3"></div> <!-- Slider de precios -->
-              <p>Rango de precio seleccionado: $<span id="precio-minimo"></span> - $<span id="precio-maximo"></span></p>
-        
-              <button id="sortAscBtn" class="boton-ordenar mb-2" onclick="ordenarProductos('asc')">Menor a Mayor</button>
-              <button id="sortDescBtn" class="boton-ordenar" onclick="ordenarProductos('desc')">Mayor a Menor</button>
-            </div>
-          </aside>
-
-        <section class="col-md-9 productos-container">
-            {% for producto in productos %}
-            <div class="producto-card">
-                <img src="{{ producto.imagen_url }}" alt="{{ producto.nombre }}" class="producto-imagen">
-                <div class="producto-info">
-                    <h4 class="producto-nombre">{{ producto.nombre }}</h4>
-                    <p class="producto-descripcion">{{ producto.descripcion }}</p>
-                    <span class="producto-precio">{{ producto.precio }}</span>
-                    <span class="producto-precio">{{ producto.marca }}</span>
-                    <a href="{% url 'producto' id=producto.id %}">Ver detalles</a>
+        <div class="container">
+            <div class="row">
+              <aside class="col-md-3" style="position: sticky; top: 10%; max-width: 250px;">
+                <div class="card p-3">
+                  <h5>Buscar Producto</h5>
+                  <input type="text" class="form-control mb-3" id="busqueda-producto" placeholder="Buscar por nombre" oninput="filtrarProductos()">
+            
+                  <div id="rango-precio" class="mb-3"></div> <!-- Slider de precios -->
+                  <p>Rango de precio seleccionado: $<span id="precio-minimo"></span> - $<span id="precio-maximo"></span></p>
+            
+                  <button id="sortAscBtn" class="boton-ordenar mb-2" onclick="ordenarProductos('asc')">Menor a Mayor</button>
+                  <button id="sortDescBtn" class="boton-ordenar" onclick="ordenarProductos('desc')">Mayor a Menor</button>
                 </div>
-            </div>
-            {% empty %}
-            <p>No hay productos disponibles en este momento.</p>
-            {% endfor %}
-        </section>
+              </aside>
+
+              <section id="productos-container" class="col-md-9 productos-container">
+                {% for producto in productos %}
+                <div class="producto-card" data-marca="{{ producto.marca }}">
+                    <img src="{{ producto.imagen_url }}" alt="{{ producto.nombre }}" class="producto-imagen">
+                    <div class="producto-info">
+                        <h4 class="producto-nombre">{{ producto.nombre }}</h4>
+                        <p class="producto-descripcion">{{ producto.descripcion }}</p>
+                        <span class="producto-precio">{{ producto.precio }}</span>
+                        <span class="producto-marca">{{ producto.marca }}</span>
+                        <a href="{% url 'producto' id=producto.id %}">Ver detalles</a>
+                    </div>
+                </div>
+                {% empty %}
+                <p>No hay productos disponibles en este momento.</p>
+                {% endfor %}
+            </section>
     </div>
 </div>
-
 {% endblock %}
-<script src="{% static 'app/js/menu.js' %}"></script>
-{% block javascript %}
 
+{% block javascript %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.1/nouislider.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.1/nouislider.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.basic.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="{% static 'app/js/marca.js' %}"></script>
 {% endblock %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect , get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import path, include
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -7,19 +7,17 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.core.management import call_command
-from django.db import connection
+from django.db import connection , transaction
 from threading import Thread
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-from .models import Profile
-from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
 from django.contrib import messages
-from .Forms import ProfileForm
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from .models import Profile
-from .Forms import ProfileForm, SelectorForm
+from .Forms import *
+from .decorators import user_is_moderator, user_is_admin, user_is_staff
+from django.utils import timezone
+from django.db.models import Max
+import json
+from io import StringIO
+from rest_framework.authtoken.models import Token
+
 
 @login_required
 def profile_view(request):
@@ -48,9 +46,6 @@ def profile_view(request):
 
     return render(request, 'registration/profile.html', {'form': form})
 
-
-
-
 def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -69,11 +64,24 @@ def login_view(request):
     return render(request, 'service/login.html')
 
 def logout_view(request):
+     # Obtener el token asociado al usuario
+    if request.user.is_authenticated:
+        try:
+            # Eliminar el token del usuario
+            token = Token.objects.get(user=request.user)
+            token.delete()
+        except Token.DoesNotExist:
+            pass  # Si no existe un token, no hacer nada
+
+    # Cerrar sesión del usuario
     logout(request)
+
+    # Agregar un mensaje de éxito
+    messages.success(request, "Has cerrado sesión exitosamente.")
+
+    # Redirigir a la página de inicio o cualquier otra página
     return redirect('login')
 
-from django.utils import timezone
-from django.db.models import Max
 
 def menu(request):
     # Obtiene la fecha actual
@@ -100,39 +108,54 @@ def menu(request):
 
 
 def productos_por_marca(request, marca):
-    # Filtra los productos por el ID de la marca
-    productos_filtrados = Producto.objects.filter(marca_id=marca)
+    # Obtiene la fecha actual
+    fecha_actual = timezone.now().date()
+    
+    # Filtra los productos por el ID de la marca y con un historial de precios registrado hoy
+    productos_filtrados = Producto.objects.filter(
+        marca_id=marca,
+        historialprecio__fecha=fecha_actual
+    ).distinct()  # Distinct para evitar duplicados si hay varios registros del mismo día
+    
     # Obtén el objeto Marca para mostrar más detalles si es necesario
     marca_obj = Marca.objects.get(id=marca)
     
-    return render(request, 'service/marca.html', {'productos': productos_filtrados, 'marca': marca_obj})
-
-
-
-
+    # Renderiza la plantilla con el contexto
+    return render(request, 'service/marca.html', {
+        'productos': productos_filtrados,
+        'marca': marca_obj
+    })
 
 def categorias(request, categoria):
+    # Obtiene la fecha actual
+    fecha_actual = timezone.now().date()
+    
+    # Obtiene todas las categorías para la navegación
     categorias = Categoria.objects.all()
 
     if categoria == "Todas":
-        productos = Producto.objects.all()  
+        # Filtra los productos que tienen un historial de precios registrado hoy
+        productos = Producto.objects.filter(
+            historialprecio__fecha=fecha_actual
+        ).distinct()  # Distinct para evitar duplicados si hay varios registros del mismo día
     else:
+        # Obtiene la categoría seleccionada
+        categoria_obj = get_object_or_404(Categoria, nombre=categoria)
         
-        categoria_obj = get_object_or_404(Categoria, nombre=categoria) 
-        productos = Producto.objects.filter(categoria=categoria_obj) 
+        # Filtra los productos por la categoría y con un historial de precios registrado hoy
+        productos = Producto.objects.filter(
+            categoria=categoria_obj,
+            historialprecio__fecha=fecha_actual
+        ).distinct()
 
     context = {
         'productos': productos,
         'categoria_seleccionada': categoria,
-        'categorias': categorias 
+        'categorias': categorias
     }
     return render(request, 'service/categoria.html', context)
 
-from django.shortcuts import render, get_object_or_404
-from .models import Producto, HistorialPrecio, Categoria
-import json
-from django.shortcuts import render, get_object_or_404
-from .models import Producto, HistorialPrecio, Categoria
+
 
 def producto(request, id):
     categorias = Categoria.objects.all()
@@ -225,7 +248,7 @@ def register(request):
 
 
 
-
+@user_is_staff
 def TiendaNueva(request):
     if request.method == 'POST':
         url = request.POST.get('url')
@@ -242,7 +265,7 @@ def TiendaNueva(request):
         return render(request, 'service/RegistroTienda.html')
 
     
-
+@user_is_staff
 def TiendaSelector(request):
     # Obtener todas las URLs y sus selectores
     urls = Url.objects.all()  # Obtén todas las URLs
@@ -256,14 +279,6 @@ def TiendaSelector(request):
 
 
 
-
-from django.shortcuts import render, get_object_or_404
-from django.db import transaction
-from django.core.management import call_command
-from threading import Thread
-from io import StringIO
-import json
-from .models import PageSelector
 
 import requests
 from lxml import html
@@ -309,7 +324,7 @@ def scrape_view(selector):
     
     # Procesar y devolver los resultados
     return data
-
+@user_is_staff
 def SelectorTienda(request, selector_id):
     selector = get_object_or_404(PageSelector, id=selector_id)
     producto_preview = None  # Almacenar el producto de vista previa
