@@ -21,11 +21,12 @@
                     <button type="submit" class="boton-agregar-carrito">Agregar al carrito</button>
                 </form>
             </div>
-            <div class="back-card"></div>
-            <div class="third-card"></div>
+     
         </div>
     </div>
+</section>
 
+<section class="producto-container">
     <!-- Contenedor para el gráfico -->
     <div class="container">
         <div style="max-width: 600px; height: 400px; margin: auto;">
@@ -41,9 +42,6 @@
 {% endblock %}
 
 {% block javascript %}
-<!-- Cargar D3.js -->
-
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="{% static 'app/js/detalle.js' %}"></script>
-
 {% endblock %}

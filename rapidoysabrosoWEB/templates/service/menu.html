@@ -26,9 +26,6 @@
     </div>
   </section>
 
- <!-- Productos -->
-<!-- Productos -->
-<!-- Productos -->
 <div class="containerCarrusel container">
   <h2 class="text-center my-4">Productos en Oferta</h2>
   <div id="productoCarrusel" class="carousel slide" data-bs-ride="carousel">
@@ -47,7 +44,7 @@
                   <a href="{% url 'producto' id=bajo.id %}" class="ver-detalles">Ver detalles &rarr;</a>
                   <form action="{% url 'agregar_a_orden' producto_id=bajo.id %}" method="POST">
                     {% csrf_token %}
-                    <button type="submit" class="boton-agregar-carrito">Agregar al carrito</button>
+                    <button type="submit" class="boton-agregar-carrito">Agregar al carrito</button>                    
                   </form>
                 </div>
               </div>
@@ -89,8 +86,8 @@
           <div id="rango-precio" class="mb-3"></div> <!-- Slider de precios -->
           <p>Rango de precio seleccionado: $<span id="precio-minimo"></span> - $<span id="precio-maximo"></span></p>
 
-          <button id="sortAscBtn" class="boton-ordenar mb-2" onclick="ordenarProductos('asc')">Menor a Mayor</button>
-          <button id="sortDescBtn" class="boton-ordenar" onclick="ordenarProductos('desc')">Mayor a Menor</button>
+          <button id="sortAscBtn" class="btn-danger mb-2" onclick="ordenarProductos('asc')">Menor a Mayor</button>
+          <button id="sortDescBtn" class="btn-primary" onclick="ordenarProductos('desc')">Mayor a Menor</button>
         </div>
       </aside>
 
@@ -103,8 +100,11 @@
               <h4 class="producto-nombre">{{ producto.nombre }}</h4>
               <p class="producto-descripcion">{{ producto.descripcion }}</p>
               <span class="producto-precio">{{ producto.precio }}</span>
+              <br>     
               <span class="producto-marca">{{ producto.marca }}</span>
+              <br>
               <a href="{% url 'producto' id=producto.id %}" class="ver-detalles">Ver detalles &rarr;</a>
+              <br>
               <form action="{% url 'agregar_a_orden' producto.id %}" method="POST">
                 {% csrf_token %}
                 <button type="submit" class="boton-agregar-carrito">Agregar al carrito</button>

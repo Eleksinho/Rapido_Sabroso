@@ -52,11 +52,32 @@ span {
     transition: transform 0.3s ease-in-out;
 }
 
-/* Estilo para las imágenes de los productos */
 .card img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
+    max-width: 100%; /* Asegura que la imagen se ajuste al tamaño del contenedor */
+    height: auto; /* Mantiene la relación de aspecto de la imagen */
+    margin-bottom: 10px; /* Espacio entre la imagen y el resto del contenido */
+}
+
+.card .producto-info {
+    flex-grow: 1; /* Permite que el contenedor de información del producto ocupe el espacio disponible */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribuye los elementos dentro de la sección de información */
+}
+
+.card .producto-info h4, 
+.card .producto-info p, 
+.card .producto-info span {
+    margin-bottom: 10px; /* Espacio entre los elementos */
+}
+
+.card .producto-info a {
+    margin-top: auto; /* Empuja el enlace hacia el final del contenedor */
+}
+
+/* Opcional: Agregar un hover más suave */
+.card:hover {
+    transform: scale(1.05); /* Efecto de escala suave al pasar el ratón */
 }
 
 /* Estilos para el efecto de fondo en las tarjetas */
