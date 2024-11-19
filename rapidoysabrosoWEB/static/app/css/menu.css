@@ -1,3 +1,116 @@
+/* Carrusel contenedor */
+.containerCarrusel {
+  max-width: 90%; /* Ajusta el ancho máximo del contenedor */
+  margin: 0 auto; /* Centra el contenedor */
+}
+
+/* Estilos de cada tarjeta de producto */
+.producto-card-carrusel {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.producto-card-carrusel:hover {
+  transform: scale(1.05); /* Efecto de aumento al pasar el cursor */
+}
+
+/* Estilo para la imagen del producto */
+.producto-imagen {
+  max-height: 200px;
+  object-fit: cover;
+  width: 100%;
+}
+
+/* Información del producto */
+.producto-info {
+  padding: 15px;
+  text-align: center;
+}
+
+.producto-info h4 {
+  font-size: 1.1rem;
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+.producto-precio {
+  color: #27ae60;
+  font-weight: bold;
+  font-size: 1.2rem;
+  display: block;
+  margin: 10px 0;
+}
+
+.producto-marca {
+  font-size: 0.9rem;
+  color: #555;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.ver-detalles {
+  text-decoration: none;
+  color: #007bff;
+  font-size: 1rem;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.boton-agregar-carrito {
+  background-color: #ff4500;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  display: inline-block;
+  cursor: pointer;
+  margin-top: 10px;
+  position: absolute;  /* Fija el botón en la parte inferior */
+  bottom: 10px;  /* Ajusta la distancia desde el fondo */
+  left: 50%;  /* Centra el botón horizontalmente */
+  transform: translateX(-50%); /* Ajusta el centro de manera precisa */
+}
+
+
+.boton-agregar-carrito:hover {
+  background-color: #e03e00;
+}
+
+/* Flechas de navegación del carrusel */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: #333;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+}
+
+/* Estilo al pasar el mouse por las flechas */
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  background-color: #ff4500;
+}
+
+.carousel-control-prev-icon:before,
+.carousel-control-next-icon:before {
+  font-size: 1.5rem;
+  color: white;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .producto-card-carrusel {
+    width: 100%;
+  }
+}
+
+
 /* General styles */
 body {
   font-family: Arial, sans-serif;
@@ -371,3 +484,210 @@ footer {
 .boton-ordenar:not(:last-child) {
   margin-bottom: 10px; /* Espaciado inferior para el primer botón */
 }
+
+/* Estilo general para el carrusel */
+#productoCarrusel {
+  margin: 20px 0;
+  overflow: hidden; /* Para evitar que se desborde */
+}
+
+.carousel-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch; /* Asegura que cada slide ocupe todo el alto disponible */
+}
+
+.carousel-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* Asegura que el carrusel ocupe el 100% del contenedor */
+}
+
+.carousel-item .row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.carousel-item .col-md-3 {
+  padding: 10px;
+}
+
+/* Estilos para el carrusel de productos */
+.containerCarrusel {
+  margin-top: 20px;
+}
+
+#productoCarrusel {
+  position: relative;
+  width: 100%;
+}
+
+.carousel-item {
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.producto-card-carrusel {
+  position: relative;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.producto-card-carrusel img.producto-imagen {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.producto-info {
+  padding: 15px;
+  background-color: #f9f9f9;
+}
+
+.producto-nombre {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.producto-precio {
+  font-size: 1.125rem;
+  color: #27ae60;
+}
+
+.producto-marca {
+  display: block;
+  font-size: 1rem;
+  color: #7f8c8d;
+  margin-top: 8px;
+}
+
+.ver-detalles {
+  display: inline-block;
+  margin-top: 10px;
+  color: #2980b9;
+  text-decoration: none;
+}
+
+.ver-detalles:hover {
+  text-decoration: underline;
+}
+
+.boton-agregar-carrito {
+  margin-top: 15px;
+  padding: 10px 15px;
+  background-color: #2980b9;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.boton-agregar-carrito:hover {
+  background-color: #3498db;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  position: absolute;
+  top: 50%;
+  z-index: 5;
+  transform: translate(0, -50%);
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: #000;
+  border-radius: 50%;
+  padding: 10px;
+}
+
+/* Ajuste para el carrusel de marcas */
+.marca-cards-container {
+  display: flex;
+  overflow-x: auto;
+  padding: 10px 0;
+}
+
+.marca-card {
+  min-width: 180px;
+  margin-right: 15px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  text-align: center;
+  padding: 10px;
+}
+
+.marca-card img.marca-logo {
+  max-height: 100px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* Ajuste para los productos */
+.producto-card {
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.producto-card img.producto-imagen {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.producto-info {
+  padding: 15px;
+}
+
+.producto-nombre {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.producto-precio {
+  font-size: 1.125rem;
+  color: #27ae60;
+}
+
+.producto-marca {
+  display: block;
+  font-size: 1rem;
+  color: #7f8c8d;
+  margin-top: 8px;
+}
+
+.ver-detalles {
+  display: inline-block;
+  margin-top: 10px;
+  color: #2980b9;
+  text-decoration: none;
+}
+
+.ver-detalles:hover {
+  text-decoration: underline;
+}
+
+.boton-agregar-carrito {
+  margin-top: 15px;
+  padding: 10px 15px;
+  background-color: #2980b9;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.boton-agregar-carrito:hover {
+  background-color: #3498db;
+}
+

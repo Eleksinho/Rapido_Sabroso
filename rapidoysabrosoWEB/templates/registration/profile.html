@@ -15,31 +15,19 @@
             {% csrf_token %}
             <div class="input_box">
                 <label for="username">Nombre de Usuario:</label>
-                <input type="text" id="username" name="username" value="{{ form.instance.user.username }}" readonly>
+                <input type="text" id="username" name="username" value="{{ user.username }}" readonly>
             </div>
             <div class="input_box">
                 <label for="first_name">Nombre:</label>
-                <input type="text" id="first_name" name="first_name" value="{{ form.instance.user.first_name }}">
+                <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}">
             </div>
             <div class="input_box">
                 <label for="last_name">Apellidos:</label>
-                <input type="text" id="last_name" name="last_name" value="{{ form.instance.user.last_name }}">
+                <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}">
             </div>
             <div class="input_box">
                 <label for="email">Dirección de correo electrónico:</label>
-                <input type="email" id="email" name="email" value="{{ form.instance.user.email }}">
-            </div>
-            <div class="input_box">
-                <label for="password">Contraseña:</label>
-                <input type="password" id="password" name="password" placeholder="********">
-            </div>
-            <div class="input_box">
-                <label for="bio">Biografía:</label>
-                <textarea id="bio" name="bio">{{ form.instance.bio }}</textarea>
-            </div>
-            <div class="input_box">
-                <label for="birth_date">Fecha de Nacimiento:</label>
-                <input type="date" id="birth_date" name="birth_date" value="{{ form.instance.birth_date }}">
+                <input type="email" id="email" name="email" value="{{ user.email }}">
             </div>
             <input type="submit" value="Guardar Cambios" class="submit_btn">
             <a href="{% url 'menu' %}" class="for_pass">Volver al Menú</a>

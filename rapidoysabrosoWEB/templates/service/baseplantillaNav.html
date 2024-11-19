@@ -28,7 +28,7 @@
               <div class="left"></div>
               <div class="right"></div>
             </div>
-            
+    
             <li class="nav-item active">
               <a class="nav-link" href="#" data-toggle="modal" data-target="#categoriaModal">
                 <i class="far fa-clone"></i>Categoría
@@ -38,35 +38,40 @@
               <a class="nav-link" href="#"><i class="far fa-calendar-alt"></i>Mapa</a>
             </li>
             {% if user.is_authenticated %}
-            {% if user.is_staff %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'RegistroTienda' %}"><i class="fas fa-sign-out-alt"></i>Agregar Tienda</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'TiendaSelector' %}"><i class="fas fa-sign-out-alt"></i>Editar Selectores</a>
-            </li>
-            {% endif %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'profile' %}"><i class="far fa-chart-bar"></i>Perfil</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#"><i class="far fa-copy"></i>Configuración</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'login' %}"><i class="fas fa-sign-out-alt"></i>Cerrar Sesión</a>
-            </li>
+              {% if user.is_staff %}
+              <!-- Opciones visibles solo para administradores -->
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'RegistroTienda' %}"><i class="fas fa-plus-circle"></i>Agregar Tienda</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'TiendaSelector' %}"><i class="fas fa-edit"></i>Editar Selectores</a>
+              </li>
+              {% endif %}
+              
+              <!-- Opciones comunes para usuarios autenticados -->
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'profile' %}"><i class="far fa-chart-bar"></i>Perfil</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#"><i class="far fa-copy"></i>Configuración</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i>Cerrar Sesión</a>
+              </li>
             {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i>Iniciar Sesión</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'register' %}"><i class="fas fa-user-plus"></i>Registrarse</a>
-            </li>
+              <!-- Opciones para usuarios no autenticados -->
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i>Iniciar Sesión</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'register' %}"><i class="fas fa-user-plus"></i>Registrarse</a>
+              </li>
             {% endif %}
           </ul>
         </div>
       </div>
     </nav>
+    
   </header>
 
   <div class="modal fade" id="categoriaModal" tabindex="-1" aria-labelledby="categoriaModalLabel" aria-hidden="true">

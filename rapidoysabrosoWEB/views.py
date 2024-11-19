@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import path, include
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import *
@@ -11,40 +10,46 @@ from django.db import connection , transaction
 from threading import Thread
 from django.contrib import messages
 from .Forms import *
-from .decorators import user_is_moderator, user_is_admin, user_is_staff
+from .decorators import user_is_staff
 from django.utils import timezone
-from django.db.models import Max
 import json
-from io import StringIO
 from rest_framework.authtoken.models import Token
+from django.utils import timezone
+from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+@receiver(post_save, sender=User)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
+
 
 
 @login_required
 def profile_view(request):
-    # Obtén el perfil del usuario actual
-    profile = Profile.objects.get(user=request.user)
+    user = request.user  # Trabajamos directamente con el usuario autenticado
 
     if request.method == 'POST':
-        # Crea un formulario para el perfil con los datos del POST
-        form = ProfileForm(request.POST, instance=profile)
-        
-        if form.is_valid():
-            # Guarda los cambios en el perfil
-            form.save()  
+        # Actualizar los datos del usuario
+        user.first_name = request.POST.get('first_name', user.first_name)
+        user.last_name = request.POST.get('last_name', user.last_name)
+        user.email = request.POST.get('email', user.email)
 
-            # Actualiza el usuario
-            user = request.user
-            user.first_name = request.POST.get('first_name')
-            user.last_name = request.POST.get('last_name')
-            user.email = request.POST.get('email')
-            user.set_password(request.POST.get('password'))  # Actualiza la contraseña si se proporciona
-            user.save()  # Guarda los cambios en el usuario
-            
-            return redirect('profile')  # Redirige al perfil después de guardar
-    else:
-        form = ProfileForm(instance=profile)  # Carga el perfil existente en el formulario
+        # Guardar cambios
+        try:
+            with transaction.atomic():
+                user.save()
+                messages.success(request, "Perfil actualizado exitosamente.")
+                return redirect('profile')  # Redirige a la vista de perfil
+        except Exception as e:
+            messages.error(request, f"Error al actualizar el perfil: {e}")
 
-    return render(request, 'registration/profile.html', {'form': form})
+    return render(request, 'registration/profile.html', {'user': user})
+
+from rest_framework.authtoken.models import Token
+from django.contrib.auth.decorators import login_required
 
 def login_view(request):
     if request.method == 'POST':
@@ -55,26 +60,31 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            messages.success(request, 'Inicio de sesión exitoso.')
-            return redirect('menu')  # Cambia 'menu' por la URL de redirección deseada
+
+            # Obtener o crear el token del usuario
+            token, _ = Token.objects.get_or_create(user=user)
+
+            # Almacenar el token en una cookie o retornarlo (para APIs, se usaría un JSON Response)
+            messages.success(request, f'Inicio de sesión exitoso. Token: {token.key}')
+            return redirect('menu')  # Cambia 'menu' por tu URL deseada
         else:
             messages.error(request, 'Usuario o contraseña incorrectos.')
-            return render(request, 'service/login.html')  # Asegúrate de que esta plantilla exista
+            return render(request, 'service/login.html')
 
     return render(request, 'service/login.html')
 
 def logout_view(request):
-     # Obtener el token asociado al usuario
     if request.user.is_authenticated:
         try:
-            # Eliminar el token del usuario
+            # Eliminar el token asociado al usuario
             token = Token.objects.get(user=request.user)
             token.delete()
         except Token.DoesNotExist:
-            pass  # Si no existe un token, no hacer nada
+            pass  # Si no hay token, no hacemos nada
 
-    # Cerrar sesión del usuario
     logout(request)
+    messages.success(request, "Has cerrado sesión exitosamente.")
+    return redirect('login')
 
     # Agregar un mensaje de éxito
     messages.success(request, "Has cerrado sesión exitosamente.")
@@ -83,21 +93,42 @@ def logout_view(request):
     return redirect('login')
 
 
-def menu(request):
+def obtener_productos_con_precio_bajo():
     # Obtiene la fecha actual
     fecha_actual = timezone.now().date()
-    
-    # Filtra los productos que tienen un historial de precios registrado hoy
+
+    # Lista para almacenar productos cuyo precio actual es menor que el anterior
+    productos_con_precio_bajo = []
+
+    # Iterar sobre todos los productos
+    for producto in Producto.objects.all():
+        # Obtener los historiales de precio ordenados por fecha, para cada producto
+        historial_precio = HistorialPrecio.objects.filter(producto=producto).order_by('fecha')
+
+        if historial_precio.count() > 1:
+            # El primer registro de historial (el más antiguo)
+            primer_precio = historial_precio.first().precio_float
+
+            # El último registro de historial (el más reciente)
+            ultimo_precio = historial_precio.last().precio_float
+
+            # Compara si el precio actual (último precio) es menor que el primero
+            if ultimo_precio < primer_precio:
+                productos_con_precio_bajo.append(producto)
+                
+    return productos_con_precio_bajo
+
+def menu(request):
+    fecha_actual = timezone.localtime(timezone.now()).date()
     productos_creados_hoy = Producto.objects.filter(
         historialprecio__fecha=fecha_actual
-    ).distinct()  # Distinct para evitar duplicados si hay varios registros del mismo día
-    
-    # Obtiene todas las categorías y marcas
+    ).distinct()
+
+    producto_bajo = obtener_productos_con_precio_bajo()
     categorias = Categoria.objects.all()  
     marcas = Marca.objects.all()  
-    
-    # Contexto para la plantilla
     context = {
+        'bajaron' : producto_bajo,
         'productos': productos_creados_hoy,
         'marcas': marcas,  
         'categorias': categorias
@@ -107,17 +138,21 @@ def menu(request):
 
 
 
+
+
+
+
 def productos_por_marca(request, marca):
-    # Obtiene la fecha actual
-    fecha_actual = timezone.now().date()
+    # Obtiene la fecha actual ajustada a la zona horaria configurada en TIME_ZONE
+    fecha_actual = timezone.localtime(timezone.now()).date()  # Solo la fecha sin la hora
     
-    # Filtra los productos por el ID de la marca y con un historial de precios registrado hoy
+    # Filtra los productos por la marca y con un historial de precios registrado hoy (fecha actual)
     productos_filtrados = Producto.objects.filter(
         marca_id=marca,
-        historialprecio__fecha=fecha_actual
+        historialprecio__fecha=fecha_actual  # Filtra por la fecha actual
     ).distinct()  # Distinct para evitar duplicados si hay varios registros del mismo día
     
-    # Obtén el objeto Marca para mostrar más detalles si es necesario
+    # Obtiene el objeto Marca para mostrar más detalles
     marca_obj = Marca.objects.get(id=marca)
     
     # Renderiza la plantilla con el contexto
@@ -127,8 +162,8 @@ def productos_por_marca(request, marca):
     })
 
 def categorias(request, categoria):
-    # Obtiene la fecha actual
-    fecha_actual = timezone.now().date()
+    # Obtiene la fecha actual ajustada a la zona horaria configurada en TIME_ZONE
+    fecha_actual = timezone.localtime(timezone.now()).date()  # Solo la fecha sin la hora
     
     # Obtiene todas las categorías para la navegación
     categorias = Categoria.objects.all()
@@ -136,7 +171,7 @@ def categorias(request, categoria):
     if categoria == "Todas":
         # Filtra los productos que tienen un historial de precios registrado hoy
         productos = Producto.objects.filter(
-            historialprecio__fecha=fecha_actual
+            historialprecio__fecha=fecha_actual  # Filtra por la fecha actual
         ).distinct()  # Distinct para evitar duplicados si hay varios registros del mismo día
     else:
         # Obtiene la categoría seleccionada
@@ -145,17 +180,18 @@ def categorias(request, categoria):
         # Filtra los productos por la categoría y con un historial de precios registrado hoy
         productos = Producto.objects.filter(
             categoria=categoria_obj,
-            historialprecio__fecha=fecha_actual
+            historialprecio__fecha=fecha_actual  # Filtra por la fecha actual
         ).distinct()
 
+    # Contexto para la plantilla
     context = {
         'productos': productos,
         'categoria_seleccionada': categoria,
         'categorias': categorias
     }
+    
+    # Renderiza la plantilla
     return render(request, 'service/categoria.html', context)
-
-
 
 def producto(request, id):
     categorias = Categoria.objects.all()

@@ -5,6 +5,7 @@ import requests
 from lxml import html
 from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import urlparse
+from django.utils.timezone import now
 
 # Definición de categorías y selectores predeterminados
 CATEGORIAS = {
@@ -161,5 +162,5 @@ class Command(BaseCommand):
                     )
                     HistorialPrecio.objects.create(producto=nuevo_producto, precio=precio_producto)
 
-            url_obj.last_scraped = datetime.now()
+            url_obj.last_scraped = now()
             url_obj.save()

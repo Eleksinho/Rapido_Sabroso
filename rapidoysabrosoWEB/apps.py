@@ -10,4 +10,4 @@ class AccountsConfig(AppConfig):
     name = 'accounts'
 
     def ready(self):
-        import accounts.signals  # Importa tus señales aquí
+        import rapidoysabrosoWEB.signals  # Importa tus señales aquí
