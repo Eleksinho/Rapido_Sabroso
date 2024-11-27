@@ -619,3 +619,19 @@ ul {
 .colorboard {
   color: #00ffaaed;
 }
+
+.alert-success {
+  color: white; /* Texto blanco para alertas de éxito */
+}
+
+.alert-danger {
+  color: white; /* Texto blanco para alertas de error */
+}
+
+.alert-warning {
+  color: black; /* Texto negro para alertas de advertencia */
+}
+
+.alert-info {
+  color: white; /* Texto blanco para alertas informativas */
+}
