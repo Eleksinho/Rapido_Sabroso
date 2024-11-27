@@ -14,7 +14,7 @@
 {% block content %}
   <!-- Marcas -->
   <section class="marcas-container container">
-    <h2 class="text-center my-4">Marcas Disponibles</h2>
+    <h2 class="text-center my-4" style="color: red;">Marcas Disponibles</h2>
     <div id="marcaCarrusel" class="marca-cards-container d-flex overflow-auto">
       <div class="marca-cards-inner d-flex">
         {% for marca in marcas %}
@@ -27,7 +27,7 @@
   </section>
 
 <div class="containerCarrusel container">
-  <h2 class="text-center my-4">Productos en Oferta</h2>
+  <h2 class="text-center my-4" style="color: red;">Productos en Oferta</h2>
   <div id="productoCarrusel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
       <!-- Iniciar la primera item del carrusel -->
@@ -71,10 +71,6 @@
   </div>
 </div>
 
-
-
-
-
   <!-- Filtro y productos -->
   <div class="container">
     <div class="row">
@@ -100,11 +96,11 @@
               <h4 class="producto-nombre">{{ producto.nombre }}</h4>
               <p class="producto-descripcion">{{ producto.descripcion }}</p>
               <span class="producto-precio">{{ producto.precio }}</span>
-              <br>     
+                
               <span class="producto-marca">{{ producto.marca }}</span>
-              <br>
-              <a href="{% url 'producto' id=producto.id %}" class="ver-detalles">Ver detalles &rarr;</a>
-              <br>
+              
+              <a href="{% url 'producto' id=producto.id %}" class="btn btn-primary">Ver detalles &rarr;</a>
+              
               <form action="{% url 'agregar_a_orden' producto.id %}" method="POST">
                 {% csrf_token %}
                 <button type="submit" class="boton-agregar-carrito">Agregar al carrito</button>

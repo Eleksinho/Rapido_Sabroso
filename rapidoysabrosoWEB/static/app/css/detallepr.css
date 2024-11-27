@@ -1,122 +1,180 @@
-/* Fondo del cuerpo y fuentes */
-body {
-    background-color: #1c1b1a;
-    font-family: sans-serif;
+/* General Card Styling */
+.producto-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 15px;
+  transition: transform 0.3s ease;
+  margin-bottom: 20px;
 }
 
-/* Estilo de los títulos */
-h4 {
-    text-align: center;
-    color: #fff;
-    font-weight: bold;
-    width: 100%;
-    font-size: 24px;
-    margin-bottom: 10px;
+/* Hover effect */
+.producto-card:hover {
+  transform: scale(1.05); /* Aumenta ligeramente el tamaño */
+  border: 1px solid red; /* Cambia el borde a rojo */
+}
+/* Product Image */
+.producto-imagen {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 15px;
 }
 
-/* Estilo de los párrafos */
-p {
-    text-align: center;
-    color: rgb(192, 182, 182);
-    margin-bottom: 20px;
+/* Product Information Container */
+.producto-info {
+  flex-grow: 1; /* Ensure it grows to fill the available space */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* Estilo de los precios */
-span {
-    color: #ffcc00;
-    font-size: 28px;
-    font-weight: bold;
+/* Product Name */
+.producto-nombre {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+
 }
 
-/* Contenedor principal de los productos */
-.container {
-    display: flex;
-    flex-wrap: wrap; /* Permite que los productos se ajusten en varias filas */
-    justify-content: center;
-    gap: 20px; /* Espacio entre las tarjetas */
-    padding: 20px;
+/* Product Description */
+.producto-descripcion {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 10px;
 }
 
-/* Estilo general de las tarjetas de producto */
-.card {
-    position: relative;
-    width: 300px; /* Ajuste para mejor visualización en formato de menú */
-    height: 450px; /* Ajuste para que no sea tan alta */
-    background-color: #000;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border-radius: 10px;
-    overflow: hidden;
-    transition: transform 0.3s ease-in-out;
+/* Product Price */
+.producto-precio {
+  font-size: 25px;
+  color: #007900cb;
+  font-weight: bold;
+  margin-bottom: 15px;
+  display: block;
 }
 
-.card img {
-    max-width: 100%; /* Asegura que la imagen se ajuste al tamaño del contenedor */
-    height: auto; /* Mantiene la relación de aspecto de la imagen */
-    margin-bottom: 10px; /* Espacio entre la imagen y el resto del contenido */
+/* Product Brand */
+.producto-marca {
+  font-size: 20px;
+  color: #fa0505;
+  margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+.producto-marca::first-letter {
+  text-transform: uppercase !important;
 }
 
-.card .producto-info {
-    flex-grow: 1; /* Permite que el contenedor de información del producto ocupe el espacio disponible */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Distribuye los elementos dentro de la sección de información */
+/* Product Details Link */
+.ver-detalles {
+  font-size: 20px;
+  color: #007bff;
+  text-decoration: none;
+  margin-bottom: 10px;
+  transition: color 0.3s ease;
 }
 
-.card .producto-info h4, 
-.card .producto-info p, 
-.card .producto-info span {
-    margin-bottom: 10px; /* Espacio entre los elementos */
+.ver-detalles:hover {
+  color: #0056b3;
+
 }
 
-.card .producto-info a {
-    margin-top: auto; /* Empuja el enlace hacia el final del contenedor */
+/* Button "Agregar al carrito" */
+.boton-agregar-carrito {
+  font-size: 14px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  margin-top: auto; /* Ensures button stays at the bottom */
+  width: 100%; /* Full-width button */
 }
 
-/* Opcional: Agregar un hover más suave */
-.card:hover {
-    transform: scale(1.05); /* Efecto de escala suave al pasar el ratón */
+.boton-agregar-carrito:hover {
+  background-color: red;
+  border: 1px solid red;
 }
 
-/* Estilos para el efecto de fondo en las tarjetas */
-.back-card, .thid-card {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transition: transform 0.4s ease-in;
-    background: linear-gradient(270deg, rgb(255, 25, 195) 0%, rgb(0, 220, 255) 16%, rgb(122, 255, 0) 82%, rgb(0, 254, 207) 100%);
-    z-index: -1;
-    box-shadow: 0px 0px 112px -41px rgb(255, 25, 195), 0 -10px 26px -5px rgb(0, 220, 255), 0px 0px 112px -41px rgb(122, 255, 0), 0 -10px 26px -5px rgb(0, 254, 207);
+/* Ensure responsive design */
+.productos-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
 }
 
-.card:hover .back-card {
-    transform: rotate(5deg);
+.producto-card {
+  width: 100%;
 }
 
-.card:hover .thid-card {
-    transform: rotate(-5deg);
+/* Estilo del botón del modal (Ver historial de precios) */
+.btn-danger {
+  background-color: #dc3545; /* Botón rojo */
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px; /* Ajusta el tamaño del botón */
+  font-size: 0.9rem; /* Ajusta el tamaño de la fuente */
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-/* Estilo de los botones */
-button {
-    background-color: #000;
-    border: 2px solid #181515;
-    padding: 10px;
-    color: #fff;
-    text-align: center;
-    transition: all 0.4s;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 10px;
-    border-radius: 5px;
+.btn-danger:hover {
+  background-color: #c82333;
 }
 
-.card:hover button {
-    background-color: #fff;
-    color: #000;
-    font-weight: bold;
+/* Estilo del modal */
+.modal-content {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.btn-close {
+  font-size: 1.2rem;
+  color: #000;
+}
+
+/* SVG dentro del modal */
+#historial-precios-chart {
+  margin: auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modal-dialog {
+      max-width: 100%;
+      margin: 15px;
+  }
+
+  .card {
+      margin-bottom: 15px;
+  }
+
+  .btn-primary, .btn-success, .btn-danger {
+      font-size: 0.9rem;
+      padding: 8px;
+  }
 }
