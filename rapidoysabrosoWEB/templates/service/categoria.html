@@ -14,42 +14,43 @@
     
     <div class="row">
       <!-- Aside para búsqueda y filtro -->
-      <aside class="col-md-3" style="position: sticky; top: 10%; max-width: 250px;">
-        <div class="card p-3">
-          <h5>Buscar Producto</h5>
-          <input type="text" class="form-control mb-3" id="busqueda-producto" placeholder="Buscar por nombre" oninput="filtrarProductos()">
-          
-          <div id="rango-precio"></div>
-          <p>Rango de precio seleccionado: $<span id="precio-minimo"></span> - $<span id="precio-maximo"></span></p>
+      <div class="container">
+        <div class="row">
+          <!-- Barra lateral con filtro -->
+          <aside class="col-md-3" style="position: sticky; top: 10%; max-width: 250px;">
+            <div class="card p-3">
+              <h5>Buscar Producto</h5>
+              <input type="text" class="form-control mb-3" id="busqueda-producto" placeholder="Buscar por nombre" oninput="filtrarProductos()">
+              <div id="rango-precio" class="mb-3"></div> <!-- Slider de precios -->
+              <p>Rango de precio seleccionado: $<span id="precio-minimo"></span> - $<span id="precio-maximo"></span></p>
+    
+              <button id="sortAscBtn" class="btn-danger mb-2" onclick="ordenarProductos('asc')">Menor a Mayor</button>
+              <button id="sortDescBtn" class="btn-primary" onclick="ordenarProductos('desc')">Mayor a Menor</button>
+            </div>
+          </aside>
 
-          <button id="sortAscBtn" class="btn btn-primary btn-block mb-2" onclick="ordenarProductos('asc')">Menor a Mayor</button>
-          <button id="sortDescBtn" class="btn btn-primary btn-block" onclick="ordenarProductos('desc')">Mayor a Menor</button>
-        </div>
-      </aside>
-
-      <!-- Contenedor de productos, con un id específico -->
-      <div class="col-md-9">
-        <div id="productos-container" class="row"> <!-- Asegúrate de que esté envuelto en una fila (row) -->
-          {% for producto in productos %}
-          <div class="col-md-4 mb-3">
-            <div class="card producto-card" style="min-width: 16rem; height: 100%;">
-              <img src="{{ producto.imagen_url }}" alt="{{ producto.nombre }}" class="card-img-top producto-imagen" style="object-fit: cover;">
-              <div class="card-body producto-info">
-                <h5 class="card-title producto-nombre">{{ producto.nombre }}</h5>
-                <p class="card-text producto-descripcion">{{ producto.descripcion }}</p>
-                <p class="card-text producto-precio"><strong>{{ producto.precio }}</strong></p>
-                <p class="card-text producto-marca">{{ producto.marca }}</p>
-                <a href="{% url 'producto' id=producto.id %}" class="btn btn-primary">Ver detalles</a>
-              </div>
+      <!-- Productos -->
+      <section class="col-md-9 productos-container" id="productos-container">
+        {% for producto in productos %}
+          <div class="producto-card">
+            <img src="{{ producto.imagen_url }}" alt="{{ producto.nombre }}" class="producto-imagen">
+            <div class="producto-info">
+              <h4 class="producto-nombre">{{ producto.nombre }}</h4>
+              <p class="producto-descripcion">{{ producto.descripcion }}</p>
+              <span class="producto-precio">{{ producto.precio }}</span>
+                
+              <span class="producto-marca">{{ producto.marca }}</span>
+              
+              <a href="{% url 'producto' id=producto.id %}" class="btn btn-primary">Ver detalles &rarr;</a>
+              
+              <form action="{% url 'agregar_a_orden' producto.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="boton-agregar-carrito">Agregar al carrito</button>
+              </form>
             </div>
           </div>
-          {% empty %}
-          <div class="col-12 text-center">
-            <p>No hay productos disponibles en este momento.</p>
-          </div>
-          {% endfor %}
-        </div>
-      </div>
+        {% endfor %}
+      </section>
     </div>
   </div>
 {% endblock %}

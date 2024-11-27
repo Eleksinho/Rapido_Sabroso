@@ -4,44 +4,75 @@
 
 {% block css %}
 <link rel="stylesheet" type="text/css" href="{% static 'app/css/detallepr.css' %}">
+<style>
+    .producto-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .card {
+        width: 100%;
+        max-width: 600px;
+        margin-bottom: 20px;
+    }
+    .modal-dialog {
+        max-width: 90%; /* Ajusta el ancho del modal en pantallas pequeñas */
+    }
+</style>
 {% endblock %}
 
 {% block content %}
 <section class="producto-container">
     <div class="container">
-        <div class="card">
-            <div class="first-card">
-                <img src="{{ producto.imagen_url }}" alt="{{ producto.nombre }}">
-                <h4>{{ producto.nombre }}</h4>
-                <p>{{ producto.descripcion }}</p>
-                <span class="producto-precio">{{ producto.precio }}</span>
-                <span>{{ producto.marca }}</span>
-                <form action="{% url 'agregar_a_orden' producto.id %}" method="POST">
-                    {% csrf_token %}
-                    <button type="submit" class="boton-agregar-carrito">Agregar al carrito</button>
-                </form>
+        <div class="row justify-content-center">
+            <!-- Tarjeta del producto -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <img src="{{ producto.imagen_url }}" class="img-fluid" alt="{{ producto.nombre }}">
+                        <h4 class="card-title mt-3">{{ producto.nombre }}</h4>
+                        <p class="card-text">{{ producto.descripcion }}</p>
+                        <h5 class="text-primary">{{ producto.precio }}</h5>
+                        <p class="text-muted">{{ producto.marca }}</p>
+                        <form action="{% url 'agregar_a_orden' producto.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success">Agregar al carrito</button>
+                        </form>
+                    </div>
+                </div>
+                <!-- Botón para abrir el modal con el gráfico -->
+                <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#graficoModal">
+                    Ver historial de precios
+                </button>
             </div>
-     
         </div>
     </div>
 </section>
 
-<section class="producto-container">
-    <!-- Contenedor para el gráfico -->
-    <div class="container">
-        <div style="max-width: 600px; height: 400px; margin: auto;">
-            <h2>Historial de Precios</h2>
-            <svg id="historial-precios-chart" width="600" height="400"></svg>
+<!-- Modal para mostrar el gráfico -->
+<div class="modal fade" id="graficoModal" tabindex="-1" aria-labelledby="graficoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="graficoModalLabel">Historial de Precios</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div style="max-width: 600px; height: 400px; margin: auto;">
+                    <svg id="historial-precios-chart" width="600" height="400"></svg>
+                </div>
+                <!-- Pasar los datos de precios y fechas a JavaScript -->
+                <script type="application/json" id="fechas-data">{{ fechas|safe }}</script>
+                <script type="application/json" id="precios-data">{{ precios|safe }}</script>
+            </div>
         </div>
     </div>
-    
-    <!-- Pasar los datos de precios y fechas a JavaScript -->
-    <script type="application/json" id="fechas-data">{{ fechas|safe }}</script>
-    <script type="application/json" id="precios-data">{{ precios|safe }}</script>
-</section>
+</div>
 {% endblock %}
 
 {% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="{% static 'app/js/detalle.js' %}"></script>
 {% endblock %}

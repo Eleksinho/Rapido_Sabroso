@@ -16,18 +16,20 @@ Marca {{ marca }} - RapidoYSabroso
     <div class="row">
         <div class="container">
             <div class="row">
-              <aside class="col-md-3" style="position: sticky; top: 10%; max-width: 250px;">
-                <div class="card p-3">
-                  <h5>Buscar Producto</h5>
-                  <input type="text" class="form-control mb-3" id="busqueda-producto" placeholder="Buscar por nombre" oninput="filtrarProductos()">
+              <div class="container">
+                <div class="row">
+                  <!-- Barra lateral con filtro -->
+                  <aside class="col-md-3" style="position: sticky; top: 10%; max-width: 250px;">
+                    <div class="card p-3">
+                      <h5>Buscar Producto</h5>
+                      <input type="text" class="form-control mb-3" id="busqueda-producto" placeholder="Buscar por nombre" oninput="filtrarProductos()">
+                      <div id="rango-precio" class="mb-3"></div> <!-- Slider de precios -->
+                      <p>Rango de precio seleccionado: $<span id="precio-minimo"></span> - $<span id="precio-maximo"></span></p>
             
-                  <div id="rango-precio" class="mb-3"></div> <!-- Slider de precios -->
-                  <p>Rango de precio seleccionado: $<span id="precio-minimo"></span> - $<span id="precio-maximo"></span></p>
-            
-                  <button id="sortAscBtn" class="boton-ordenar mb-2" onclick="ordenarProductos('asc')">Menor a Mayor</button>
-                  <button id="sortDescBtn" class="boton-ordenar" onclick="ordenarProductos('desc')">Mayor a Menor</button>
-                </div>
-              </aside>
+                      <button id="sortAscBtn" class="btn-danger mb-2" onclick="ordenarProductos('asc')">Menor a Mayor</button>
+                      <button id="sortDescBtn" class="btn-primary" onclick="ordenarProductos('desc')">Mayor a Menor</button>
+                    </div>
+                  </aside>
 
               <section id="productos-container" class="col-md-9 productos-container">
                 {% for producto in productos %}
@@ -38,7 +40,11 @@ Marca {{ marca }} - RapidoYSabroso
                         <p class="producto-descripcion">{{ producto.descripcion }}</p>
                         <span class="producto-precio">{{ producto.precio }}</span>
                         <span class="producto-marca">{{ producto.marca }}</span>
-                        <a href="{% url 'producto' id=producto.id %}">Ver detalles</a>
+                        <a href="{% url 'producto' id=producto.id %}" class="btn btn-primary">Ver detalles &rarr;</a>
+                        <form action="{% url 'agregar_a_orden' producto.id %}" method="POST">
+                          {% csrf_token %}
+                          <button type="submit" class="boton-agregar-carrito">Agregar al carrito</button>
+                        </form>
                     </div>
                 </div>
                 {% empty %}

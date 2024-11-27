@@ -284,6 +284,22 @@ def register(request):
 
 
 
+# @user_is_staff
+# def TiendaNueva(request):
+#     if request.method == 'POST':
+#         url = request.POST.get('url')
+#         if url:
+#             url_instance, created = Url.objects.get_or_create(url=url)
+#             if created:
+#                 # Llama al comando de Django para ejecutar el scraping          
+#                 call_command('scrape_urls')
+#             else:
+#                 return HttpResponse("Esta URL ya está registrada.")
+#         else:
+#             return HttpResponse("Por favor, ingrese una URL válida.")
+#     else:
+#         return render(request, 'service/RegistroTienda.html')
+
 @user_is_staff
 def TiendaNueva(request):
     if request.method == 'POST':
@@ -291,14 +307,18 @@ def TiendaNueva(request):
         if url:
             url_instance, created = Url.objects.get_or_create(url=url)
             if created:
-                # Llama al comando de Django para ejecutar el scraping          
+                # Ejecutar comando para el scraping
                 call_command('scrape_urls')
+                messages.success(request, "La URL fue registrada y se inició el scraping.")
+                return redirect('RegistroTIenda')  # Cambia por la vista deseada
             else:
-                return HttpResponse("Esta URL ya está registrada.")
+                messages.info(request, "Esta URL ya está registrada.")
+                return redirect('RegistroTienda')  # O la misma vista
         else:
-            return HttpResponse("Por favor, ingrese una URL válida.")
-    else:
-        return render(request, 'service/RegistroTienda.html')
+            messages.error(request, "Por favor, ingrese una URL válida.")
+            return redirect('RegistroTienda')  # O la misma vista
+    return render(request, 'service/RegistroTienda.html')
+
 
     
 @user_is_staff

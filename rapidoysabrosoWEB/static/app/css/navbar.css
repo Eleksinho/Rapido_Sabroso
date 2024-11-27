@@ -1,167 +1,230 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+html, body {
+    height: 100%; /* Asegura que la altura del documento ocupe el 100% */
+    margin: 0; /* Elimina los márgenes por defecto */
+    display: flex;
+    flex-direction: column; /* Coloca los elementos de la página en columna */
+}
 
-body{
-	font-family: 'Roboto', sans-serif;
+.main-content {
+    flex: 1; /* Permite que el contenido principal ocupe el espacio disponible */
 }
-* {
-	margin: 0;
-	padding: 0;
+
+footer {
+    background-color: #000; /* Fondo negro */
+    border-top: 4px solid #800000; /* Borde superior rojo oscuro */
+    text-align: center;
+    padding: 20px 0; /* Espacio interno superior e inferior */
+    margin: 0; /* Elimina los márgenes */
+    width: 100%; /* Asegura que el footer ocupe todo el ancho */
 }
-i {
-	margin-right: 10px;
+
+footer p {
+    color: #fff; /* Texto en blanco */
+    margin: 0; /* Elimina el margen por defecto */
 }
-/*----------bootstrap-navbar-css------------*/
-.navbar-logo{
+  /*---------- Estilo de la barra de navegación ----------*/
+  
+  .navbar-logo {
 	padding: 15px;
 	color: #fff;
-}
-.navbar-mainbg{
-	background-color: #000000;
+	font-size: 24px; /* Tamaño de fuente aumentado */
+	transition: color 0.3s ease; /* Agregado para transición de color */
+  }
+  
+  .navbar-logo:hover {
+	color: #800000; /* Color rojo al pasar el mouse */
+  }
+  
+  .navbar-mainbg {
+	background-color: #000000; /* Fondo negro */
 	padding: 0px;
-}
-#navbarSupportedContent{
+	width: 100%; /* Asegura que la barra de navegación ocupe el ancho completo */
+  }
+  
+  #navbarSupportedContent {
 	overflow: hidden;
 	position: relative;
-}
-#navbarSupportedContent ul{
+  }
+  
+  #navbarSupportedContent ul {
 	padding: 0px;
 	margin: 0px;
-}
-#navbarSupportedContent ul li a i{
-	margin-right: 10px;
-}
-#navbarSupportedContent li {
-	list-style-type: none;
-	float: left;
-}
-#navbarSupportedContent ul li a{
-	color: rgba(255,255,255,0.5);
-    text-decoration: none;
-    font-size: 15px;
-    display: block;
-    padding: 20px 20px;
-    transition-duration:0.6s;
+  }
+  
+  #navbarSupportedContent ul li a {
+	color: #fff; /* Texto blanco */
+	text-decoration: none;
+	font-size: 18px; /* Tamaño de fuente aumentado */
+	font-weight: bold; /* Negrita para mejor visibilidad */
+	display: block;
+	padding: 20px 20px;
+	transition-duration: 0.6s;
 	transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    position: relative;
-}
-#navbarSupportedContent>ul>li.active>a{
-	color: #ad0283;
+	position: relative;
+  }
+  
+  #navbarSupportedContent>ul>li.active>a {
+	color: #ffffff; /* Color negro para el elemento activo */
 	background-color: transparent;
 	transition: all 0.7s;
-}
-#navbarSupportedContent a:not(:only-child):after {
+  }
+  
+  #navbarSupportedContent a:not(:only-child):after {
 	content: "\f105";
 	position: absolute;
 	right: 20px;
 	top: 10px;
-	font-size: 14px;
+	font-size: 18px; /* Tamaño de fuente aumentado */
 	font-family: "Font Awesome 5 Free";
 	display: inline-block;
 	padding-right: 3px;
 	vertical-align: middle;
 	font-weight: 900;
 	transition: 0.5s;
-}
-#navbarSupportedContent .active>a:not(:only-child):after {
+  }
+  
+  #navbarSupportedContent .active>a:not(:only-child):after {
 	transform: rotate(90deg);
-}
-.hori-selector{
-	display:inline-block;
-	position:absolute;
+  }
+  
+  .hori-selector {
+	display: inline-block;
+	position: absolute;
 	height: 100%;
 	top: 0px;
 	left: 0px;
-	transition-duration:0.6s;
+	transition-duration: 0.6s;
 	transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-	background-color: #fff;
+	background-color: #800000; /* Fondo rojo */
 	border-top-left-radius: 15px;
 	border-top-right-radius: 15px;
 	margin-top: 10px;
-}
-.hori-selector .right,
-.hori-selector .left{
+	box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.5); /* Sombra para resaltar */
+  }
+  
+  .hori-selector .right,
+  .hori-selector .left {
 	position: absolute;
-	width: 25px;
-	height: 25px;
-	background-color: #fff;
+	width: 30px; /* Aumento de tamaño */
+	height: 30px; /* Aumento de tamaño */
+	background-color: #800000; /* Fondo rojo */
 	bottom: 10px;
-}
-.hori-selector .right{
+  }
+  
+  .hori-selector .right {
 	right: -25px;
-}
-.hori-selector .left{
+  }
+  
+  .hori-selector .left {
 	left: -25px;
-}
-.hori-selector .right:before,
-.hori-selector .left:before{
+  }
+  
+  .hori-selector .right:before,
+  .hori-selector .left:before {
 	content: '';
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #000000;
-}
-.hori-selector .right:before{
+	position: absolute;
+	width: 60px; /* Aumento de tamaño */
+	height: 60px; /* Aumento de tamaño */
+	border-radius: 50%;
+	background-color: #000; /* Fondo negro */
+	box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.7); /* Sombra para resaltar */
+  }
+  
+  .hori-selector .right:before {
 	bottom: 0;
-    right: -25px;
-}
-.hori-selector .left:before{
+	right: -25px;
+  }
+  
+  .hori-selector .left:before {
 	bottom: 0;
-    left: -25px;
-}
-
-
-@media(min-width: 992px){
+	left: -25px;
+  }
+  
+  @media (min-width: 992px) {
 	.navbar-expand-custom {
-	    -ms-flex-flow: row nowrap;
-	    flex-flow: row nowrap;
-	    -ms-flex-pack: start;
-	    justify-content: flex-start;
+	  -ms-flex-flow: row nowrap;
+	  flex-flow: row nowrap;
+	  -ms-flex-pack: start;
+	  justify-content: flex-start;
 	}
 	.navbar-expand-custom .navbar-nav {
-	    -ms-flex-direction: row;
-	    flex-direction: row;
+	  -ms-flex-direction: row;
+	  flex-direction: row;
 	}
 	.navbar-expand-custom .navbar-toggler {
-	    display: none;
+	  display: none;
 	}
 	.navbar-expand-custom .navbar-collapse {
-	    display: -ms-flexbox!important;
-	    display: flex!important;
-	    -ms-flex-preferred-size: auto;
-	    flex-basis: auto;
+	  display: -ms-flexbox !important;
+	  display: flex !important;
+	  -ms-flex-preferred-size: auto;
+	  flex-basis: auto;
 	}
-}
-
-
-@media (max-width: 991px){
-	#navbarSupportedContent ul li a{
-		padding: 12px 30px;
+  }
+  
+  @media (max-width: 991px) {
+	#navbarSupportedContent ul li a {
+	  padding: 12px 30px;
 	}
-	.hori-selector{
-		margin-top: 0px;
-		margin-left: 10px;
-		border-radius: 0;
-		border-top-left-radius: 25px;
-		border-bottom-left-radius: 25px;
+	.hori-selector {
+	  margin-top: 0px;
+	  margin-left: 10px;
+	  border-radius: 0;
+	  border-top-left-radius: 25px;
+	  border-bottom-left-radius: 25px;
+	 
 	}
 	.hori-selector .left,
-	.hori-selector .right{
-		right: 10px;
+	.hori-selector .right {
+	  right: 10px;
 	}
-	.hori-selector .left{
-		top: -25px;
-		left: auto;
+	.hori-selector .left {
+	  top: -25px;
+	  left: auto;
 	}
-	.hori-selector .right{
-		bottom: -25px;
+	.hori-selector .right {
+	  bottom: -25px;
 	}
-	.hori-selector .left:before{
-		left: -25px;
-		top: -25px;
+	.hori-selector .left:before {
+	  left: -25px;
+	  top: -25px;
 	}
-	.hori-selector .right:before{
-		bottom: -25px;
-		left: -25px;
+	.hori-selector .right:before {
+	  bottom: -25px;
+	  left: -25px;
 	}
-}
+  }
+  .modal-content {
+	background-color: #121212; /* Color oscuro para el fondo */
+	color: #ffffff; /* Texto en blanco */
+	border: 1px solid #800000; /* Borde rojo oscuro */
+  }
+  
+  /* Estilo del encabezado de la modal */
+  .modal-header {
+	background-color: #800000; /* Fondo rojo oscuro */
+	color: #ffffff; /* Texto en blanco */
+  }
+  
+  /* Estilo del cuerpo de la modal */
+  .modal-body {
+	background-color: #1c1c1c; /* Fondo oscuro para el cuerpo */
+	color: #dcdcdc; /* Texto claro para mejor legibilidad */
+  }
+  
+  /* Estilo de los enlaces */
+  .modal-body a {
+	color: #800000; /* Enlaces con color rojo oscuro */
+	text-decoration: none; /* Sin subrayado */
+  }
+  
+  .modal-body a:hover {
+	color: #ff4500; /* Color de los enlaces al pasar el mouse */
+	text-decoration: underline; /* Subrayado al pasar el mouse */
+  }
+  
+  /* Estilo del botón de cerrar */
+  .close {
+	color: #ffffff; /* Color del botón de cerrar */
+  }
+ 

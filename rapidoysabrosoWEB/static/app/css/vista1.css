@@ -1,68 +1,77 @@
-*{
-	margin: 0;
-	padding: 0;
-	font-family: 'Open Sans', sans-serif;
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000; /* Fondo negro */
+    color: #fff; /* Texto blanco */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-body{
-	background: url(https://res.cloudinary.com/dejzo3x6l/image/upload/v1462601848/login%20page%20design/material-design-1080p-wallpaper_1.jpg) no-repeat center;
-	background-attachment: fixed;
-	background-size: cover;
+.container {
+    background-color: #121212; /* Negro suave */
+    padding: 2rem;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.6);
+    text-align: center;
 }
 
-.container{
-	width: 500px;
-	height: 400px;
-	margin: 0px auto;
-	margin-top: 100px;
-	text-align: center;
-	background-color: rgba(95, 158, 160, 0.43);
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #1e1e1e;
+    color: #fff;
+    font-size: 1rem;
 }
 
-.container img{
-	width: 120px;
-	height: 120px;
-	margin-top:-50px;
-	margin-bottom: 50px;
+input[type="text"]::placeholder, input[type="password"]::placeholder {
+    color: #bbb;
 }
 
-input[type="text"],input[type="password"]{
-	width: 250px;
-	height: 30px;
-	margin-bottom: 30px;
-	padding-left: 30px;
-	font-size: 17px;
+input[type="text"]:focus, input[type="password"]:focus {
+    outline: none;
+    border: 1px solid #f00;
 }
 
-.input_box::before{
-	content:url(https://res.cloudinary.com/dejzo3x6l/image/upload/v1462601843/login%20page%20design/user.png);
-	position: absolute;
-	padding: 3.2px;
-	background-color: rgba(219, 116, 40, 0.33);
+.submit_btn {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #f00; /* Fondo rojo */
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
 }
 
-.input_box:nth-child(3)::before{
-	content:url(https://res.cloudinary.com/dejzo3x6l/image/upload/v1462601842/login%20page%20design/lock.png);
-}
-.submit_btn{
-	background-color:rgb(214, 119, 49);
-	font-size: 20px;
-	padding:10px 30px;
-	border: none;
-	letter-spacing: 2px;
-	transition: background-color .2s;
-	margin-bottom: 10px;
-}
-.submit_btn:hover{
-	background-color:rgb(247, 136, 55);
-	cursor: pointer;
+.submit_btn:hover {
+    background-color: #ff3333; /* Rojo más claro al pasar el mouse */
 }
 
-a.for_pass{
-	color: #d1cfcf;
-}
-a.for_pass:hover{
-	color:white;
+/* Estilo de los enlaces */
+.for_pass {
+    display: block;
+    margin-top: 1rem;
+    color: #f00;
+    text-decoration: none;
+    font-size: 0.9rem;
 }
 
+.for_pass:hover {
+    text-decoration: underline;
+}
 
+/* Mensajes de error */
+.error {
+    font-size: 0.9rem;
+    color: #ff3333; /* Rojo para mensajes de error */
+    margin-top: 1rem;
+}

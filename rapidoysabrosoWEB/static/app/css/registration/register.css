@@ -1,34 +1,99 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000; /* Fondo negro */
+    color: #fff; /* Texto blanco */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
 .container {
-    width: 50%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
+    background-color: #121212; /* Negro suave */
+    padding: 2rem;
     border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.6);
 }
 
 h2 {
     text-align: center;
-    margin-bottom: 20px;
+    color: #f00; /* Título rojo */
+    margin-bottom: 1.5rem;
 }
 
+/* Estilo del formulario */
 .form-register {
     display: flex;
     flex-direction: column;
 }
 
-.form-register p {
-    margin-bottom: 15px;
+.form-register label {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
 }
 
-.btn-primary {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
+.form-register input {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
     border: none;
     border-radius: 5px;
+    background-color: #1e1e1e;
+    color: #fff;
+}
+
+.form-register input::placeholder {
+    color: #bbb;
+}
+
+.form-register input:focus {
+    outline: none;
+    border: 1px solid #f00;
+}
+
+.ayuda {
+    font-size: 0.9rem;
+    color: #aaa;
+    margin-bottom: 1rem;
+}
+
+/* Botón de registro */
+.btn-primary {
+    background-color: #f00; /* Fondo rojo */
+    color: #fff;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 5px;
     cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
 }
 
 .btn-primary:hover {
-    background-color: #0056b3;
+    background-color: #ff3333; /* Rojo más claro al pasar el mouse */
+}
+
+/* Mensajes adicionales */
+.nota {
+    font-size: 0.8rem;
+    color: #bbb;
+    margin-top: -0.5rem;
+}
+
+/* Enlace de inicio de sesión */
+p {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+p a {
+    color: #f00;
+    text-decoration: none;
+}
+
+p a:hover {
+    text-decoration: underline;
 }
