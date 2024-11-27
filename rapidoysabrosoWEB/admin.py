@@ -42,3 +42,25 @@ class HistorialPrecioAdmin(admin.ModelAdmin):
     list_display = ('producto', 'precio', 'fecha')
     list_filter = ('fecha', 'producto')
     search_fields = ('producto__nombre',)
+
+from django.contrib import admin
+from .models import Url_Locales, SelectorMAPA, Mapa_data
+
+class Url_LocalesAdmin(admin.ModelAdmin):
+    list_display = ('url',)
+    search_fields = ('url',)
+
+class SelectorMAPAAdmin(admin.ModelAdmin):
+    list_display = ('url', 'local_selector', 'direccion_selector')
+    search_fields = ('url__url', 'local_selector', 'direccion_selector')
+    list_filter = ('url',)
+
+class Mapa_dataAdmin(admin.ModelAdmin):
+    list_display = ('local', 'direccion', 'url', 'fecha')
+    search_fields = ('local', 'direccion', 'url__url')
+    list_filter = ('url', 'fecha')
+
+# Registrar los modelos en el admin
+admin.site.register(Url_Locales, Url_LocalesAdmin)
+admin.site.register(SelectorMAPA, SelectorMAPAAdmin)
+admin.site.register(Mapa_data, Mapa_dataAdmin)
