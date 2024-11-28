@@ -46,21 +46,20 @@ class HistorialPrecioAdmin(admin.ModelAdmin):
 from django.contrib import admin
 from .models import Url_Locales, SelectorMAPA, Mapa_data
 
-class Url_LocalesAdmin(admin.ModelAdmin):
-    list_display = ('url',)
-    search_fields = ('url',)
+@admin.register(Url_Locales)
+class UrlLocalesAdmin(admin.ModelAdmin):
+    list_display = ("id", "url")  # Muestra el ID y la URL en la lista
+    search_fields = ("url",)  # Habilita la búsqueda por URL
 
+@admin.register(SelectorMAPA)
 class SelectorMAPAAdmin(admin.ModelAdmin):
-    list_display = ('url', 'local_selector', 'direccion_selector')
-    search_fields = ('url__url', 'local_selector', 'direccion_selector')
-    list_filter = ('url',)
+    list_display = ("id", "url", "local_selector", "direccion_selector")  # Muestra los campos principales
+    search_fields = ("url__url", "local_selector", "direccion_selector")  # Búsqueda por URL y selectores
+    list_filter = ("url",)  # Filtro por la URL relacionada
 
-class Mapa_dataAdmin(admin.ModelAdmin):
-    list_display = ('local', 'direccion', 'url', 'fecha')
-    search_fields = ('local', 'direccion', 'url__url')
-    list_filter = ('url', 'fecha')
-
-# Registrar los modelos en el admin
-admin.site.register(Url_Locales, Url_LocalesAdmin)
-admin.site.register(SelectorMAPA, SelectorMAPAAdmin)
-admin.site.register(Mapa_data, Mapa_dataAdmin)
+@admin.register(Mapa_data)
+class MapaDataAdmin(admin.ModelAdmin):
+    list_display = ("id", "local", "direccion", "telefono", "coordenadas", "Marca", "fuente_url_mapa", "fecha")
+    search_fields = ("local", "direccion", "telefono", "coordenadas", "Marca__nombre", "fuente_url_mapa__url")  # Búsqueda avanzada
+    list_filter = ("Marca", "fuente_url_mapa", "fecha")  # Filtros por marca, fuente y fecha
+    ordering = ("-fecha",)  # Orden descendente por fecha de scraping

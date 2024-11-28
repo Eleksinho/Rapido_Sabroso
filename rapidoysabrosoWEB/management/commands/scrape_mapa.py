@@ -5,12 +5,16 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from rapidoysabrosoWEB.models import Mapa_data, Url_Locales
-import os
-import django
+from rapidoysabrosoWEB.models import Mapa_data, Url_Locales, Marca
+from django.db import IntegrityError
+from urllib.parse import urlparse
+
+def obtener_marca(url):
+    dominio = urlparse(url).netloc
+    return dominio.split('.')[1] if '.' in dominio else dominio
 
 class Command(BaseCommand):
-    help = 'Extrae datos de las URLs de la base de datos y los guarda en la base de datos'
+    help = 'Extrae datos de las URLs usando selectores fijos y guarda los resultados en la base de datos'
 
     def handle(self, *args, **kwargs):
         # Configura las opciones de Chrome
@@ -26,9 +30,8 @@ class Command(BaseCommand):
         driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
 
         # Obtener todas las URLs de la base de datos
-        urls = Url_Locales.objects.all()  # Puedes agregar filtros si lo deseas, por ejemplo, limitando a ciertas URLs
+        urls = Url_Locales.objects.all()
 
-        # Iterar sobre cada URL en la base de datos
         for url_obj in urls:
             url = url_obj.url
             self.stdout.write(self.style.NOTICE(f"Procesando URL: {url}"))
@@ -37,53 +40,71 @@ class Command(BaseCommand):
                 # Cargar la página
                 driver.get(url)
 
-                # Usar WebDriverWait para esperar explícitamente que el contenedor con la clase aparezca
                 try:
-                    # Esperar hasta que el contenedor con la clase 'p_yaB_HV2WHmVqYhD9eFG' esté presente en el DOM
+                    # Esperar hasta que los contenedores estén presentes
                     containers = WebDriverWait(driver, 20).until(
                         EC.presence_of_all_elements_located((By.CLASS_NAME, "p_yaB_HV2WHmVqYhD9eFG"))
                     )
 
-                    # Iterar sobre los contenedores encontrados
+                    # Procesar cada contenedor
                     for container in containers:
-                        # Buscar el h3 dentro de cada contenedor (Local)
+                        # Local
                         h3_element = container.find_element(By.TAG_NAME, "h3")
                         local = h3_element.text.strip()
 
-                        # Buscar los a con la clase '_23zkYzJmHt5A4mqX11HBiL' dentro del contenedor
+                        # Dirección y teléfono
                         a_elements = container.find_elements(By.CSS_SELECTOR, "a._23zkYzJmHt5A4mqX11HBiL")
-
                         direccion = ""
+                        telefono = ""
                         coordenadas = ""
 
                         if a_elements:
-                            # Dirección: Obtener el primer href (asumimos que es la dirección)
-                            direccion_url = a_elements[0].get_attribute('href')
+                            # Dirección: Extraer del texto del primer enlace
+                            direccion = a_elements[0].text.strip()
 
-                            # Extraer las coordenadas después del '='
-                            if '=' in direccion_url:
-                                coordenadas = direccion_url.split('=')[1]  # Extraer las coordenadas
+                            # Extraer las coordenadas de la URL (después del '=')
+                            direccion_url = a_elements[0].get_attribute("href")
+                            if "=" in direccion_url:
+                                coordenadas = direccion_url.split("=")[-1]  # Coordenadas lat, long
 
+                            # Teléfono: Extraer del segundo enlace si existe
                             if len(a_elements) > 1:
-                                # Obtener el texto del segundo href (dirección física completa)
-                                direccion = a_elements[1].text.strip()
+                                telefono_href = a_elements[1].get_attribute("href")
+                                if "tel:" in telefono_href:
+                                    telefono = telefono_href.split("tel:")[1]
 
-                        # Crear y guardar la entrada en la base de datos (Modelo Mapa_data)
-                        # Crear el objeto Mapa_data
-                        Mapa_data.objects.create(
-                            local=local,  # Local desde h3
-                            direccion=direccion,  # Dirección desde el texto del segundo href
-                            coordenadas=coordenadas,  # Coordenadas extraídas de la URL
-                            url=url_obj,  # Relación con el objeto URL
+                        # Obtener el nombre de la marca desde la URL
+                        marca_nombre = obtener_marca(url)
+
+                        # Buscar la marca en la base de datos
+                        marca = Marca.objects.filter(nombre__iexact=marca_nombre).first()
+
+                        if not marca:
+                            self.stdout.write(self.style.ERROR(f"No se encontró la marca '{marca_nombre}' en la base de datos."))
+                            continue  # Si no se encuentra la marca, saltamos a la siguiente URL
+
+                        # Intentar obtener el objeto Mapa_data existente o crearlo
+                        mapa_data, created = Mapa_data.objects.update_or_create(
+                            local=local,
+                            direccion=direccion,
+                            defaults={
+                                'telefono': telefono,
+                                'coordenadas': coordenadas,  # Coordenadas extraídas de la URL
+                                'Marca': marca,
+                                'fuente_url_mapa': url_obj,
+                            }
                         )
 
-                    self.stdout.write(self.style.SUCCESS(f"Datos guardados exitosamente para {url}."))
+                        if created:
+                            self.stdout.write(self.style.SUCCESS(f"Datos guardados para {local}"))
+                        else:
+                            self.stdout.write(self.style.SUCCESS(f"Datos actualizados para {local}"))
 
                 except Exception as e:
-                    self.stdout.write(self.style.ERROR(f"No se pudo procesar el contenedor de la URL {url}. Error: {e}"))
+                    self.stdout.write(self.style.ERROR(f"Error al procesar los contenedores en la URL {url}: {e}"))
 
             except Exception as e:
-                self.stdout.write(self.style.ERROR(f"No se pudo cargar la URL {url}. Error: {e}"))
+                self.stdout.write(self.style.ERROR(f"No se pudo cargar la URL {url}: {e}"))
 
-        # Cierra el navegador después de terminar
+        # Cerrar el navegador después de completar el proceso
         driver.quit()
