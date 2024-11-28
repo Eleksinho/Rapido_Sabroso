@@ -1,99 +1,141 @@
+/* Estilo base para todo el cuerpo */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #000; /* Fondo negro */
-    color: #fff; /* Texto blanco */
+    font-family: 'Arial', sans-serif;
+    background: #000000; /* Fondo negro */
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100vh; /* Ocupa toda la pantalla */
+    background-color: #000000; /* Fondo suave */
 }
 
+/* Estilo de la caja que contiene el formulario */
 .container {
-    background-color: #121212; /* Negro suave */
-    padding: 2rem;
-    border-radius: 10px;
+    background-color: #ffffff; /* Fondo blanco para el contenedor */
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(201, 196, 196, 0.355); /* Sombra profunda para dar profundidad */
+    padding: 40px;
     width: 100%;
-    max-width: 400px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.6);
-}
-
-h2 {
+    max-width: 400px; /* Máxima anchura del formulario */
     text-align: center;
-    color: #f00; /* Título rojo */
-    margin-bottom: 1.5rem;
+    transition: transform 0.3s ease;
 }
 
-/* Estilo del formulario */
-.form-register {
-    display: flex;
-    flex-direction: column;
+/* Estilo del logo */
+.container img {
+    width: 110px;
+    height: auto;
+    margin-bottom: 20px;
 }
 
-.form-register label {
-    margin-bottom: 0.5rem;
+/* Título del formulario */
+h2 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 30px;
     font-weight: bold;
+    letter-spacing: 1px;
+    color: #000000; /* Rojo para el título */
 }
 
-.form-register input {
-    padding: 0.75rem;
-    margin-bottom: 1rem;
-    border: none;
+/* Estilo para los inputs */
+.input_box {
+    margin-bottom: 20px;
+}
+
+.input_box input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: #1e1e1e;
-    color: #fff;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
 }
 
-.form-register input::placeholder {
-    color: #bbb;
-}
-
-.form-register input:focus {
+/* Cambio de color al enfocar el input */
+.input_box input:focus {
+    border-color: #d70606; /* Rojo brillante */
     outline: none;
-    border: 1px solid #f00;
 }
 
-.ayuda {
-    font-size: 0.9rem;
-    color: #aaa;
-    margin-bottom: 1rem;
-}
-
-/* Botón de registro */
-.btn-primary {
-    background-color: #f00; /* Fondo rojo */
-    color: #fff;
+/* Estilo del botón de submit */
+.submit_btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 1.2rem;
+    background-color: #ff0000; /* Rojo vibrante */
+    color: white;
     border: none;
-    padding: 0.75rem;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 1rem;
     transition: background-color 0.3s ease;
 }
 
-.btn-primary:hover {
-    background-color: #ff3333; /* Rojo más claro al pasar el mouse */
+/* Hover para el botón de submit */
+.submit_btn:hover {
+    background-color: #d70606; /* Rojo más oscuro para hover */
 }
 
-/* Mensajes adicionales */
-.nota {
-    font-size: 0.8rem;
-    color: #bbb;
-    margin-top: -0.5rem;
-}
-
-/* Enlace de inicio de sesión */
-p {
-    text-align: center;
-    margin-top: 1rem;
-}
-
-p a {
-    color: #f00;
+/* Enlaces de "Olvidé mi contraseña" y "No iniciar sesión" */
+.for_pass {
+    display: block;
+    font-size: 0.9rem;
+    color: #007bff;
+    margin-top: 10px;
     text-decoration: none;
 }
 
-p a:hover {
+.for_pass:hover {
     text-decoration: underline;
+    color: #0056b3;
 }
+
+/* Estilo de los mensajes de error */
+.error {
+    color: #d70606;
+    text-align: center;
+    margin-top: 15px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+/* Animación para el contenedor */
+.container:hover {
+    transform: translateY(-10px); /* Efecto sutil al pasar el ratón */
+}
+
+/* Estilo para el contenedor de la contraseña */
+.input_box {
+    position: relative; /* Necesario para posicionar el tooltip de manera absoluta */
+    margin-bottom: 20px;
+}
+
+/* Estilo del tooltip (mensaje emergente) */
+.tooltip {
+    display: none; /* Ocultar el mensaje emergente por defecto */
+    position: absolute;
+    bottom: -25px; /* Coloca el tooltip debajo del campo */
+    left: 0;
+    padding: 8px;
+    background-color: #333;
+    color: white;
+    font-size: 0.85rem;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+/* Mostrar el tooltip cuando el campo de entrada tiene foco */
+#password:focus + .tooltip {
+    display: block; /* Mostrar el mensaje emergente cuando el campo tiene foco */
+}
+
+/* Alternativa: mostrar el tooltip cuando el campo es hover (si deseas mostrarlo al pasar el ratón) */
+.input_box:hover .tooltip {
+    display: block; /* Aparece cuando el usuario pasa el ratón sobre el campo */
+}
+

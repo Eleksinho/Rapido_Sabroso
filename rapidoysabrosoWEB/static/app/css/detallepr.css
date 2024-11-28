@@ -1,180 +1,106 @@
-/* General Card Styling */
-.producto-card {
+/* Asegura que el cuerpo de la página tenga al menos la altura completa */
+html, body {
+  height: 100%; /* Ocupa toda la altura de la ventana */
+  margin: 0; /* Quita márgenes por defecto */
+}
+
+/* Contenedor principal */
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Hace que el contenedor principal tenga al menos la altura de la ventana */
+}
+
+/* Contenido principal */
+main {
+  flex-grow: 1; /* Hace que el contenido principal crezca para llenar el espacio disponible */
+}
+
+/* Asegura que el footer se quede al final */
+footer {
+  background-color: #f1f1f1;
+  text-align: center;
+  padding: 10px;
+  width: 100%;
+}
+
+/* Estilos para las tarjetas del producto */
+.card {
   border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 12px; /* Bordes más redondeados */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Sombra más suave */
   background-color: #fff;
   text-align: center;
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 15px;
-  transition: transform 0.3s ease;
-  margin-bottom: 20px;
+  padding: 20px;
+  margin-bottom: 25px;
 }
 
-/* Hover effect */
-.producto-card:hover {
-  transform: scale(1.05); /* Aumenta ligeramente el tamaño */
-  border: 1px solid red; /* Cambia el borde a rojo */
-}
-/* Product Image */
-.producto-imagen {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-bottom: 1px solid #eee;
+/* Estilo de la imagen de las tarjetas */
+.card img {
+  width: 100%; /* Asegura que la imagen ocupe todo el espacio disponible */
+  height: 200px; /* Tamaño fijo para la imagen */
+  object-fit: contain; /* Asegura que la imagen se vea completa sin recortes */
+  border-radius: 8px;
   margin-bottom: 15px;
 }
 
-/* Product Information Container */
-.producto-info {
-  flex-grow: 1; /* Ensure it grows to fill the available space */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* Product Name */
-.producto-nombre {
-  font-size: 18px;
+/* Título de la tarjeta */
+.card-title {
+  font-size: 20px;
   font-weight: bold;
-  color: #333;
-  margin-bottom: 10px;
-
+  color: #000000;
+  margin-bottom: 15px;
 }
 
-/* Product Description */
-.producto-descripcion {
-  font-size: 14px;
+/* Descripción del producto */
+.card-text {
+  font-size: 15px;
   color: #555;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  line-height: 1.5;
 }
 
-/* Product Price */
-.producto-precio {
-  font-size: 25px;
-  color: #007900cb;
+/* Estilo para el precio del producto */
+.text-precio {
+  font-size: 32px; /* Aumenta el tamaño del precio */
+  color: #28a745; /* Cambiar color (ejemplo: color tomate) */
   font-weight: bold;
   margin-bottom: 15px;
-  display: block;
 }
 
-/* Product Brand */
-.producto-marca {
-  font-size: 20px;
-  color: #fa0505;
-  margin-bottom: 10px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: block;
-}
-.producto-marca::first-letter {
-  text-transform: uppercase !important;
-}
-
-/* Product Details Link */
-.ver-detalles {
-  font-size: 20px;
-  color: #007bff;
-  text-decoration: none;
-  margin-bottom: 10px;
-  transition: color 0.3s ease;
-}
-
-.ver-detalles:hover {
-  color: #0056b3;
-
-}
-
-/* Button "Agregar al carrito" */
-.boton-agregar-carrito {
-  font-size: 14px;
-  padding: 10px 20px;
-  background-color: #007bff;
+/* Estilo del botón de agregar al carrito */
+.btn-success {
+  font-size: 16px;
+  padding: 12px 25px;
+  background-color: #007900cb;
   color: #fff;
-  border-radius: 5px;
+  border-radius: 50px;
   cursor: pointer;
   text-transform: uppercase;
   transition: all 0.3s ease;
-  margin-top: auto; /* Ensures button stays at the bottom */
-  width: 100%; /* Full-width button */
-}
-
-.boton-agregar-carrito:hover {
-  background-color: red;
-  border: 1px solid red;
-}
-
-/* Ensure responsive design */
-.productos-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-.producto-card {
-  width: 100%;
-}
-
-/* Estilo del botón del modal (Ver historial de precios) */
-.btn-danger {
-  background-color: #dc3545; /* Botón rojo */
-  border: none;
-  border-radius: 5px;
-  padding: 8px 15px; /* Ajusta el tamaño del botón */
-  font-size: 0.9rem; /* Ajusta el tamaño de la fuente */
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.btn-danger:hover {
-  background-color: #c82333;
-}
-
-/* Estilo del modal */
-.modal-content {
+  width: 50%;
   border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-.modal-header {
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #ddd;
+.btn-success:hover {
+  background-color: #007900cb;
+  border: 1px solid #007900cb;
 }
 
-.modal-title {
-  font-size: 1.5rem;
-  font-weight: bold;
+/* Estilo para el botón de historial de precios */
+.btn-historial {
+  font-size: 16px;
+  padding: 12px 25px;
+  background-color: #e2c209; /* Cambiar color de fondo del botón (ejemplo: color naranja) */
+  color: #ffffff; /* Mantener el color blanco del texto */
+  border-radius: 10px;
+  width: 50%;
 }
 
-.btn-close {
-  font-size: 1.2rem;
-  color: #000;
-}
-
-/* SVG dentro del modal */
-#historial-precios-chart {
-  margin: auto;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .modal-dialog {
-      max-width: 100%;
-      margin: 15px;
-  }
-
-  .card {
-      margin-bottom: 15px;
-  }
-
-  .btn-primary, .btn-success, .btn-danger {
-      font-size: 0.9rem;
-      padding: 8px;
-  }
+.btn-historial:hover {
+  background-color: #e2c209;
+  border: 1px solid #e2c209;
 }

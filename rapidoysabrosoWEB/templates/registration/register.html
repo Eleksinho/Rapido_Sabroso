@@ -1,33 +1,43 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
+    <link rel="shortcut icon" href="{% static 'imagenes/favicon.ico' %}" type="image/x-icon">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'app/css/registration/register.css' %}">
-    <title>Registro de Usuario</title>
+    <title>Registro - Rápido&Sabroso</title>
 </head>
 <body>
     <div class="container">
+        <!-- Logo aquí si es necesario -->
+        <img src="{% static 'imagenes/DALL·E-2024-10-09-17.35 (1).png' %}" alt="Logo" />
+
         <h2>Registro de Usuario</h2>
         
         <form method="POST" class="form-register">
             {% csrf_token %}
-            <label for="username">Nombre de usuario</label>
-            <input type="text" id="username" name="username" placeholder="Escribe tu usuario">
+            <div class="input_box">
+                <label for="username">Nombre de usuario</label>
+                <input type="text" id="username" name="username" placeholder="Escribe tu usuario" required>
+            </div>
 
-            <label for="password">Contraseña</label>
-            <input type="password" id="password" name="password" placeholder="Escribe tu contraseña">
-            <p class="ayuda">Debe contener al menos 8 caracteres y no ser demasiado simple.</p>
+            <div class="input_box">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" placeholder="Escribe tu contraseña" required>
+                <div class="tooltip" id="password-tooltip">Debe contener al menos 8 caracteres y no ser demasiado simple.</div>
+            </div>            
 
-            <label for="confirm-password">Confirma tu contraseña</label>
-            <input type="password" id="confirm-password" name="confirm_password" placeholder="Repite tu contraseña">
+            <div class="input_box">
+                <label for="confirm-password">Confirma tu contraseña</label>
+                <input type="password" id="confirm-password" name="confirm_password" placeholder="Repite tu contraseña" required>
+            </div>
             
-            <button type="submit" class="btn-primary">Registrarse</button>
+            <button type="submit" class="submit_btn">Registrarse</button>
         </form>
         
-        <p>¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia sesión aquí</a>.</p>
+        <p>¿Ya tienes una cuenta? <a href="{% url 'login' %}" class="for_pass">Inicia sesión aquí</a>.</p>
     </div>
 </body>
 </html>
