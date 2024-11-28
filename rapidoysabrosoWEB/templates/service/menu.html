@@ -75,17 +75,51 @@
   <div class="container">
     <div class="row">
       <!-- Barra lateral con filtro -->
-      <aside class="col-md-3" style="position: sticky; top: 10%; max-width: 250px;">
+      <aside id="buscar-producto-aside" class="col-md-3" style="position: sticky; top: 10%; max-width: 250px; transition: all 0.3s ease;">
         <div class="card p-3">
           <h5>Buscar Producto</h5>
           <input type="text" class="form-control mb-3" id="busqueda-producto" placeholder="Buscar por nombre" oninput="filtrarProductos()">
           <div id="rango-precio" class="mb-3"></div> <!-- Slider de precios -->
           <p>Rango de precio seleccionado: $<span id="precio-minimo"></span> - $<span id="precio-maximo"></span></p>
-
+      
           <button id="sortAscBtn" class="btn-danger mb-2" onclick="ordenarProductos('asc')">Menor a Mayor</button>
           <button id="sortDescBtn" class="btn-primary" onclick="ordenarProductos('desc')">Mayor a Menor</button>
         </div>
       </aside>
+      
+      <!-- Botón para abrir/cerrar el aside en pantallas pequeñas -->
+      <button id="toggle-btn" class="btn btn-secondary d-md-none">
+        ☰
+      </button>
+      
+      <!-- Agregar un poco de espacio a la izquierda para que el contenido no quede detrás del aside -->
+      <style>
+        #buscar-producto-aside {
+          position: fixed;
+          top: 10%;
+          left: 0;
+          z-index: 1050;
+          height: 100%;
+          overflow-y: auto;
+          transform: translateX(-100%); /* Ocultar por defecto */
+        }
+      
+        #buscar-producto-aside.show {
+          transform: translateX(0); /* Deslizar cuando se active */
+        }
+      
+        #toggle-btn {
+          z-index: 1100;
+          position: fixed;
+          top: 10%;
+          left: 10px;
+          padding: 10px;
+          background-color: #343a40;
+          color: white;
+          border: none;
+          border-radius: 50%;
+        }
+      </style>
 
       <!-- Productos -->
       <section class="col-md-9 productos-container" id="productos-container">
@@ -122,4 +156,21 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+  <script>
+    // Mostrar/ocultar el aside al hacer clic en el botón
+document.getElementById('toggle-btn').addEventListener('click', function() {
+  const aside = document.getElementById('buscar-producto-aside');
+  aside.classList.toggle('show');
+});
+
+// Para cerrar el aside si se hace clic fuera de él (opcional)
+document.addEventListener('click', function(event) {
+  const aside = document.getElementById('buscar-producto-aside');
+  const toggleBtn = document.getElementById('toggle-btn');
+  
+  if (!aside.contains(event.target) && !toggleBtn.contains(event.target)) {
+    aside.classList.remove('show');
+  }
+});
+  </script>
 {% endblock %}

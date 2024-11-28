@@ -144,13 +144,17 @@ class Command(BaseCommand):
 
                     if not historial_hoy:
                         HistorialPrecio.objects.create(producto=producto_existente, precio=precio_producto)
+                    
+                    # Actualizar siempre los datos del producto con la información más reciente
                     producto_existente.precio = precio_producto
                     producto_existente.descripcion = descripcion_producto
                     producto_existente.imagen_url = imagen_url
                     producto_existente.categoria = categoria
                     producto_existente.marca = marca
                     producto_existente.save()
+
                 else:
+                    # Crear un nuevo producto y agregarlo al historial
                     nuevo_producto = Producto.objects.create(
                         nombre=nombre_producto,
                         precio=precio_producto,
@@ -162,5 +166,6 @@ class Command(BaseCommand):
                     )
                     HistorialPrecio.objects.create(producto=nuevo_producto, precio=precio_producto)
 
+            # Actualizar la fecha de última vez que se hizo scraping para la URL
             url_obj.last_scraped = now()
             url_obj.save()

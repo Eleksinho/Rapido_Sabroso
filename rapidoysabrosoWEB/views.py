@@ -300,7 +300,7 @@ def register(request):
 #     else:
 #         return render(request, 'service/RegistroTienda.html')
 
-@user_is_staff
+
 def TiendaNueva(request):
     if request.method == 'POST':
         url = request.POST.get('url')
@@ -310,7 +310,7 @@ def TiendaNueva(request):
                 # Ejecutar comando para el scraping
                 call_command('scrape_urls')
                 messages.success(request, "La URL fue registrada y se inició el scraping.")
-                return redirect('RegistroTIenda')  # Cambia por la vista deseada
+                return redirect('RegistroTienda')  # Cambia por la vista deseada
             else:
                 messages.info(request, "Esta URL ya está registrada.")
                 return redirect('RegistroTienda')  # O la misma vista
@@ -321,7 +321,7 @@ def TiendaNueva(request):
 
 
     
-@user_is_staff
+
 def TiendaSelector(request):
     # Obtener todas las URLs y sus selectores
     urls = Url.objects.all()  # Obtén todas las URLs
@@ -356,31 +356,41 @@ def scrape_view(selector):
         return {
             'nombre': 'Error',
             'precio': 'Error',
-            'imagen_url': 'Error'
+            'imagen_url': 'Error',
+            'descripcion': 'Error'
         }
-    
+
     tree = html.fromstring(response.content)
 
-    # Extraer datos usando los selectores del formulario
-    producto = tree.xpath(product_selector)
-    precio = tree.xpath(price_selector)
-    descripcion = tree.xpath(description_selector)
-    imagen = tree.xpath(image_selector)
+    # Función para intentar obtener un valor de un selector y manejar errores
+    def get_value(selector, xpath):
+        try:
+            result = tree.xpath(xpath)
+            if result:
+                return result[0].text_content().strip() if isinstance(result[0], html.HtmlElement) else result[0].strip()
+            return 'No disponible'
+        except Exception as e:
+            print(f"Error al procesar selector {xpath}: {e}")
+            return 'Error'
+
+    # Extraer datos utilizando los selectores con manejo de errores
+    producto = get_value(selector, product_selector)
+    precio = get_value(selector, price_selector)
+    descripcion = get_value(selector, description_selector)
+    imagen = get_value(selector, image_selector)
 
     # Imprimir los resultados intermedios para depuración
-   
     data = {
-        'nombre': producto[0].text_content().strip() if producto else 'No disponible',
-        'precio': precio[0].strip() if precio else 'No disponible',
-        'imagen_url': imagen[0] if imagen else 'No disponible',
-        'descripcion': descripcion[0].text_content().strip() if descripcion else 'No disponible',
-        
-        # Agrega más campos según sea necesario
+        'nombre': producto,
+        'precio': precio,
+        'imagen_url': imagen,
+        'descripcion': descripcion,
     }
     
     # Procesar y devolver los resultados
     return data
-@user_is_staff
+
+
 def SelectorTienda(request, selector_id):
     selector = get_object_or_404(PageSelector, id=selector_id)
     producto_preview = None  # Almacenar el producto de vista previa
