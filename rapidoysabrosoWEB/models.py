@@ -113,8 +113,14 @@ class HistorialPrecio(models.Model):
     
     # SECCION MAPA Y DIRECCIONES
 
+class Url_Locales(models.Model):
+    url = models.URLField(unique=True, verbose_name="URL de la Tienda")
+    
+    def __str__(self):
+        return self.url
+
 class SelectorMAPA(models.Model):
-    url = models.ForeignKey(Url, on_delete=models.CASCADE, related_name="selectors")
+    url = models.ForeignKey(Url_Locales, on_delete=models.CASCADE, related_name="selectors")
     local_selector = models.CharField(max_length=255, verbose_name="Selector CSS para el Local")
     direccion_selector = models.CharField(max_length=255, verbose_name="Selector CSS para la Dirección")
     
@@ -124,15 +130,11 @@ class SelectorMAPA(models.Model):
 class Mapa_data(models.Model):
     local = models.CharField(max_length=255, verbose_name="Nombre del Local")
     direccion = models.CharField(max_length=255, verbose_name="Dirección")
+    telefono = models.CharField(max_length=20, blank=True, null=True, verbose_name="Teléfono")  # Nuevo campo
     coordenadas = models.CharField(max_length=255, blank=True, null=True, verbose_name="Coordenadas (Latitud, Longitud)")
-    url = models.ForeignKey(Url, on_delete=models.CASCADE, related_name="scraped_data")
+    Marca = models.ForeignKey(Marca, on_delete=models.CASCADE, related_name="scraped_data")
+    fuente_url_mapa = models.ForeignKey(Url_Locales, on_delete=models.CASCADE, related_name="scraped_data")
     fecha = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Scraping")
 
     def __str__(self):
         return f"{self.local} - {self.direccion}"
-    
-class Url_Locales(models.Model):
-    url = models.URLField(unique=True, verbose_name="URL de la Tienda")
-    
-    def __str__(self):
-        return self.url
