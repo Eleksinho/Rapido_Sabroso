@@ -41,4 +41,3 @@ $(document).ready(function () {
 $(window).on("resize", function () {
   setTimeout(test, 500);
 });
-  
