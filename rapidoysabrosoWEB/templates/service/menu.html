@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block title %}Menú - RapidoYSabroso{% endblock %}
+{% block title %}Menú - Rápido&Sabroso{% endblock %}
 
 {% block css %}
   <link rel="stylesheet" href="{% static 'app/css/menu.css' %}">
@@ -15,17 +15,42 @@
   <!-- Marcas -->
   <section class="marcas-container container">
     <h2 class="text-center my-4" style="color: red;">Marcas Disponibles</h2>
-    <div id="marcaCarrusel" class="marca-cards-container d-flex overflow-auto">
-      <div class="marca-cards-inner d-flex">
-        {% for marca in marcas %}
-          <a href="{% url 'marca' marca=marca.id %}" style="background-color:black;" class="marca-card text-center mx-3 p-3">
-            <img class="img-fluid marca-logo" src="{{ marca.logo_url }}" alt="{{ marca.nombre }}">
-          </a>
-        {% endfor %}
+  
+    <!-- Carrusel de Marcas -->
+    <div id="marcaCarrusel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <!-- Iniciar la primera item del carrusel -->
+        <div class="carousel-item active">
+          <div class="row justify-content-center">
+            {% for marca in marcas %}
+              <div class="col-md-2 col-12 mb-4">
+                <a href="{% url 'marca' marca=marca.id %}" class="marca-card text-center mx-3 p-3">
+                  <img class="img-fluid marca-logo" src="{{ marca.logo_url }}" alt="{{ marca.nombre }}">
+                </a>
+              </div>
+            {% if forloop.counter|divisibleby:5 and not forloop.last %}
+              </div> <!-- Cierra la fila actual -->
+            </div> <!-- Cierra el carrusel-item -->
+            <div class="carousel-item"> <!-- Inicia el siguiente carrusel-item -->
+              <div class="row justify-content-center"> <!-- Nueva fila de marcas -->
+            {% endif %}
+            {% endfor %}
+          </div> <!-- Cierra la última fila -->
+        </div> <!-- Cierra el último carrusel-item -->
       </div>
+  
+      <!-- Controles del carrusel -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#marcaCarrusel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#marcaCarrusel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
-  </section>
-
+  </section>  
+  
 <div class="containerCarrusel container">
   <h2 class="text-center my-4" style="color: red;">Productos en Oferta</h2>
   <div id="productoCarrusel" class="carousel slide" data-bs-ride="carousel">

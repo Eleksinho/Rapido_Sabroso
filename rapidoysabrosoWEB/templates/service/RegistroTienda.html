@@ -1,12 +1,13 @@
 {% load static %}
+<head>
+  <link rel="shortcut icon" href="{% static 'imagenes/favicon.ico' %}" type="image/x-icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Tienda - Rápido&Sabroso</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'app/css/RegistroTienda.css' %}">
+</head>
 
-<link rel="stylesheet" type="text/css" href="{% static 'app/css/RegistroTienda.css' %}">
-
-<header class="top-header">
-  
-</header>
-
-<div class="container mt-3">
+<!--<div class="container mt-3">
   {% if messages %}
     {% for message in messages %}
       <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
@@ -15,37 +16,7 @@
       </div>
     {% endfor %}
   {% endif %}
-</div>
-
-<div id="container" class="text-center mb-3">
-  <a href="{% url 'menu' %}" class="learn-more">
-    <span class="circle" aria-hidden="true">
-      <span class="icon arrow"></span>
-    </span>
-    <span class="button-text">Volver al menu</span>
-  </a>
-</div>
-
-<!--dust particle-->
-<div>
-  <div class="starsec"></div>
-  <div class="starthird"></div>
-  <div class="starfourth"></div>
-  <div class="starfifth"></div>
-</div>
-<!--Dust particle end-->
-
-<!-- Alertas -->
-<div class="container mt-3">
-  {% if messages %}
-    {% for message in messages %}
-      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    {% endfor %}
-  {% endif %}
-</div>
+</div>-->
 
 <!-- Main container -->
 <div class="container text-center text-dark d-flex justify-content-center align-items-center vh-90">
@@ -55,26 +26,43 @@
         <div class="col-xl-12 col-md-12 col-md-12">
           <div class="card">
             <div class="card-body wow-bg" id="formBg">
+              
+              <!-- Contenedor del Logo -->
+              <div class="logo-container">
+                <img src="{% static 'imagenes/DALL·E-2024-10-09-17.35 (1).png' %}" alt="Logo Rapido y Sabroso" class="logo">
+              </div>
+              
               <h2 class="colorboard text-center">Registro de Tienda</h2>
               <h4 class="colorboard text-center">Ingresa la URL de la tienda</h4>
 
+              <!-- Formulario de registro de tienda -->
               <form method="POST">
                 {% csrf_token %}
-                <div class="input-group mb-3">
+                <div class="input_box">
+                  <label for="url"></label>
                   <input type="url" class="form-control textbox-dg" name="url" placeholder="https://ejemplo.com" required>
                 </div>
 
+                <!-- Botón de registro -->
                 <div class="row">
                   <div class="col-12">
                     <button type="submit" class="btn btn-animated btn-block logn-btn">Registrar</button>
                   </div>
                 </div>
               </form>
+
+              <!-- Botón de Volver al menú, ahora dentro del card -->
+              <div id="container" class="text-center mt-3">
+                <a href="{% url 'menu' %}" class="learn-more">
+                  <span class="button-text">Volver al menú</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>

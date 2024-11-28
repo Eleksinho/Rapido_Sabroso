@@ -1,25 +1,9 @@
 {% extends 'service/baseplantillaNav.html' %}
 {% load static %}
-{% block title %}Producto {{ producto.nombre }} - RapidoYSabroso{% endblock %}
+{% block title %}Producto {{ producto.nombre }} - Rápido&Sabroso{% endblock %}
 
 {% block css %}
 <link rel="stylesheet" type="text/css" href="{% static 'app/css/detallepr.css' %}">
-<style>
-    .producto-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-    .card {
-        width: 100%;
-        max-width: 600px;
-        margin-bottom: 20px;
-    }
-    .modal-dialog {
-        max-width: 90%; /* Ajusta el ancho del modal en pantallas pequeñas */
-    }
-</style>
 {% endblock %}
 
 {% block content %}
@@ -33,18 +17,20 @@
                         <img src="{{ producto.imagen_url }}" class="img-fluid" alt="{{ producto.nombre }}">
                         <h4 class="card-title mt-3">{{ producto.nombre }}</h4>
                         <p class="card-text">{{ producto.descripcion }}</p>
-                        <h5 class="text-primary">{{ producto.precio }}</h5>
+                        <h5 class="text-precio">{{ producto.precio }}</h5>
                         <p class="text-muted">{{ producto.marca }}</p>
                         <form action="{% url 'agregar_a_orden' producto.id %}" method="POST">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-success">Agregar al carrito</button>
                         </form>
+                        <br>
+                        <button class="btn-historial " data-bs-toggle="modal" data-bs-target="#graficoModal">
+                            Ver historial de precios
+                        </button>
+                        </br>
                     </div>
                 </div>
                 <!-- Botón para abrir el modal con el gráfico -->
-                <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#graficoModal">
-                    Ver historial de precios
-                </button>
             </div>
         </div>
     </div>
