@@ -433,60 +433,72 @@ footer {
 
 /* Brand Cards */
 .marca-card {
-  max-width: 200px;
-  height: 130px;
+  max-width: 200px;      /* Ancho máximo de la tarjeta */
+  height: 130px;         /* Altura de la tarjeta */
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
   margin: 0 auto;
-  background-color: #2b0303;
-  border: 1px solid #ddd;
-  text-transform: uppercase;
+  background-color: #4a4a4a;   /* Fondo de la tarjeta */
+  border: 1px solid #ddd;     /* Borde de la tarjeta */
+  text-transform: uppercase;   /* Transformación de texto */
 }
 
 .marca-card img {
-  max-width: 150px;
-  max-height: 150px;
-  object-fit: contain;
+  width: 100%;           /* Hace que la imagen ocupe todo el ancho de la tarjeta */
+  height: 100%;          /* Hace que la imagen ocupe toda la altura de la tarjeta */
+  object-fit: cover;     /* Hace que la imagen se recorte y se ajuste al área de la tarjeta sin deformarse */
+  object-position: center; /* Centra la imagen dentro del contenedor */
+  max-width: 150px;      /* Limita el tamaño máximo de la imagen */
+  max-height: 150px;     /* Limita la altura máxima de la imagen */
 }
 
 .marca-card:hover {
-  background-color: #e0e0e0;
+  background-color: #e0e0e0;  /* Cambia el fondo al pasar el ratón */
 }
 
 /* Carousel */
 .carousel-inner img {
-  width: 100%;
-  height: auto;
+  width: 100%;   /* Asegura que las imágenes del carrusel se ajusten al 100% del contenedor */
+  height: auto;  /* Mantiene la proporción de la imagen */
 }
 
-.carousel-control-prev-icon, .carousel-control-next-icon {
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
-  padding: 10px;
+/* Ajustes para pantallas pequeñas (móviles y tablets) */
+@media (max-width: 768px) {
+  /* Ajustes para la tarjeta de marca */
+  .marca-card {
+    max-width: 100%;    /* La tarjeta ocupa todo el ancho disponible */
+    height: auto;       /* La altura se ajusta según el contenido */
+  }
+
+  /* Ajustes para las imágenes dentro de las tarjetas de marca */
+  .marca-card img {
+    max-width: 120px;   /* Limita el ancho máximo de la imagen */
+    max-height: 120px;  /* Limita la altura máxima de la imagen */
+    object-fit: cover;  /* Asegura que la imagen se recorte y ocupe el área de la tarjeta */
+    object-position: center; /* Centra la imagen dentro del contenedor */
+  }
+}
+
+/* Ajustes para pantallas más pequeñas (móviles, menos de 480px de ancho) */
+@media (max-width: 480px) {
+  /* Ajustes adicionales para las tarjetas de marca en pantallas muy pequeñas */
+  .marca-card {
+    max-width: 100%;   /* La tarjeta ocupa todo el ancho disponible */
+    height: auto;      /* La altura se ajusta según el contenido */
+  }
+  /* Ajustes para las imágenes dentro de las tarjetas de marca */
+  .marca-card img {
+    width: 100px;    /* Reduce el ancho de la imagen */
+    height: 100px;   /* Ajusta la altura proporcionalmente */
+    object-fit: contain;  /* Asegura que la imagen no se recorte y se vea completamente */
+    object-position: center; /* Centra la imagen dentro del contenedor */
+  }
 }
 
 /* Logo Styles */
 .logo-img {
   display: block;
   margin: 0 auto;
-}
-
-@media (max-width: 600px) {
-  .logo-img {
-    width: 150px;
-  }
-}
-
-@media (min-width: 601px) and (max-width: 1024px) {
-  .logo-img {
-    width: 250px;
-  }
-}
-
-@media (min-width: 1025px) {
-  .logo-img {
-    width: 300px;
-  }
 }

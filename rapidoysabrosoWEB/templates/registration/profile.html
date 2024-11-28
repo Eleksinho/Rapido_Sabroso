@@ -3,14 +3,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="shortcut icon" href="{% static 'imagenes/favicon.ico' %}" type="image/x-icon">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil de Usuario - RapidoYSabroso</title>
+    <title>Perfil - Rápido&Sabroso</title>
     <link rel="stylesheet" type="text/css" href="{% static 'app/css/registration/profile.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/vista1.css' %}"> <!-- Nueva hoja de estilo -->
 </head>
 <body>
     <div class="container">
-        <h1>Perfil de Usuario</h1>
+        <img src="{% static 'imagenes/DALL·E-2024-10-09-17.35 (1).png' %}" alt="Logo Rapido y Sabroso">
+        <h2>Perfil de Usuario</h2>
         <form method="post">
             {% csrf_token %}
             <div class="input_box">

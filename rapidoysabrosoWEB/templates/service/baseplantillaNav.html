@@ -5,24 +5,26 @@
   <link rel="shortcut icon" href="{% static 'imagenes/favicon.ico' %}" type="image/x-icon">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}Dashboard - Rapido&Sabroso{% endblock %}</title>
+  <title>{% block title %}Dashboard - Rápido&Sabroso{% endblock %}</title>
   {% block css %}
   {% endblock %}
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="{% static 'app/css/navbar.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'app/css/categorias.css' %}"> <!-- Vincula el nuevo archivo de CSS -->
 </head>
-<body>
+<body class="bg-light">
 
   <header>
-    <nav class="navbar navbar-expand-custom navbar-mainbg">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <div class="container">
-        <a class="navbar-brand navbar-logo d-flex align-items-center" href="{% url 'menu' %}">
-          <span class="ml-2">Rapido&Sabroso</span>
+        <a class="navbar-brand" href="{% url 'menu' %}">
+          <img src="{% static 'imagenes/DALL·E-2024-10-09-17.35 (1).png' %}" alt="Logo" class="logo">
+          Rápido&Sabroso
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <i class="fas fa-bars text-white"></i>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ml-auto">
             <div class="hori-selector">
               <div class="left"></div>
@@ -71,45 +73,53 @@
         </div>
       </div>
     </nav>
-    
   </header>
 
+  <!-- Modal para Categorías -->
   <div class="modal fade" id="categoriaModal" tabindex="-1" aria-labelledby="categoriaModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header bg-primary text-white">
           <h5 class="modal-title" id="categoriaModalLabel">Selecciona una Categoría</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <ul class="list-group">
-            <li class="list-group-item"><a href="{% url 'categoria' 'Todas' %}">Todas las Categorías</a></li>
+          <!-- Cambié de lista a tarjetas -->
+          <div class="categories">
+            <div class="category-card">
+              <h3><a href="{% url 'categoria' 'Todas' %}">Todas las Categorías</a></h3>
+            </div>
             {% for categoria in categorias %}
-            <li class="list-group-item"><a href="{% url 'categoria' categoria.nombre %}">{{ categoria.nombre }}</a></li>
+            <div class="category-card">
+              <h3><a href="{% url 'categoria' categoria.nombre %}">{{ categoria.nombre }}</a></h3>
+            </div>
             {% endfor %}
-          </ul>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <main>
-    {% block content %}
-    {% endblock %}
-  </main>
+  <div class="page-wrapper">
+    <main>
+      {% block content %}{% endblock %}
+    </main>
 
-  <footer>
-    <p>&copy; 2024 RapidoYSabroso. Todos los derechos reservados.</p>
-  </footer>
+    {% block footer %}
+    <footer class="">
+      <p>&copy; 2024 RapidoYSabroso. Todos los derechos reservados.</p>
+    </footer>
+    {% endblock %}
+  </div>
+
+  <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <!-- <script src="{% static 'app/js/menu.js' %}"></script> -->
   <script src="{% static 'app/js/navbar.js' %}"></script>
   {% block javascript %}
-
   {% endblock %}
 
 </body>

@@ -1,84 +1,93 @@
-/* profile.css */
-
+/* Estilo base para todo el cuerpo */
 body {
-    background: linear-gradient(to right, #6a11cb, #2575fc); /* Degradado de color */
-    font-family: 'Arial', sans-serif; /* Fuente legible */
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to right, #ff6f61, #ffb347); /* Fondo degradado */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f7f7f7;
 }
 
+/* Estilo del contenedor del formulario */
 .container {
-    max-width: 600px; /* Ancho máximo de la caja */
-    margin: 50px auto; /* Centra el contenedor */
-    padding: 20px; /* Espaciado interno */
-    background: #fff; /* Fondo blanco para el formulario */
-    border-radius: 8px; /* Bordes redondeados */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Sombra más intensa */
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(201, 196, 196, 0.355);
+    padding: 40px;
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
 }
 
-h1 {
-    text-align: center; /* Centrar el encabezado */
-    color: #333; /* Color del texto del encabezado */
-    margin-bottom: 20px; /* Espaciado inferior */
+/* Estilo del logo */
+.container img {
+    width: 110px;
+    height: auto;
+    margin-bottom: 20px;
 }
 
+/* Título */
+h2 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 30px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* Inputs */
 .input_box {
-    margin-bottom: 15px; /* Espaciado inferior entre campos */
+    margin-bottom: 20px;
 }
 
-.input_box label {
-    display: block; /* Mostrar la etiqueta como bloque */
-    margin-bottom: 5px; /* Espaciado inferior */
-    font-weight: bold; /* Negrita para las etiquetas */
-    color: #555; /* Color del texto de las etiquetas */
+.input_box input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
 }
 
-.input_box input[type="text"],
-.input_box input[type="password"],
-.input_box input[type="date"],
-.input_box textarea {
-    width: 100%; /* Ancho completo */
-    padding: 10px; /* Espaciado interno */
-    border: 1px solid #ccc; /* Borde gris */
-    border-radius: 4px; /* Bordes redondeados */
-    transition: border-color 0.3s; /* Transición suave para el borde */
+/* Cambios al enfocar los inputs */
+.input_box input:focus {
+    border-color: #d70606; /* Rojo brillante */
+    outline: none;
 }
 
-.input_box input[type="text"]:focus,
-.input_box input[type="password"]:focus,
-.input_box input[type="date"]:focus,
-.input_box textarea:focus {
-    border-color: #007bff; /* Borde azul al enfocar */
-    outline: none; /* Sin contorno predeterminado */
-}
-
-textarea {
-    height: 100px; /* Altura fija para el área de texto */
-    resize: vertical; /* Permitir redimensionar verticalmente */
-}
-
+/* Botón de enviar */
 .submit_btn {
-    width: 100%; /* Ancho completo del botón */
-    padding: 10px; /* Espaciado interno */
-    background-color: #007bff; /* Fondo azul */
-    color: white; /* Texto blanco */
-    border: none; /* Sin borde */
-    border-radius: 4px; /* Bordes redondeados */
-    cursor: pointer; /* Cambiar cursor al pasar */
-    font-size: 16px; /* Tamaño de fuente */
-    transition: background-color 0.3s; /* Transición suave */
+    width: 100%;
+    padding: 14px;
+    font-size: 1.2rem;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
+/* Hover para el botón */
 .submit_btn:hover {
-    background-color: #0056b3; /* Color más oscuro al pasar el cursor */
+    background-color: #d70606; /* Rojo más oscuro */
 }
 
-a {
-    text-decoration: none; /* Sin subrayado */
-    color: #007bff; /* Color azul para enlaces */
-    display: block; /* Enlaces en bloques para mejor clicabilidad */
-    text-align: center; /* Centrar enlaces */
-    margin-top: 20px; /* Espaciado superior */
+/* Enlaces */
+.for_pass {
+    display: block;
+    font-size: 0.9rem;
+    color: #007bff;
+    margin-top: 10px;
+    text-decoration: none;
 }
 
-a:hover {
-    text-decoration: underline; /* Subrayar al pasar el cursor */
+.for_pass:hover {
+    text-decoration: underline;
+    color: #0056b3;
 }
