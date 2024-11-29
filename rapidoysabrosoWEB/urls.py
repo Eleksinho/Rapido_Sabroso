@@ -14,6 +14,7 @@ urlpatterns = [
     path('TiendaSelector',TiendaSelector, name='TiendaSelector'),
     path('SelectorTienda/<int:selector_id>', SelectorTienda, name='SelectorTienda'),
     path('profile/', profile_view, name='profile'),
+    path('mapa_locales/', mapa_locales, name='mapa_locales'),
 
 #Carrito-----------------------------------------------------
 
