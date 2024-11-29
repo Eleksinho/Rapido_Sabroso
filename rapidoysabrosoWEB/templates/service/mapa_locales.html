@@ -1,24 +1,77 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapa de Locales</title>
-
-    <!-- Cargar archivo CSS desde la carpeta estática -->
-    {% load static %}
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
-    <link rel="stylesheet" href="{% static 'app/css/mapa_locales.css' %}" />
+    <style>
+        /* Asegúrate de que el mapa tenga el tamaño correcto */
+        #map {
+            height: 100vh; /* 100% de la altura de la pantalla */
+            width: 100%; /* 100% del ancho */
+        }
+    </style>
+    <!-- Agregar los estilos de Mapbox -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
 </head>
 <body>
+    <!-- Formulario para seleccionar marca -->
+    <form method="get" id="filterForm">
+        <select id="marcaSelect" name="marca_id">
+            <option value="">Seleccionar Marca</option>
+            {% for marca in marcas %}
+                <option value="{{ marca.id }}" {% if marca.id == marca_id %}selected{% endif %}>{{ marca.nombre }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Filtrar</button>
+    </form>
+    
+
     <div id="map"></div>
 
-    <!-- Cargar la librería Leaflet -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    
-    <!-- Cargar archivo JS desde la carpeta estática -->
+    <!-- Pasar los datos de los locales desde el backend -->
+    <script>
+        var localesData = '{{ localesData|escapejs }}';  // Pasar la data como un JSON seguro
+    </script>
+
+    <!-- Cargar el archivo JS con la lógica para mostrar los locales -->
     <script src="{% static 'app/js/mapa_locales.js' %}"></script>
+
+    <!-- Agregar el script para filtrar locales -->
+    <script>
+        // Inicializamos el mapa
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            zoom: 14
+        });
+
+        // Función para agregar los marcadores
+        function agregarLocales(locales) {
+            locales.forEach(function(local) {
+                new mapboxgl.Marker()
+                    .setLngLat([local.lon, local.lat])
+                    .setPopup(new mapboxgl.Popup().setHTML(
+                        "<h3>" + local.name + "</h3><p>" + local.address + "</p>"
+                    ))
+                    .addTo(map);
+            });
+        }
+
+        // Cuando el mapa se carga, agregamos los locales
+        map.on('load', function() {
+            // Convertimos la data de los locales que viene del backend a formato JSON
+            var locales = JSON.parse(localesData);
+
+            // Llamamos a la función para agregar los marcadores al mapa
+            agregarLocales(locales);
+        });
+    </script>
+    <script>
+        console.log("Marca seleccionada:", "{{ marca_id }}");  // Ver si el valor de marca_id está presente
+    </script>
+    
 </body>
 </html>

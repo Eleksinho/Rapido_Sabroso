@@ -84,27 +84,32 @@ class Command(BaseCommand):
                             continue  # Si no se encuentra la marca, saltamos a la siguiente URL
 
                         # Intentar obtener el objeto Mapa_data existente o crearlo
-                        mapa_data, created = Mapa_data.objects.update_or_create(
-                            local=local,
-                            direccion=direccion,
-                            defaults={
-                                'telefono': telefono,
-                                'coordenadas': coordenadas,  # Coordenadas extraídas de la URL
-                                'Marca': marca,
-                                'fuente_url_mapa': url_obj,
-                            }
-                        )
+                        try:
+                            mapa_data, created = Mapa_data.objects.update_or_create(
+                                local=local,
+                                direccion=direccion,
+                                defaults={
+                                    'telefono': telefono,
+                                    'coordenadas': coordenadas,  # Coordenadas extraídas de la URL
+                                    'Marca': marca,
+                                    'fuente_url_mapa': url_obj,
+                                }
+                            )
 
-                        if created:
-                            self.stdout.write(self.style.SUCCESS(f"Datos guardados para {local}"))
-                        else:
-                            self.stdout.write(self.style.SUCCESS(f"Datos actualizados para {local}"))
+                            if created:
+                                self.stdout.write(self.style.SUCCESS(f"Datos guardados para {local}"))
+                            else:
+                                self.stdout.write(self.style.SUCCESS(f"Datos actualizados para {local}"))
+
+                        except IntegrityError as e:
+                            self.stdout.write(self.style.ERROR(f"Error al guardar los datos de {local}: {e}"))
 
                 except Exception as e:
                     self.stdout.write(self.style.ERROR(f"Error al procesar los contenedores en la URL {url}: {e}"))
 
             except Exception as e:
                 self.stdout.write(self.style.ERROR(f"No se pudo cargar la URL {url}: {e}"))
+                continue  # Continúa con la siguiente URL si hay un error
 
         # Cerrar el navegador después de completar el proceso
         driver.quit()

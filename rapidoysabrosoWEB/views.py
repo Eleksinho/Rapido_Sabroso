@@ -282,23 +282,51 @@ def register(request):
     return render(request, 'registration/register.html', {'form': form})
 
 
+
+from django.shortcuts import render
+from .models import Mapa_data, Marca
+import json
+
 def mapa_locales(request):
-    # Obtener los locales con coordenadas válidas
-    locales = Mapa_data.objects.filter(coordenadas__isnull=False).exclude(coordenadas="")
+    # Obtener todas las marcas para mostrarlas en el formulario
+    marcas = Marca.objects.all()
 
-    # Convertir las coordenadas en JSON para pasarlas al template
-    data = [
-        {
-            "nombre": local.local,
-            "direccion": local.direccion,
-            "lat": float(local.coordenadas.split(",")[0]),
-            "lng": float(local.coordenadas.split(",")[1]),
-        }
-        for local in locales
-    ]
+    # Obtener el parámetro 'marca_id' desde la URL (GET)
+    marca_id = request.GET.get('marca_id')
 
-    return render(request, "service/mapa_locales.html", {"locales": data})
+    # Filtrar los locales según la marca seleccionada
+    if marca_id:
+        # Solo obtenemos los locales que coinciden con la marca seleccionada
+        locales = Mapa_data.objects.filter(Marca__id=marca_id)
+    else:
+        # Si no se selecciona ninguna marca, mostramos todos los locales
+        locales = Mapa_data.objects.all()
 
+    # Crear una lista de diccionarios con los datos necesarios (nombre del local y coordenadas)
+    locales_data = []
+    for local in locales:
+        if local.coordenadas:
+            try:
+                lat, lon = map(float, local.coordenadas.split(','))
+                locales_data.append({
+                    "name": local.local,
+                    "address": local.direccion,
+                    "lat": lat,
+                    "lon": lon,
+                    "marca": local.Marca.nombre  # Obtener el nombre de la marca
+                })
+            except ValueError:
+                continue
+
+    # Convertir la lista de locales a formato JSON para enviarla al frontend
+    locales_data_json = json.dumps(locales_data)
+
+    # Renderizar la plantilla pasando los datos de los locales y las marcas
+    return render(request, 'service/mapa_locales.html', {
+        'localesData': locales_data_json,
+        'marcas': marcas,
+        'marca_id': marca_id  # Pasar el ID de la marca seleccionada para mantenerlo en el selector
+    })
 # @user_is_staff
 # def TiendaNueva(request):
 #     if request.method == 'POST':
