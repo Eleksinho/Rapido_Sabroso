@@ -221,55 +221,7 @@ def convertir_precio(precio):
     """Convierte el precio de CharField a float eliminando caracteres no numéricos."""
     return float(precio.replace('$', '').replace('.', '').replace(',', ''))
 
-def agregar_a_orden(request, producto_id):
-    
-    orden, creada = Orden.objects.get_or_create(id=request.session.get('orden_id'))
 
-    # Guardamos la id de la orden en la sesión
-    request.session['orden_id'] = orden.id
-
-    # Obtenemos el producto por su ID
-    producto = get_object_or_404(Producto, id=producto_id)
-
-    # Agregamos el producto a la orden o aumentamos la cantidad si ya está
-    orden_producto, creado = OrdenProducto.objects.get_or_create(orden=orden, producto=producto)
-    if not creado:
-        orden_producto.cantidad += 1
-    orden_producto.save()
-
-    # Calcular el total de la orden, realizando la conversión en una línea
-    total = sum(float(item.producto.precio.replace('$', '').replace('.', '').replace(',', '.')) * int(item.cantidad) for item in orden.ordenproducto_set.all())
-    
-    # Guardar el total en la orden
-    orden.total = total
-    orden.save()
-
-    return redirect('ver_orden')
-
-
-def eliminar_de_orden(request, producto_id):
-    orden_id = request.session.get('orden_id')
-    if orden_id:
-        orden = get_object_or_404(Orden, id=orden_id)
-        orden_producto = orden.ordenproducto_set.filter(producto__id=producto_id).first()
-        
-        if orden_producto:
-            orden_producto.delete()
-            
-            # Recalcular el total
-            total = sum(float(item.producto.precio.replace('$', '').replace('.', '').replace(',', '.')) * item.cantidad for item in orden.ordenproducto_set.all())
-            orden.total = total
-            orden.save()
-
-    return redirect('ver_orden')
-
-
-
-
-def ver_orden(request):
-    orden = Orden.objects.get(id=request.session.get('orden_id'))
-    productos_en_orden = orden.ordenproducto_set.all()
-    return render(request, 'service/orden.html', {'orden': orden, 'productos_en_orden': productos_en_orden})
 
 def register(request):
     if request.method == 'POST':
@@ -471,3 +423,126 @@ def SelectorTienda(request, selector_id):
         'scraping_iniciado': scraping_iniciado
     }
     return render(request, 'service/SelectorTienda.html', context)
+
+
+#carrito---------------------------------------
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Producto
+from .utils import agregar_al_carrito, eliminar_del_carrito, obtener_carrito
+
+def ver_carrito(request):
+    carrito = request.session.get('carrito', {})
+    productos = []
+    total = 0
+
+    for producto_id, datos in carrito.items():
+        producto = get_object_or_404(Producto, id=producto_id)
+        cantidad = datos.get('cantidad', 1)
+        precio_listo = int(datos.get('precio'))
+
+        total += precio_listo * cantidad  # Accumulate total properly # Sumamos el precio * cantidad al total
+        productos.append({
+            'producto': producto,
+            'cantidad': cantidad,
+            'total': precio_listo * cantidad,  
+        })
+    
+
+    
+    return render(request, 'service/carrito.html', {'productos': productos, 'total': total})
+
+
+
+def agregar_a_carrito(request, producto_id):
+    carrito = request.session.get('carrito', {})
+    producto = get_object_or_404(Producto, id=producto_id)
+
+     # Precio en centavos
+
+    producto_id = str(producto_id)  # ID como cadena
+    precio_listo = producto.precio.replace('$', '').replace('.', '')  # Eliminar símbolo y separadores
+
+    if producto_id in carrito:
+        carrito[producto_id]['cantidad'] += 1
+    else:
+        carrito[producto_id] = {
+            'nombre': producto.nombre,
+            'precio': precio_listo,  # Precio en centavos
+            'cantidad': 1,
+            'imagen_url': producto.imagen_url,
+        }
+    print(precio_listo)
+    request.session['carrito'] = carrito
+    return redirect('ver_carrito')
+
+
+
+
+
+
+
+def eliminar_de_carrito(request, producto_id):
+    """Elimina un producto del carrito almacenado en la sesión."""
+    carrito = request.session.get('carrito', {})
+
+    # Eliminar el producto del carrito
+    if str(producto_id) in carrito:
+        del carrito[str(producto_id)]
+        request.session['carrito'] = carrito  # Actualiza la sesión
+
+    return redirect('ver_carrito')
+
+
+#Integracion--------------------------------------------------------------
+
+from django.shortcuts import get_object_or_404, redirect
+from transbank.webpay.webpay_plus.transaction import Transaction
+from .models import Producto, Orden, OrdenProducto
+def iniciar_orden(request):
+    carrito = request.session.get('carrito', {})
+    if not carrito:
+        return redirect('ver_carrito')
+
+    orden = Orden.objects.create(total=0)
+    total = 0
+
+    for producto_id, datos in carrito.items():
+        producto = get_object_or_404(Producto, id=producto_id)
+        cantidad = datos.get('cantidad',0)
+        precio_listo = int(datos.get('precio',0))
+        total += precio_listo * cantidad 
+        OrdenProducto.objects.create(orden=orden, producto=producto, cantidad=cantidad)
+        
+    orden.total = total 
+    orden.save()
+
+    transaction = Transaction()
+    response = transaction.create(
+        buy_order=str(orden.id),
+        session_id=str(request.user.id if request.user.is_authenticated else 'anon'),
+        amount=total,  # Total en centavos
+        return_url=request.build_absolute_uri('/webpay/confirmar/')
+    )
+
+    request.session['webpay_token'] = response['token']
+    return redirect(response['url'] + '?token_ws=' + response['token'])
+
+
+
+def confirmar_pago(request):
+    token = request.GET.get('token_ws')
+    transaction = Transaction()
+    response = transaction.commit(token)
+
+    if response['status'] == 'AUTHORIZED':
+        orden_id = response['buy_order']
+        orden = Orden.objects.get(id=orden_id)
+        orden.estado = 'pagada'
+        orden.save()
+
+        # Limpiar el carrito
+        request.session.pop('carrito', None)
+
+        return render(request, 'service/confirmacion.html', {'orden': orden})
+    else:
+        return render(request, 'error_pago.html', {'response': response})

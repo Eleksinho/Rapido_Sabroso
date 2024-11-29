@@ -67,7 +67,7 @@
                   <span class="producto-precio">{{ bajo.precio }}</span>
                   <span class="producto-marca">{{ bajo.marca }}</span>
                   <a href="{% url 'producto' id=bajo.id %}" class="ver-detalles">Ver detalles &rarr;</a>
-                  <form action="{% url 'agregar_a_orden' producto_id=bajo.id %}" method="POST">
+                  <form action="{% url 'agregar_a_carrito' producto_id=bajo.id %}" method="POST">
                     {% csrf_token %}
                     <button type="submit" class="boton-agregar-carrito">Agregar al carrito</button>                    
                   </form>
@@ -160,7 +160,7 @@
               
               <a href="{% url 'producto' id=producto.id %}" class="btn btn-primary">Ver detalles &rarr;</a>
               
-              <form action="{% url 'agregar_a_orden' producto.id %}" method="POST">
+              <form action="{% url 'agregar_a_carrito' producto.id %}" method="POST">
                 {% csrf_token %}
                 <button type="submit" class="boton-agregar-carrito">Agregar al carrito</button>
               </form>
