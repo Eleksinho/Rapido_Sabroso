@@ -60,8 +60,16 @@ class PageSelector(models.Model):
     
 
 class Orden(models.Model):
+    ESTADOS = [
+        ('pendiente', 'Pendiente'),
+        ('pagada', 'Pagada'),
+        ('cancelada', 'Cancelada'),
+    ]
+
     fecha = models.DateTimeField(auto_now_add=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    estado = models.CharField(max_length=10, choices=ESTADOS, default='pendiente')
+
 
 class OrdenProducto(models.Model):
     orden = models.ForeignKey(Orden, on_delete=models.CASCADE)

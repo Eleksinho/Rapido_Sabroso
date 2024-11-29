@@ -163,3 +163,12 @@ MESSAGE_TAGS = {
     messages.ERROR: 'error',
     messages.SUCCESS: 'success',
 }
+
+
+from transbank.common.integration_type import IntegrationType
+from transbank.webpay.webpay_plus.transaction import Transaction
+
+# Configuración del ambiente de prueba
+Transaction.commerce_code = "597055555532"  # Código de comercio de prueba
+Transaction.api_key = "integración"  # Valor por defecto en el SDK
+Transaction.integration_type = IntegrationType.TEST

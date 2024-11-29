@@ -1,0 +1,23 @@
+
+<table>
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in productos %}
+        <tr>
+            <td>{{ item.producto.nombre }}</td>
+            <td>{{ item.cantidad }}</td>
+            <td>${{ item.total }}</td> <!-- Mostrar como moneda -->
+            <td><a href="{% url 'eliminar_de_carrito' item.producto.id %}">Eliminar</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<p>Total: ${{ total|floatformat:2 }}</p>
+<a href="{% url 'iniciar_orden' %}">Pagar</a>
