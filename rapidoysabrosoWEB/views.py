@@ -234,7 +234,22 @@ def register(request):
     return render(request, 'registration/register.html', {'form': form})
 
 
+def mapa_locales(request):
+    # Obtener los locales con coordenadas válidas
+    locales = Mapa_data.objects.filter(coordenadas__isnull=False).exclude(coordenadas="")
 
+    # Convertir las coordenadas en JSON para pasarlas al template
+    data = [
+        {
+            "nombre": local.local,
+            "direccion": local.direccion,
+            "lat": float(local.coordenadas.split(",")[0]),
+            "lng": float(local.coordenadas.split(",")[1]),
+        }
+        for local in locales
+    ]
+
+    return render(request, "service/mapa_locales.html", {"locales": data})
 
 # @user_is_staff
 # def TiendaNueva(request):
