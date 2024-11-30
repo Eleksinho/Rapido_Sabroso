@@ -77,30 +77,34 @@ footer {
   padding: 12px 25px;
   background-color: #007900cb;
   color: #fff;
-  border-radius: 50px;
+  border-radius: 10px;
   cursor: pointer;
-  text-transform: uppercase;
   transition: all 0.3s ease;
   width: 50%;
-  border-radius: 10px;
 }
 
 .btn-success:hover {
   background-color: #007900cb;
-  border: 1px solid #007900cb;
 }
 
 /* Estilo para el botón de historial de precios */
 .btn-historial {
   font-size: 16px;
   padding: 12px 25px;
-  background-color: #e2c209; /* Cambiar color de fondo del botón (ejemplo: color naranja) */
-  color: #ffffff; /* Mantener el color blanco del texto */
+  background-color: #e2c209;
+  color: #ffffff;
   border-radius: 10px;
   width: 50%;
+  border: none; /* Eliminar cualquier borde */
+  outline: none; /* Eliminar el borde de enfoque */
+  box-shadow: none; /* Eliminar cualquier sombra */
 }
 
 .btn-historial:hover {
-  background-color: #e2c209;
-  border: 1px solid #e2c209;
+  background-color: #e2c209; /* Mantener el mismo color en hover */
 }
+
+.btn-historial:focus {
+  outline: none; /* Eliminar el borde de enfoque */
+}
+

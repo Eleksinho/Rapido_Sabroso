@@ -1,54 +1,65 @@
 {% load static %}
+<head>
+  <link rel="shortcut icon" href="{% static 'imagenes/favicon.ico' %}" type="image/x-icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Selector - Rápido&Sabroso</title>
+</head>
+
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="{% static 'app/css/RegistroTienda.css' %}">
+<!-- Enlace a tu archivo CSS personalizado -->
+<link rel="stylesheet" type="text/css" href="{% static 'app/css/SelectorTienda.css' %}">
 
-<header class="top-header"></header>
-
-
-
-<div class="container text-dark d-flex justify-content-center align-items-center vh-100">
+<div id="edit-tienda-page" class="container text-dark d-flex justify-content-center align-items-center vh-100">
   <div class="row w-100">
-    <div class="col-lg-6 d-block mx-auto">
-      <div class="row">
-        <div class="col-xl-12 col-md-12 col-md-12">
-          <div class="card">
-            <div class="card-body wow-bg" id="formBg">
-              <h2 class="colorboard text-center">Editar Selectores de Tienda</h2>
-              <h4 class="colorboard text-center">Modifica los selectores según sea necesario</h4>
-
-              <form method="POST">
-                {% csrf_token %}
-                <div class="mb-3">
-                  {{ form.as_p }}
-                </div>
-
-                <div class="row">
-                  <div class="col-6">
-                    <button type="submit" name="preview" class="btn btn-secondary btn-block">Previsualizar</button>
-                  </div>
-                  <div class="col-6">
-                    <button type="submit" name="save" class="btn btn-primary btn-block">Guardar y Ejecutar Scraping</button>
-                  </div>
-                </div>
-              </form>
+    <!-- Formulario de Edición de Selectores -->
+    <div class="col-lg-6 col-md-12 mb-4">
+      <div class="card shadow-lg rounded-lg">
+        <div class="card-body">
+          <h2 class="text-center font-weight-bold mb-4">Editar Selectores de Tienda</h2>
+          <h4 class="text-muted text-center mb-4">Modifica los selectores según sea necesario</h4>
+          
+          <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+              {{ form.as_p }}
             </div>
-          </div>
+
+            <div class="row">
+              <div class="col-6">
+                <button type="submit" name="preview" class="btn btn-warning btn-lg btn-block rounded-pill shadow-sm">Previsualizar</button>
+              </div>
+              <div class="col-6">
+                <button type="submit" name="save" class="btn btn-primary btn-lg btn-block rounded-pill shadow-sm">Guardar y Ejecutar Scraping</button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
 
-    <div class="col-lg-6 d-block mx-auto">
+    <!-- Vista Previa del Producto -->
+    <div class="col-lg-6 col-md-12 mb-4">
       {% if producto_preview %}
-        <div class="mt-4">
-          <h3 class="colorboard text-center">Vista Previa del Producto</h3>
-          <div class="card">
-            <div class="card-body wow-bg" id="formBg" >
-              <p class="colorboard"><strong>Nombre:</strong> {{ producto_preview.nombre }}</p>
-              <p class="colorboard"><strong>Precio:</strong> {{ producto_preview.precio }}</p>
-              <p class="colorboard"><strong>descripcion:</strong> {{ producto_preview.descripcion }}</p>
-              <p class="colorboard"><strong>Imagen:</strong></p>
-              <img src="{{ producto_preview.imagen_url }}" alt="Imagen del Producto" class="img-fluid">
-            </div>
+        <div>
+          <div class="card shadow-lg rounded-lg">
+            <div class="card-body">
+              <h2 class="text-center font-weight-bold mb-4">Vista Previa del Producto</h2>
+              <!-- Imagen del producto -->
+              <img src="{{ producto_preview.imagen_url }}" class="img-fluid" alt="{{ producto_preview.nombre }}">
+          
+              <!-- Nombre del producto -->
+              <h4 class="card-title mt-3">{{ producto_preview.nombre }}</h4>
+          
+              <!-- Descripción del producto -->
+              <p class="card-text">{{ producto_preview.descripcion }}</p>
+          
+              <!-- Precio del producto -->
+              <h5 class="text-precio">{{ producto_preview.precio }}</h5>
+          
+              <!-- Marca del producto -->
+              <p class="text-muted">{{ producto_preview.marca }}</p>
+            </div>          
           </div>
         </div>
       {% endif %}
@@ -56,13 +67,10 @@
   </div>
 </div>
 
-
-<div class="fixed-bottom text-left mb-3 mr-3">
-  <a href="{% url 'menu' %}" class="learn-more btn btn-secondary">
-    <span class="circle" aria-hidden="true">
-      <span class="icon arrow"></span>
-    </span>
-    <span class="button-text">Volver al menú</span>
+<!-- Botón Fijo de Volver al Menú -->
+<div class="text-center mt-5">
+  <a href="{% url 'menu' %}" class="btn btn-danger btn-lg">
+    Volver al menú
   </a>
 </div>
-</div>
+
