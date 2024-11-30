@@ -14,7 +14,7 @@
 {% block content %}
   <!-- Marcas -->
   <section class="marcas-container container">
-    <h2 class="text-center my-4" style="color: red;">Marcas Disponibles</h2>
+    <h2 class="text-center my-4" style="color: rgb(0, 0, 0);">Marcas Disponibles</h2>
   
     <!-- Carrusel de Marcas -->
     <div id="marcaCarrusel" class="carousel slide" data-bs-ride="carousel">
@@ -52,7 +52,7 @@
   </section>  
   
 <div class="containerCarrusel container">
-  <h2 class="text-center my-4" style="color: red;">Productos en Oferta</h2>
+  <h2 class="text-center my-4" style="color: rgb(0, 0, 0);">Productos en Oferta</h2>
   <div id="productoCarrusel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
       <!-- Iniciar la primera item del carrusel -->
@@ -112,40 +112,6 @@
         </div>
       </aside>
       
-      <!-- Botón para abrir/cerrar el aside en pantallas pequeñas -->
-      <button id="toggle-btn" class="btn btn-secondary d-md-none">
-        ☰
-      </button>
-      
-      <!-- Agregar un poco de espacio a la izquierda para que el contenido no quede detrás del aside -->
-      <style>
-        #buscar-producto-aside {
-          position: fixed;
-          top: 10%;
-          left: 0;
-          z-index: 1050;
-          height: 100%;
-          overflow-y: auto;
-          transform: translateX(-100%); /* Ocultar por defecto */
-        }
-      
-        #buscar-producto-aside.show {
-          transform: translateX(0); /* Deslizar cuando se active */
-        }
-      
-        #toggle-btn {
-          z-index: 1100;
-          position: fixed;
-          top: 10%;
-          left: 10px;
-          padding: 10px;
-          background-color: #343a40;
-          color: white;
-          border: none;
-          border-radius: 50%;
-        }
-      </style>
-
       <!-- Productos -->
       <section class="col-md-9 productos-container" id="productos-container">
         {% for producto in productos %}

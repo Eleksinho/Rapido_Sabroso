@@ -67,7 +67,7 @@ h2 {
     width: 100%;
     padding: 14px;
     font-size: 1.2rem;
-    background-color: #ff0000; /* Rojo vibrante */
+    background-color:#14a716;
     color: white;
     border: none;
     border-radius: 5px;
@@ -77,7 +77,7 @@ h2 {
 
 /* Hover para el botón de submit */
 .submit_btn:hover {
-    background-color: #d70606; /* Rojo más oscuro para hover */
+    background-color: #14a716;
 }
 
 /* Enlaces de "Olvidé mi contraseña" y "No iniciar sesión" */
