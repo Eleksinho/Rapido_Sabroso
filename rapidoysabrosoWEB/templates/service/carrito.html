@@ -1,23 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="shortcut icon" href="{% static 'imagenes/favicon.ico' %}" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras - Rápido&Sabroso</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/carrito.css' %}">
+</head>
+<body>
+    <div class="cart-container">
+        <!-- Contenedor para logo y título -->
+        <div class="cart-header">
+            <!-- Información del carrito (título e instrucciones) -->
+            <div class="cart-info">
+                <h1>Carrito de Compras</h1>
+                <p>En este carrito podrás revisar los productos que seleccionaste. Añadir o elimina productos. Cuando estés listo, procede al pago.</p>
+            </div>
 
-<table>
-    <thead>
-        <tr>
-            <th>Producto</th>
-            <th>Cantidad</th>
-            <th>Subtotal</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in productos %}
-        <tr>
-            <td>{{ item.producto.nombre }}</td>
-            <td>{{ item.cantidad }}</td>
-            <td>${{ item.total }}</td> <!-- Mostrar como moneda -->
-            <td><a href="{% url 'eliminar_de_carrito' item.producto.id %}">Eliminar</a></td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<p>Total: ${{ total|floatformat:2 }}</p>
-<a href="{% url 'iniciar_orden' %}">Pagar</a>
+            <!-- Logo -->
+            <div class="cart-logo">
+                <img src="{% static 'imagenes/DALL·E-2024-10-09-17.35 (1).png' %}" alt="Logo Rapido y Sabroso">
+            </div>
+        </div>
+
+        <!-- Contenedor con la tabla de productos y el resumen del carrito -->
+        <div class="cart-main">
+            <!-- Tabla de productos -->
+            <div class="cart-table-container">
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Subtotal</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in productos %}
+                        <tr>
+                            <td>{{ item.producto.nombre }}</td>
+                            <td>{{ item.cantidad }}</td>
+                            <td>${{ item.total }}</td>
+                            <td><a href="{% url 'eliminar_de_carrito' item.producto.id %}" class="btn-remove">Eliminar</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Resumen del carrito y los botones -->
+            <div class="cart-summary-container">
+                <div class="cart-summary">
+                    <p>Total: <span class="total-price">${{ total|floatformat:2 }}</span></p>
+                    <a href="{% url 'iniciar_orden' %}" class="btn-pay">Pagar</a>
+                    <div class="cart-buttons">
+                        <!-- Botón para seguir comprando -->
+                        <a href="{% url 'menu' %}" class="btn-continue">Seguir comprando</a>
+                        <!-- Botón para cancelar compra -->
+                        <a href="{% url 'menu' %}" class="btn-cancel">Cancelar compra</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

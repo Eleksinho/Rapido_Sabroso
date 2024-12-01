@@ -1,6 +1,6 @@
 .instructions {
     font-size: 1.1rem;
-    color: #333;
+    color: #000000;
     margin-top: 30px;
     line-height: 1.6;
     text-align: left;
@@ -9,7 +9,7 @@
 .instructions h3 {
     font-size: 1.6rem;
     margin-bottom: 10px;
-    color: #444;
+    color: #000000;
 }
 
 .instructions p {
@@ -47,7 +47,7 @@ body {
 h1 {
     font-size: 2.5rem;
     margin-bottom: 20px;
-    color: #333;
+    color: #000000;
 }
 
 /* Contenedor con dos columnas */

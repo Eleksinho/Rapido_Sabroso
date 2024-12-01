@@ -163,7 +163,7 @@ body {
   transition: background-color 0.3s, box-shadow 0.3s;
   outline: none;
   border: none; /* Eliminar borde */
-  margin-top: -100px; /* Ajuste para mover el botón más cerca de las tarjetas */
+  margin-top: -30px; /* Ajuste para mover el botón más cerca de las tarjetas */
 }
 
 .text-center .btn-danger:hover {

@@ -32,6 +32,9 @@
               <div class="col-6">
                 <button type="submit" name="save" class="btn btn-primary btn-lg btn-block rounded-pill shadow-sm">Guardar y Ejecutar Scraping</button>
               </div>
+              <div class="text-center mt-5">
+                <a href="{% url 'menu' %}" class="btn btn-danger btn-lg">Volver al menú</a>
+              </div> 
             </div>
           </form>
         </div>
@@ -65,12 +68,5 @@
       {% endif %}
     </div>
   </div>
-</div>
-
-<!-- Botón Fijo de Volver al Menú -->
-<div class="text-center mt-5">
-  <a href="{% url 'menu' %}" class="btn btn-danger btn-lg">
-    Volver al menú
-  </a>
 </div>
 

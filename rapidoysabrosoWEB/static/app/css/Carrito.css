@@ -1,0 +1,208 @@
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.cart-container {
+    width: 80%;
+    max-width: 1200px;
+    margin: 30px auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Contenedor para logo y título */
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+/* Información del carrito (título e instrucciones) */
+.cart-info {
+    text-align: left;
+    max-width: 50%;
+}
+
+.cart-info h1 {
+    font-size: 2rem;
+    color: #000000;
+}
+
+.cart-info p {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+/* Logo del carrito */
+.cart-logo {
+    text-align: right;
+}
+
+.cart-logo img {
+    max-width: 200px; /* Limitar el tamaño del logo */
+    height: auto;
+}
+
+/* Contenedor principal (tabla y resumen) */
+.cart-main {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+/* Estilos para la tabla */
+.cart-table-container {
+    flex: 2;
+    margin-right: 20px;
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.cart-table th,
+.cart-table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.cart-table th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.cart-table tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* Estilo para el botón de eliminar */
+.btn-remove {
+    color: #f44336;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    background-color: #fce4e4;
+    transition: background-color 0.3s ease;
+}
+
+.btn-remove:hover {
+    background-color: #f44336;
+    color: white;
+}
+
+/* Estilo para el resumen del carrito */
+.cart-summary-container {
+    flex: 1;
+    max-width: 300px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.cart-summary {
+    font-size: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cart-summary .total-price {
+    font-weight: bold;
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+.cart-summary .btn-pay {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease;
+}
+
+.cart-summary .btn-pay:hover {
+    background-color: #45a049;
+}
+
+/* Nuevos botones: Seguir comprando y Cancelar compra */
+.cart-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.cart-buttons a {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    text-align: center;
+    flex: 1;
+    margin: 0 5px;
+}
+
+.btn-continue {
+    background-color: #fbc02d;  /* Amarillo para seguir comprando */
+    color: white;
+}
+
+.btn-continue:hover {
+    background-color: #f9a825;
+}
+
+.btn-cancel {
+    background-color: #e57373;  /* Rojo para cancelar */
+    color: white;
+}
+
+.btn-cancel:hover {
+    background-color: #f44336;
+}
+
+/* Media queries para diseño responsivo */
+@media (max-width: 768px) {
+    .cart-container {
+        width: 95%;
+    }
+
+    .cart-main {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cart-summary-container {
+        margin-top: 20px;
+    }
+
+    .cart-info h1 {
+        font-size: 1.8rem;
+    }
+
+    .cart-summary .btn-pay {
+        margin-top: 10px;
+    }
+
+    .cart-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cart-buttons a {
+        margin-bottom: 10px;
+    }
+}
