@@ -65,7 +65,7 @@ def login_view(request):
             token, _ = Token.objects.get_or_create(user=user)
 
             # Almacenar el token en una cookie o retornarlo (para APIs, se usaría un JSON Response)
-            messages.success(request, f'Inicio de sesión exitoso. Token: {token.key}')
+            # messages.success(request, f'Inicio de sesión exitoso. Token: {token.key}')
             return redirect('menu')  # Cambia 'menu' por tu URL deseada
         else:
             messages.error(request, 'Usuario o contraseña incorrectos.')

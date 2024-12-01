@@ -3,14 +3,12 @@
 
 {% block title %}Selectores - Rápido&Sabroso{% endblock %}
 
-{% block css %}
-
-{% endblock %}
-
-
 {% block content %}
+<!-- Enlace a tu archivo CSS personalizado -->
+<link rel="stylesheet" type="text/css" href="{% static 'app/css/TiendaSelector.css' %}">
+
   <div class="container-fluid mt-4">  <!-- Usamos container-fluid para ocupar todo el ancho -->
-    <h2 class="text-center mb-4">Lista de selectores para la tienda:</h2>
+    <h2 class="text-center mb-4">Lista de selectores para la tienda</h2>
     
     <div class="table-responsive"> <!-- Hacemos la tabla responsiva -->
       <table class="table table-bordered table-striped">
@@ -31,11 +29,14 @@
               <td>{{ selector.url }}</td>
               <td>{{ selector.product_selector }}</td>
               <td>{{ selector.price_selector }}</td>
+
+
+              
               <td>{{ selector.description_selector }}</td>
               <td>{{ selector.image_selector }}</td>
               <td>{{ selector.logo_selector }}</td>
               <td>
-                <a href="{% url 'SelectorTienda' selector.id %}" class="btn btn-primary btn-sm">Editar</a>
+                <a href="{% url 'SelectorTienda' selector.id %}" class="btn btn-editar btn-sm">Editar</a>
               </td>
             </tr>
           {% endfor %}
