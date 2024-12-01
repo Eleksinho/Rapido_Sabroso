@@ -47,8 +47,17 @@ function trazarRuta(lat1, lon1, lat2, lon2) {
     fetch(url)
         .then(response => response.json())
         .then(data => {
+            console.log("Respuesta Directions API:", data); // Verificar la respuesta de la API
             if (data.routes.length > 0) {
                 const route = data.routes[0].geometry; // Obtener la geometría de la ruta
+
+                // Eliminar capas previas si existen
+                if (map.getLayer("route")) {
+                    map.removeLayer("route");
+                    map.removeSource("route");
+                }
+
+                // Agregar la nueva ruta
                 map.addLayer({
                     "id": "route",
                     "type": "line",
@@ -64,6 +73,8 @@ function trazarRuta(lat1, lon1, lat2, lon2) {
                         "line-width": 5
                     }
                 });
+            } else {
+                console.error("No se encontraron rutas.");
             }
         })
         .catch(error => {
@@ -71,7 +82,7 @@ function trazarRuta(lat1, lon1, lat2, lon2) {
         });
 }
 
-// Obtener la ubicación actual del usuario
+// Función para obtener la ubicación actual del usuario
 function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -87,10 +98,16 @@ function getLocation() {
                 .setPopup(new mapboxgl.Popup().setHTML("<h3>Estás aquí</h3>"))
                 .addTo(map);
 
-            // Suposición de que los datos de los locales se pasan desde el backend en JSON
-            var locales = JSON.parse(localesData);  // `localesData` será un objeto JSON pasado desde el servidor
-            agregarLocales(locales, lat, lon);  // Agregar los marcadores de los locales y encontrar el más cercano
+            // Convertir localesData a JSON y procesar los locales
+            try {
+                var locales = JSON.parse(localesData);
+                console.log("Locales cargados:", locales); // Verificar los locales cargados
+                agregarLocales(locales, lat, lon); // Agregar los marcadores de los locales y encontrar el más cercano
+            } catch (error) {
+                console.error("Error al parsear localesData:", error);
+            }
         }, function(error) {
+            console.error("Error al obtener la ubicación:", error);
             alert("No se pudo obtener la ubicación.");
         });
     } else {
@@ -129,5 +146,5 @@ function agregarLocales(locales, latUsuario, lonUsuario) {
 
 // Cuando se carga el mapa, obtener la ubicación actual y agregar los locales
 map.on('load', function() {
-    getLocation();  // Llamar a la función para obtener la ubicación del usuario
+    getLocation(); // Llamar a la función para obtener la ubicación del usuario
 });
