@@ -59,35 +59,7 @@
     <script src="{% static 'app/js/mapa_locales.js' %}"></script>
 
     <!-- Agregar el script para filtrar locales -->
-    <script>
-        // Inicializamos el mapa
-        var map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v11',
-            zoom: 14
-        });
 
-        // Función para agregar los marcadores
-        function agregarLocales(locales) {
-            locales.forEach(function(local) {
-                new mapboxgl.Marker()
-                    .setLngLat([local.lon, local.lat])
-                    .setPopup(new mapboxgl.Popup().setHTML(
-                        "<h3>" + local.name + "</h3><p>" + local.address + "</p>"
-                    ))
-                    .addTo(map);
-            });
-        }
-
-        // Cuando el mapa se carga, agregamos los locales
-        map.on('load', function() {
-            // Convertimos la data de los locales que viene del backend a formato JSON
-            var locales = JSON.parse(localesData);
-
-            // Llamamos a la función para agregar los marcadores al mapa
-            agregarLocales(locales);
-        });
-    </script>
 
     <script>
         console.log("Marca seleccionada:", "{{ marca_id }}");  // Ver si el valor de marca_id está presente
