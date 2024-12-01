@@ -11,9 +11,23 @@ body {
   background-color: #000000; /* Fondo oscuro */
 }
 
+/* Contenedor para los mensajes de alerta en la parte superior */
+.alert-container {
+  background-color: #ffffff; /* Fondo blanco para el contenedor */
+  position: fixed; /* Fija el contenedor en la parte superior */
+  top: 0; /* Pegado al borde superior */
+  left: 50%; /* Centrado horizontalmente */
+  transform: translateX(-50%); /* Para centrar el contenedor */
+  z-index: 1050; /* Asegura que los mensajes estén por encima del resto del contenido */
+  width: 90%; /* Un poco de espacio lateral */
+  max-width: 600px; /* Limita el tamaño máximo */
+  padding: 10px 15px; /* Espaciado alrededor de los mensajes */
+  margin-top: 10px; /* Espacio superior */
+}
+
 /* Estilo de la caja que contiene el formulario */
 .container {
-  background-color: #ffffff; /* Fondo blanco para el contenedor */
+  background-color: #ffffff; 
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(201, 196, 196, 0.355); /* Sombra para dar profundidad */
   padding: 40px;
@@ -26,7 +40,7 @@ body {
 /* Título del formulario */
 h2.colorboard, h4.colorboard {
   font-size: 1.8rem;
-  color: #000000; /* Color oscuro para el título */
+  color: #000000;
   margin-bottom: 30px;
   font-weight: bold;
   letter-spacing: 1px;
@@ -50,26 +64,26 @@ h2.colorboard, h4.colorboard {
 
 /* Cambio de color al enfocar el input */
 .input_box input:focus {
-  border-color: #d70606; /* Rojo brillante */
+  border-color: #000000; /* Rojo brillante */
   outline: none;
 }
 
-/* Estilo del botón de submit */
+/* Estilo del botón de registrar */
 .btn-animated {
   width: 100%;
   padding: 14px;
   font-size: 1.2rem;
-  background-color: #ff0000; /* Rojo vibrante */
-  color: white;
+  color: #fff;
+  background-color: #14a716;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-/* Hover para el botón de submit */
+/* Hover para el botón de registrar */
 .btn-animated:hover {
-  background-color: #d70606; /* Rojo más oscuro para hover */
+  background-color: #14a716;
 }
 
 /* Estilo del botón "Volver al menú" */
@@ -91,20 +105,21 @@ h2.colorboard, h4.colorboard {
   height: auto;   /* Mantiene la proporción del logo */
 }
 
+/* Estilo del botón de volver menu */
 .learn-more {
   display: inline-flex;
   align-items: center;
   text-decoration: none;
   color: #fff;
-  background-color: #000000;
+  background-color: #e90a0a;
   padding: 12px 25px;
-  border-radius: 50px;
+  border-radius: 5px;
   font-weight: bold;
   transition: background-color 0.3s, transform 0.3s;
 }
 
 .learn-more:hover {
-  background-color: #000000;
+  background-color: #e90a0a;
   transform: scale(0.95);
 }
 
@@ -121,7 +136,7 @@ h2.colorboard, h4.colorboard {
 .learn-more .icon.arrow {
   width: 6px;
   height: 6px;
-  border: solid #000000;
+  border: solid #ff0303;
   border-width: 0 2px 2px 0;
   transform: rotate(135deg);
   position: absolute;

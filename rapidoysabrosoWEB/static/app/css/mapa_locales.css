@@ -1,4 +1,183 @@
+.instructions {
+    font-size: 1.1rem;
+    color: #333;
+    margin-top: 30px;
+    line-height: 1.6;
+    text-align: left;
+}
+
+.instructions h3 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+    color: #444;
+}
+
+.instructions p {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+/* Estilo general para los párrafos */
+p {
+    margin-bottom: 15px;
+}
+
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Contenedor con dos columnas */
+.content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.map-column {
+    flex: 1;
+    min-width: 500px;
+    height: 500px;
+    margin-left: 20px;
+}
+
+.info-column {
+    flex: 1;
+    min-width: 300px;
+    margin-top: 30px;
+    text-align: left;
+}
+
+/* Formulario y selector de marca */
+form {
+    margin-top: 20px;
+    width: 100%;
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-size: 16px;
+    color: #444;
+    display: block;
+    margin-bottom: 5px;
+}
+
+select {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+}
+
+select:hover {
+    background-color: #f1f1f1;
+}
+
+button {
+    padding: 12px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Estilo para el botón "Volver al menú" */
+.btn-back {
+    padding: 12px 20px;
+    font-size: 16px;
+    background-color: #f44336;  /* Rojo */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-back:hover {
+    background-color: #d32f2f;  /* Rojo más oscuro */
+}
+
+
+/* Estilo para el mapa */
 #map {
-    height: 400px;  /* Adjust the height of the map */
-    width: 400px;   /* Ensure the map is square */
+    height: 100%;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+/* Efecto hover para el mapa */
+#map:hover {
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Media queries para hacer el diseño responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    select {
+        font-size: 14px;
+    }
+
+    button {
+        font-size: 14px;
+    }
+
+    .content-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .map-column {
+        width: 100%;
+        height: 400px;
+        margin-left: 0;
+        margin-bottom: 20px;
+    }
+
+    .info-column {
+        width: 100%;
+    }
 }

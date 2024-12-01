@@ -1,35 +1,54 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en">
+
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/mapa_locales.css' %}">
     <title>Mapa de Locales</title>
-    <style>
-        /* Asegúrate de que el mapa tenga el tamaño correcto */
-        #map {
-            height: 100vh; /* 100% de la altura de la pantalla */
-            width: 100%; /* 100% del ancho */
-        }
-    </style>
+
     <!-- Agregar los estilos de Mapbox -->
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
 </head>
 <body>
-    <!-- Formulario para seleccionar marca -->
-    <form method="get" id="filterForm">
-        <select id="marcaSelect" name="marca_id">
-            <option value="">Seleccionar Marca</option>
-            {% for marca in marcas %}
-                <option value="{{ marca.id }}" {% if marca.id == marca_id %}selected{% endif %}>{{ marca.nombre }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit">Filtrar</button>
-    </form>
-    
 
-    <div id="map"></div>
+    <!-- Contenedor principal -->
+    <div class="container">
+        <h1>¡Encuentra Tu Local Más Cercano!</h1>
+        <!-- Contenedor con dos columnas -->
+        <div class="content-wrapper">
+            <!-- Columna del formulario y las instrucciones -->
+            <div class="info-column">
+                <div class="instructions">
+                    <h3>¿Cómo usar el mapa?</h3>
+                    <p>Al seleccionar una marca en el formulario de arriba, el mapa mostrará todos los locales relacionados con esa marca. Haz clic en los marcadores del mapa para obtener más información, como la dirección y nombre del local.</p>
+                    <p>El mapa se puede mover y hacer zoom para explorar los locales de cerca. Utiliza los controles de la esquina inferior derecha para ajustar el zoom según lo necesites.</p>
+                </div>
+
+                <!-- Formulario para seleccionar la marca -->
+                <form method="get" id="filterForm">
+                    <div class="form-group">
+                        <select id="marcaSelect" name="marca_id">
+                            <option value="">Seleccionar Marca</option>
+                            {% for marca in marcas %}
+                                <option value="{{ marca.id }}" {% if marca.id == marca_id %}selected{% endif %}>{{ marca.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Filtrar</button>
+                </form>
+                <a href="{% url 'menu' %}">
+                    <button type="button" class="btn-back">Volver al menú</button>
+                </a>
+            </div>
+            <!-- Columna del mapa -->
+            <div class="map-column">
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
 
     <!-- Pasar los datos de los locales desde el backend -->
     <script>
@@ -69,9 +88,10 @@
             agregarLocales(locales);
         });
     </script>
+
     <script>
         console.log("Marca seleccionada:", "{{ marca_id }}");  // Ver si el valor de marca_id está presente
     </script>
-    
+
 </body>
 </html>

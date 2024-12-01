@@ -316,7 +316,7 @@ footer {
 /* Product Brand */
 .producto-marca {
   font-size: 20px;
-  color: #fa0505;
+  color: #000000;
   margin-bottom: 10px;
   white-space: nowrap;
   overflow: hidden;
@@ -356,8 +356,7 @@ footer {
 }
 
 .boton-agregar-carrito:hover {
-  background-color: red;
-  border: 1px solid red;
+  background-color: #007900cb;
 }
 
 /* Ensure responsive design */
@@ -502,3 +501,36 @@ footer {
   display: block;
   margin: 0 auto;
 }
+
+#buscar-producto-aside {
+  position: fixed;
+  top: 10%;
+  right: 0; /* Mueve el aside hacia la derecha */
+  max-width: 250px; /* Limita el tamaño máximo a 250px */
+  z-index: 1050;
+  height: 100%;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+}
+
+#toggle-btn {
+  position: fixed;
+  top: 10%;
+  left: 15px; /* Coloca el botón más a la izquierda */
+  z-index: 1060; /* Asegúrate de que el botón esté encima del aside */
+  background-color: #ccc;
+  border: none;
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#buscar-producto-aside.open {
+  transform: translateX(0); /* Muestra el aside cuando tiene la clase "open" */
+}
+
+#buscar-producto-aside.show {
+  transform: translateX(0); /* Deslizar cuando se active */
+}
+

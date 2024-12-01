@@ -7,18 +7,19 @@
   <link rel="stylesheet" type="text/css" href="{% static 'app/css/RegistroTienda.css' %}">
 </head>
 
-<div class="container mt-3">
-  {% if messages %}
+<!-- Contenedor para los mensajes de alerta en la parte superior -->
+{% if messages %}
+  <div class="alert-container">
     {% for message in messages %}
       <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
         {{ message }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     {% endfor %}
-  {% endif %}
-</div>
+  </div>
+{% endif %}
 
-<!-- Main container -->
+<!-- Main container para el formulario -->
 <div class="container text-center text-dark d-flex justify-content-center align-items-center vh-90">
   <div class="row">
     <div class="col-lg-6 d-block mx-auto">

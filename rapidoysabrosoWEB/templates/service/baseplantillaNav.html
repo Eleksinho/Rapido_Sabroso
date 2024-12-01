@@ -10,7 +10,7 @@
   {% endblock %}
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="{% static 'app/css/navbar.css' %}">
-  <link rel="stylesheet" type="text/css" href="{% static 'app/css/categorias.css' %}"> <!-- Vincula el nuevo archivo de CSS -->
+  <link rel="stylesheet" type="text/css" href="{% static 'app/css/categorias.css' %}">
 </head>
 <body class="bg-light">
 
@@ -35,6 +35,9 @@
               <a class="nav-link" href="#" data-toggle="modal" data-target="#categoriaModal">
                 <i class="far fa-clone"></i>Categoría
               </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'mapa_locales' %}"><i class="fas fa-sign-in-alt"></i>Mapa</a>
             </li>
             <li class="nav-item">
               {% comment %} <a class="nav-link" href="#"><i class="far fa-calendar-alt"></i>Mapa</a> {% endcomment %}
