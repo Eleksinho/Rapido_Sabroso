@@ -74,6 +74,7 @@ class Orden(models.Model):
 class OrdenProducto(models.Model):
     orden = models.ForeignKey(Orden, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    user= models.ForeignKey(User, on_delete=models.CASCADE) 
     cantidad = models.PositiveIntegerField(default=1)
 
     def subtotal(self):

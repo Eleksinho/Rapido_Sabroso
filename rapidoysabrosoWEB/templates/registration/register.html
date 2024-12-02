@@ -18,7 +18,7 @@
         
         <form method="POST" class="form-register">
             {% csrf_token %}
-            <div class="input_box">
+            <!-- <div class="input_box">
                 <label for="username">Nombre de usuario</label>
                 <input type="text" id="username" name="username" placeholder="Escribe tu usuario" required>
             </div>
@@ -32,8 +32,8 @@
             <div class="input_box">
                 <label for="confirm-password">Confirma tu contraseña</label>
                 <input type="password" id="confirm-password" name="confirm_password" placeholder="Repite tu contraseña" required>
-            </div>
-            
+            </div> -->
+            {{ form.as_p }}
             <button type="submit" class="submit_btn">Registrarse</button>
         </form>
         

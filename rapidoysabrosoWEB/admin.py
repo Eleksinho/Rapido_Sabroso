@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Url, Producto, PageSelector, Categoria, Marca, Profile, HistorialPrecio
+from .models import Url, Producto, PageSelector, Categoria, Marca, Profile, HistorialPrecio, Orden, OrdenProducto
 
 # Admin para el modelo Url
 @admin.register(Url)
@@ -63,3 +63,21 @@ class MapaDataAdmin(admin.ModelAdmin):
     search_fields = ("local", "direccion", "telefono", "coordenadas", "Marca__nombre", "fuente_url_mapa__url")  # Búsqueda avanzada
     list_filter = ("Marca", "fuente_url_mapa", "fecha")  # Filtros por marca, fuente y fecha
     ordering = ("-fecha",)  # Orden descendente por fecha de scraping
+
+@admin.register(Orden)
+class OrdenAdmin(admin.ModelAdmin):
+    list_display = ('id', 'fecha', 'total', 'estado')  # Muestra estas columnas en el listado
+    list_filter = ('estado', 'fecha')  # Añade filtros por estado y fecha
+    search_fields = ('id',)  # Habilita búsqueda por ID
+    ordering = ('-fecha',)  # Ordena por fecha descendente
+
+@admin.register(OrdenProducto)
+class OrdenProductoAdmin(admin.ModelAdmin):
+    list_display = ('id', 'orden', 'producto','user', 'cantidad', 'subtotal')  # Mostrar estos campos en el listado
+    list_filter = ('orden', 'producto')  # Filtros para orden y producto
+    search_fields = ('orden__id', 'producto__nombre')  # Búsqueda por ID de la orden o nombre del producto
+    ordering = ('orden',)  # Ordenar por la orden
+
+    def subtotal(self, obj):
+        return obj.subtotal()
+    subtotal.short_description = 'Subtotal'  # Nombre que se muestra en la columna

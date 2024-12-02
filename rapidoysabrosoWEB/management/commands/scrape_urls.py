@@ -51,6 +51,8 @@ def descargar_imagen(url_imagen):
     except requests.exceptions.RequestException:
         return None
 
+# Parte del código permanece igual...
+
 class Command(BaseCommand):
     help = 'Realiza scraping de todas las URLs almacenadas y extrae los productos'
 
@@ -60,9 +62,9 @@ class Command(BaseCommand):
 
         for url_obj in urls:
             # Verificar si la URL ya fue scrapeada hoy
-            if HistorialPrecio.objects.filter(producto__fuente_url=url_obj, fecha=today).exists():
-                print(f"{url_obj.url} ya fue scrapeada hoy. Se omite.")
-                continue  # Omitir esta URL y pasar a la siguiente
+            # if HistorialPrecio.objects.filter(producto__fuente_url=url_obj, fecha=today).exists():
+            #     print(f"{url_obj.url} ya fue scrapeada hoy. Se omite.")
+            #     continue  # Omitir esta URL y pasar a la siguiente
 
             url = url_obj.url
             print(f"Scraping {url}...")
@@ -145,14 +147,13 @@ class Command(BaseCommand):
                     if not historial_hoy:
                         HistorialPrecio.objects.create(producto=producto_existente, precio=precio_producto)
                     
-                    # Actualizar siempre los datos del producto con la información más reciente
-                    producto_existente.precio = precio_producto
-                    producto_existente.descripcion = descripcion_producto
-                    producto_existente.imagen_url = imagen_url
-                    producto_existente.categoria = categoria
-                    producto_existente.marca = marca
-                    producto_existente.save()
-
+                        if producto_existente.precio != precio_producto:
+                            producto_existente.precio = precio_producto  # Actualizamos el precio del producto
+                            producto_existente.descripcion = descripcion_producto
+                            producto_existente.imagen_url = imagen_url
+                            producto_existente.categoria = categoria
+                            producto_existente.marca = marca
+                            producto_existente.save(force_update=True)  # Guardamos el producto con los nuevos datos
                 else:
                     # Crear un nuevo producto y agregarlo al historial
                     nuevo_producto = Producto.objects.create(

@@ -92,6 +92,20 @@ def logout_view(request):
     # Redirigir a la página de inicio o cualquier otra página
     return redirect('login')
 
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            usuario = form.save()
+            login(request, usuario)  # Autentica al usuario después de registrarse
+            return redirect('menu')  # Cambia 'inicio' por tu vista de inicio
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/register.html', {'form': form})
+
+
+
+
 
 def obtener_productos_con_precio_bajo():
     # Obtiene la fecha actual
@@ -220,18 +234,6 @@ def producto(request, id):
 def convertir_precio(precio):
     """Convierte el precio de CharField a float eliminando caracteres no numéricos."""
     return float(precio.replace('$', '').replace('.', '').replace(',', ''))
-
-
-
-def register(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect(' service/login')
-    else:
-        form = UserCreationForm()
-    return render(request, 'registration/register.html', {'form': form})
 
 
 
@@ -425,6 +427,19 @@ def SelectorTienda(request, selector_id):
     return render(request, 'service/SelectorTienda.html', context)
 
 
+
+
+@login_required
+def MostrarHistorial(request):
+    # Filtra las órdenes relacionadas al usuario actual con estado "pagada"
+    ordenes = Orden.objects.filter(
+        ordenproducto__user=request.user,
+        estado__iexact="pagada"  # Asegura que el estado sea "pagada" (insensible a mayúsculas/minúsculas)
+    ).distinct()
+    return render(request, 'service/MostrarHistorial.html', {'ordenes': ordenes})
+
+
+
 #carrito---------------------------------------
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Producto
@@ -499,21 +514,34 @@ from django.shortcuts import get_object_or_404, redirect
 from transbank.webpay.webpay_plus.transaction import Transaction
 from .models import Producto, Orden, OrdenProducto
 def iniciar_orden(request):
+    if not request.user.is_authenticated:  # Verificar si el usuario está autenticado
+        return redirect('login')  # Redirigir a la página de inicio de sesión si no está autenticado
+
     carrito = request.session.get('carrito', {})
     if not carrito:
         return redirect('ver_carrito')
 
+    # Crear la orden asociada al usuario
     orden = Orden.objects.create(total=0)
     total = 0
 
+    # Procesar los productos en el carrito
     for producto_id, datos in carrito.items():
         producto = get_object_or_404(Producto, id=producto_id)
-        cantidad = datos.get('cantidad',0)
-        precio_listo = int(datos.get('precio',0))
-        total += precio_listo * cantidad 
-        OrdenProducto.objects.create(orden=orden, producto=producto, cantidad=cantidad)
-        
-    orden.total = total 
+        cantidad = datos.get('cantidad', 0)
+        precio_listo = int(datos.get('precio', 0))
+        total += precio_listo * cantidad
+
+        # Crear cada OrdenProducto asociada a la orden y al usuario
+        OrdenProducto.objects.create(
+            orden=orden,
+            producto=producto,
+            cantidad=cantidad,
+            user=request.user  # Asignar el usuario autenticado
+        )
+
+    # Actualizar el total de la orden
+    orden.total = total
     orden.save()
 
     transaction = Transaction()
@@ -521,11 +549,12 @@ def iniciar_orden(request):
         buy_order=str(orden.id),
         session_id=str(request.user.id if request.user.is_authenticated else 'anon'),
         amount=total,  # Total en centavos
-        return_url=request.build_absolute_uri('/webpay/confirmar/')
+        return_url=request.build_absolute_uri('/ver_carrito')
     )
 
     request.session['webpay_token'] = response['token']
     return redirect(response['url'] + '?token_ws=' + response['token'])
+
 
 
 
