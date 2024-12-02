@@ -1,124 +1,126 @@
-/* Contenedor principal */
-.order-history-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-}
-
-/* Logo en la parte superior */
-.history-logo img {
-    width: 120px;
-    margin-bottom: 20px;
-}
-
-/* Título e instrucciones */
-.history-header h1 {
-    font-size: 2rem;
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
     color: #333;
-    text-align: center;
-    margin-bottom: 10px;
 }
 
-.history-header p {
-    font-size: 1rem;
-    color: #666;
-    text-align: center;
-    margin-bottom: 20px;
+.order-history-container {
+    width: 80%;
+    max-width: 1200px;
+    margin: 30px auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Tabla */
+/* Contenedor para logo y título */
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+/* Información del historial (título e instrucciones) */
+.history-info {
+    text-align: left;
+    max-width: 50%;
+}
+
+.history-info h1 {
+    font-size: 2rem;
+    color: #000000;
+}
+
+.history-info p {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+/* Logo del historial */
+.history-logo {
+    text-align: right;
+}
+
+.history-logo img {
+    max-width: 200px;
+    height: auto;
+}
+
+/* Estilos de la tabla */
+.history-table-container {
+    margin-top: 20px;
+}
+
 .history-table {
     width: 100%;
-    max-width: 800px;
     border-collapse: collapse;
-    margin: 20px 0;
-    font-size: 0.9rem;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
 }
 
-.history-table th, .history-table td {
-    border: 1px solid #ddd;
+.history-table th,
+.history-table td {
     padding: 12px;
     text-align: center;
+    border-bottom: 1px solid #ddd;
 }
 
 .history-table th {
-    background-color: #007BFF;
-    color: #fff;
-    font-weight: bold;
-}
-
-.history-table tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: #4CAF50;
+    color: white;
 }
 
 .history-table tr:hover {
-    background-color: #e6f7ff;
-}
-
-/* Productos dentro de las órdenes */
-.history-table ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    text-align: left;
-}
-
-.history-table ul li {
-    margin: 4px 0;
+    background-color: #f9f9f9;
 }
 
 /* Mensaje cuando no hay órdenes */
 .no-orders-message {
-    font-size: 1rem;
-    color: #ff0000;
+    font-size: 1.2rem;
     text-align: center;
-    margin-top: 20px;
+    color: #f44336;
 }
 
 /* Botón para volver al menú */
 .history-buttons {
-    margin-top: 20px;
+    text-align: center;
+    margin-top: 30px;
 }
 
 .btn-return {
-    display: inline-block;
+    background-color: #e57373;
+    color: white;
     padding: 10px 20px;
-    background-color: #007BFF;
-    color: #fff;
+    border-radius: 6px;
     text-decoration: none;
-    font-size: 1rem;
-    border-radius: 5px;
+    font-size: 1.2rem;
     transition: background-color 0.3s ease;
 }
 
 .btn-return:hover {
-    background-color: #0056b3;
+    background-color: #f44336;
 }
 
-/* Responsive */
+/* Media queries para diseño responsivo */
 @media (max-width: 768px) {
-    .history-table {
-        font-size: 0.8rem;
+    .order-history-container {
+        width: 95%;
+    }
+
+    .history-header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .history-info h1 {
+        font-size: 1.8rem;
     }
 
     .history-table th, .history-table td {
-        padding: 8px;
-    }
-
-    .history-header h1 {
-        font-size: 1.5rem;
-    }
-
-    .history-header p {
-        font-size: 0.9rem;
-    }
-
-    .btn-return {
         font-size: 0.9rem;
     }
 }

@@ -2,11 +2,13 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <link rel="shortcut icon" href="{% static 'imagenes/favicon.ico' %}" type="image/x-icon">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Historial de Órdenes - Rápido&Sabroso</title>
     <link rel="stylesheet" type="text/css" href="{% static 'app/css/MostrarHistorial.css' %}">
 </head>
+
 <body>
     <div class="order-history-container">
         <!-- Contenedor para logo y título -->
@@ -26,32 +28,34 @@
         <!-- Contenedor para el historial de órdenes -->
         <div class="history-main">
             {% if ordenes %}
-                <table class="history-table">
-                    <thead>
-                        <tr>
-                            <th>Fecha</th>
-                            <th>Total</th>
-                            <th>Estado</th>
-                            <th>Productos</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for orden in ordenes %}
+                <div class="history-table-container">
+                    <table class="history-table">
+                        <thead>
                             <tr>
-                                <td>{{ orden.fecha|date:"d M Y, H:i" }}</td>
-                                <td>${{ orden.total|floatformat:2 }}</td>
-                                <td>{{ orden.estado|title }}</td>
-                                <td>
-                                    <ul>
-                                        {% for orden_producto in orden.ordenproducto_set.all %}
-                                            <li>{{ orden_producto.producto.nombre }} (Cantidad: {{ orden_producto.cantidad }})</li>
-                                        {% endfor %}
-                                    </ul>
-                                </td>
+                                <th>Fecha</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                                <th>Productos</th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {% for orden in ordenes %}
+                                <tr>
+                                    <td>{{ orden.fecha|date:"d M Y, H:i" }}</td>
+                                    <td>${{ orden.total|floatformat:2 }}</td>
+                                    <td>{{ orden.estado|title }}</td>
+                                    <td>
+                                        <ul>
+                                            {% for orden_producto in orden.ordenproducto_set.all %}
+                                                <li>{{ orden_producto.producto.nombre }} (Cantidad: {{ orden_producto.cantidad }})</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             {% else %}
                 <p class="no-orders-message">No tienes órdenes en tu historial.</p>
             {% endif %}
