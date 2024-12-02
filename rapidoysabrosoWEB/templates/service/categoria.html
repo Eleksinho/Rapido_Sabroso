@@ -1,6 +1,6 @@
 {% extends 'service/baseplantillaNav.html' %}
 
-{% load static %} 
+{% load static %}
 
 {% block title %}Productos en la Categoría - {{ categoria }}{% endblock %}
 
@@ -13,12 +13,22 @@
     <h1 class="text-center my-4">Productos en la Categoría: {{ categoria }}</h1>
     
     <div class="row">
-      <!-- Aside para búsqueda y filtro -->
+      <!-- Apartado para búsqueda y filtro -->
       <div class="container">
         <div class="row">
           <!-- Barra lateral con filtro -->
-          <aside class="col-md-3" style="position: sticky; top: 10%; max-width: 250px;">
-            <div class="card p-3">
+          <aside id="buscar-producto-aside" class="col-md-3" style="position: sticky; top: 10%; max-width: 250px; transition: all 0.3s ease;">
+            <!-- Botón para abrir/cerrar el buscador -->
+            <button id="toggle-btn" class="btn-circle">
+              <!-- Ícono de búsqueda SVG -->
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </button>    
+            
+            <!-- El formulario de búsqueda -->
+            <div class="card p-3" id="buscador">
               <h5>Buscar Producto</h5>
               <input type="text" class="form-control mb-3" id="busqueda-producto" placeholder="Buscar por nombre" oninput="filtrarProductos()">
               <div id="rango-precio" class="mb-3"></div> <!-- Slider de precios -->
@@ -29,39 +39,53 @@
             </div>
           </aside>
 
-      <!-- Productos -->
-      <section class="col-md-9 productos-container" id="productos-container">
-        {% for producto in productos %}
-          <div class="producto-card">
-            <img src="{{ producto.imagen_url }}" alt="{{ producto.nombre }}" class="producto-imagen">
-            <div class="producto-info">
-              <h4 class="producto-nombre">{{ producto.nombre }}</h4>
-              <p class="producto-descripcion">{{ producto.descripcion }}</p>
-              <span class="producto-precio">{{ producto.precio }}</span>
-                
-              <span class="producto-marca">{{ producto.marca }}</span>
-              
-              <a href="{% url 'producto' id=producto.id %}" class="btn btn-primary">Ver detalles &rarr;</a>
-              
-              <form action="{% url 'agregar_a_carrito' producto.id %}" method="POST">
-                {% csrf_token %}
-                <button type="submit" class="boton-agregar-carrito">Agregar al carrito</button>
-              </form>
-            </div>
-          </div>
-        {% endfor %}
-      </section>
+          <!-- Productos -->
+          <section class="col-md-9 productos-container" id="productos-container">
+            {% for producto in productos %}
+              <div class="producto-card">
+                <img src="{{ producto.imagen_url }}" alt="{{ producto.nombre }}" class="producto-imagen">
+                <div class="producto-info">
+                  <h4 class="producto-nombre">{{ producto.nombre }}</h4>
+                  <p class="producto-descripcion">{{ producto.descripcion }}</p>
+                  <span class="producto-precio">{{ producto.precio }}</span>
+                  <span class="producto-marca">{{ producto.marca }}</span>
+                  <a href="{% url 'producto' id=producto.id %}" class="btn btn-primary">Ver detalles &rarr;</a>
+                  <form action="{% url 'agregar_a_carrito' producto.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="boton-agregar-carrito">Agregar al carrito</button>
+                  </form>
+                </div>
+              </div>
+            {% endfor %}
+          </section>
+        </div>
+      </div>
     </div>
   </div>
 {% endblock %}
 
-
 {% block javascript %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.1/nouislider.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.1/nouislider.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.basic.min.js"></script> <!-- Agrega esto -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.basic.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="{% static 'app/js/categoria.js' %}"></script>
+
+<script>
+    // Mostrar/ocultar el aside al hacer clic en el botón
+    document.getElementById('toggle-btn').addEventListener('click', function() {
+      const aside = document.getElementById('buscar-producto-aside');
+      const buscador = document.getElementById('buscador');
+      const isHidden = buscador.style.display === 'none' || buscador.style.display === '';
+
+      // Toggle visibilidad del buscador
+      if (isHidden) {
+        buscador.style.display = 'block';  // Muestra el formulario de búsqueda
+      } else {
+        buscador.style.display = 'none';   // Oculta el formulario de búsqueda
+      }
+    });
+</script>
 {% endblock %}

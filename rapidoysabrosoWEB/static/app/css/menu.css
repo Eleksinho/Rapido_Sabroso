@@ -534,3 +534,50 @@ footer {
   transform: translateX(0); /* Deslizar cuando se active */
 }
 
+/* Estilos para el botón circular */
+#toggle-btn {
+  position: fixed;
+  bottom: 20px; /* Posición en la parte inferior */
+  right: 20px;  /* Espacio desde el borde derecho */
+  background-color: #ffcc00; /* Color de fondo amarillo */
+  color: rgb(0, 0, 0); /* Color del ícono */
+  border: none;
+  border-radius: 50%; /* Hacerlo circular */
+  width: 60px;  /* Ancho del botón */
+  height: 60px; /* Altura del botón */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px; /* Tamaño del ícono */
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Sombra suave para el botón */
+  transition: all 0.3s ease;
+}
+
+#toggle-btn:hover {
+  background-color: #ffbb33; /* Color amarillo más oscuro al pasar el ratón */
+}
+
+#toggle-btn:focus {
+  outline: none; /* Eliminar el borde de enfoque */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Sombra de enfoque */
+}
+
+#toggle-btn i {
+  font-size: 30px; /* Tamaño del ícono */
+}
+
+/* Aseguramos que el botón solo aparezca en pantallas pequeñas */
+@media (max-width: 767px) {
+  #toggle-btn {
+    display: flex; /* Mostrar el botón solo en pantallas móviles */
+  }
+}
+
+/* Si se usa un buscador oculto, debe desaparecer en pantallas grandes */
+@media (min-width: 768px) {
+  #toggle-btn {
+    display: none; /* El botón no aparece en pantallas más grandes */
+  }
+}
+
