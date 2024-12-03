@@ -110,10 +110,10 @@
         
         <div class="card p-3" id="buscador">
           <h5>Buscar Producto</h5>
-          <input type="text" class="form-control mb-3" id="busqueda-producto" placeholder="Buscar por nombre" oninput="filtrarProductos()">
+          <br></br>
           <div id="rango-precio" class="mb-3"></div> <!-- Slider de precios -->
+          <input type="text" class="form-control mb-3" id="busqueda-producto" placeholder="Buscar por nombre" oninput="filtrarProductos()">
           <p>Rango de precio seleccionado: $<span id="precio-minimo"></span> - $<span id="precio-maximo"></span></p>
-      
           <button id="sortAscBtn" class="btn-danger mb-2" onclick="ordenarProductos('asc')">Menor a Mayor</button>
           <button id="sortDescBtn" class="btn-primary" onclick="ordenarProductos('desc')">Mayor a Menor</button>
         </div>

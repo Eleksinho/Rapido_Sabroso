@@ -3,6 +3,7 @@
 <html lang="es">
 <head>
   <link rel="shortcut icon" href="{% static 'imagenes/favicon.ico' %}" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Dashboard - Rápido&Sabroso{% endblock %}</title>
@@ -30,46 +31,63 @@
               <div class="left"></div>
               <div class="right"></div>
             </div>
-    
+  
+            <!-- Botón Categoría -->
             <li class="nav-item active">
               <a class="nav-link" href="#" data-toggle="modal" data-target="#categoriaModal">
-                <i class="far fa-clone"></i>Categoría
+                <i class="far fa-clone"></i> Categoría
               </a>
             </li>
+  
+            <!-- Botón Mapa -->
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'mapa_locales' %}"><i class="fas fa-sign-in-alt"></i>Mapa</a>
+              <a class="nav-link" href="{% url 'mapa_locales' %}">
+                <i class="fas fa-map-marker-alt"></i> Mapa
+              </a>
             </li>
-            <li class="nav-item">
-              {% comment %} <a class="nav-link" href="#"><i class="far fa-calendar-alt"></i>Mapa</a> {% endcomment %}
-            </li>
+  
             {% if user.is_authenticated %}
               {% if user.is_staff %}
-              <!-- Opciones visibles solo para administradores -->
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'RegistroTienda' %}"><i class="fas fa-plus-circle"></i>Agregar Tienda</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'TiendaSelector' %}"><i class="fas fa-edit"></i>Editar Selectores</a>
-              </li>
+                <!-- Opciones visibles solo para administradores -->
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'RegistroTienda' %}">
+                    <i class="fas fa-plus-circle"></i> Agregar Tienda
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'TiendaSelector' %}">
+                    <i class="fas fa-edit"></i> Editar Selectores
+                  </a>
+                </li>
               {% endif %}
-              
+  
               <!-- Opciones comunes para usuarios autenticados -->
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'profile' %}"><i class="far fa-chart-bar"></i>Perfil</a>
+                <a class="nav-link" href="{% url 'profile' %}">
+                  <i class="far fa-user"></i> Perfil
+                </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'MostrarHistorial' %}"><i class="far fa-chart-bar"></i>Historial De Compras</a>
+                <a class="nav-link" href="{% url 'MostrarHistorial' %}">
+                  <i class="fas fa-history"></i> Historial De Compras
+                </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i>Cerrar Sesión</a>
+                <a class="nav-link" href="{% url 'logout' %}">
+                  <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </a>
               </li>
             {% else %}
               <!-- Opciones para usuarios no autenticados -->
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i>Iniciar Sesión</a>
+                <a class="nav-link" href="{% url 'login' %}">
+                  <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'register' %}"><i class="fas fa-user-plus"></i>Registrarse</a>
+                <a class="nav-link" href="{% url 'register' %}">
+                  <i class="fas fa-user-plus"></i> Registrarse
+                </a>
               </li>
             {% endif %}
           </ul>
@@ -77,6 +95,7 @@
       </div>
     </nav>
   </header>
+  
 
   <!-- Modal para Categorías -->
   <div class="modal fade" id="categoriaModal" tabindex="-1" aria-labelledby="categoriaModalLabel" aria-hidden="true">

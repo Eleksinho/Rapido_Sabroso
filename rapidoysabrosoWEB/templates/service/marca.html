@@ -19,13 +19,22 @@ Marca {{ marca }} - Rápido&Sabroso
               <div class="container">
                 <div class="row">
                   <!-- Barra lateral con filtro -->
-                  <aside class="col-md-3" style="position: sticky; top: 10%; max-width: 250px;">
-                    <div class="card p-3">
+                  <aside id="buscar-producto-aside" class="col-md-3" style="position: sticky; top: 10%; max-width: 250px; transition: all 0.3s ease;">
+                    <!-- Botón para abrir/cerrar el buscador (ubicado en la parte inferior) -->
+                    <button id="toggle-btn" class="btn-circle">
+                      <!-- Ícono de búsqueda SVG -->
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                      </svg>
+                    </button>        
+                    
+                    <div class="card p-3" id="buscador">
                       <h5>Buscar Producto</h5>
-                      <input type="text" class="form-control mb-3" id="busqueda-producto" placeholder="Buscar por nombre" oninput="filtrarProductos()">
+                      <br></br>
                       <div id="rango-precio" class="mb-3"></div> <!-- Slider de precios -->
+                      <input type="text" class="form-control mb-3" id="busqueda-producto" placeholder="Buscar por nombre" oninput="filtrarProductos()">
                       <p>Rango de precio seleccionado: $<span id="precio-minimo"></span> - $<span id="precio-maximo"></span></p>
-            
                       <button id="sortAscBtn" class="btn-danger mb-2" onclick="ordenarProductos('asc')">Menor a Mayor</button>
                       <button id="sortDescBtn" class="btn-primary" onclick="ordenarProductos('desc')">Mayor a Menor</button>
                     </div>
@@ -63,4 +72,19 @@ Marca {{ marca }} - Rápido&Sabroso
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="{% static 'app/js/marca.js' %}"></script>
+
+<script>
+  // Mostrar/ocultar el aside al hacer clic en el botón
+  document.getElementById('toggle-btn').addEventListener('click', function() {
+const buscador = document.getElementById('buscador');
+const isHidden = buscador.style.display === 'none' || buscador.style.display === '';
+
+// Toggle visibilidad del buscador
+if (isHidden) {
+  buscador.style.display = 'block';  // Muestra el formulario de búsqueda
+} else {
+  buscador.style.display = 'none';   // Oculta el formulario de búsqueda
+}
+});
+</script>
 {% endblock %}

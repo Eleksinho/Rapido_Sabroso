@@ -268,7 +268,7 @@ footer {
 /* Hover effect */
 .producto-card:hover {
   transform: scale(1.05); /* Aumenta ligeramente el tamaño */
-  border: 1px solid red; /* Cambia el borde a rojo */
+  border: 1px solid rgb(0, 0, 0); /* Cambia el borde a rojo */
 }
 /* Product Image */
 .producto-imagen {
@@ -509,9 +509,31 @@ footer {
   max-width: 250px; /* Limita el tamaño máximo a 250px */
   z-index: 1050;
   height: 100%;
-  overflow-y: auto;
-  transition: transform 0.3s ease;
 }
+
+#buscar-producto-aside button {
+  padding: 10px 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#buscar-producto-aside #sortAscBtn {
+  background-color: #007bff; /* Color azul */
+  color: #fff;
+}
+
+#buscar-producto-aside #sortDescBtn {
+  background-color: #a73728; /* Color verde */
+  color: #fff;
+}
+
+#buscar-producto-aside button:hover {
+  transform: scale(1.1); /* Ampliar ligeramente al pasar el mouse */
+}
+
+
 
 #toggle-btn {
   position: fixed;
@@ -580,4 +602,6 @@ footer {
     display: none; /* El botón no aparece en pantallas más grandes */
   }
 }
+
+
 
