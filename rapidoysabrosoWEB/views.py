@@ -490,12 +490,6 @@ def agregar_a_carrito(request, producto_id):
     request.session['carrito'] = carrito
     return redirect('ver_carrito')
 
-
-
-
-
-
-
 def eliminar_de_carrito(request, producto_id):
     """Elimina un producto del carrito almacenado en la sesión."""
     carrito = request.session.get('carrito', {})
@@ -506,7 +500,6 @@ def eliminar_de_carrito(request, producto_id):
         request.session['carrito'] = carrito  # Actualiza la sesión
 
     return redirect('ver_carrito')
-
 
 #Integracion--------------------------------------------------------------
 
@@ -549,17 +542,19 @@ def iniciar_orden(request):
         buy_order=str(orden.id),
         session_id=str(request.user.id if request.user.is_authenticated else 'anon'),
         amount=total,  # Total en centavos
-        return_url=request.build_absolute_uri('/ver_carrito')
+        return_url=request.build_absolute_uri('/webpay/confirmar')
     )
 
     request.session['webpay_token'] = response['token']
     return redirect(response['url'] + '?token_ws=' + response['token'])
 
-
-
-
 def confirmar_pago(request):
     token = request.GET.get('token_ws')
+    session_token = request.session.get('webpay_token')
+
+    if token != session_token:
+        return render(request, 'sevice/carrito.html', {'response': 'Token inválido'})
+
     transaction = Transaction()
     response = transaction.commit(token)
 
@@ -570,8 +565,9 @@ def confirmar_pago(request):
         orden.save()
 
         # Limpiar el carrito
-        request.session.pop('carrito', None)
+        request.session['carrito'] = {}
+        request.session.modified = True
 
         return render(request, 'service/confirmacion.html', {'orden': orden})
     else:
-        return render(request, 'error_pago.html', {'response': response})
+        return render(request, 'error.html', {'response': response})

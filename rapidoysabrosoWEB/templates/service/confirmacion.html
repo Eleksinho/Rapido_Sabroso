@@ -1,3 +1,21 @@
-<h1>¡Pago exitoso!</h1>
-<p>Gracias por tu compra. Tu orden #{{ orden.id }} ha sido procesada correctamente.</p>
-<a href="/">Volver al inicio</a>
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="shortcut icon" href="{% static 'imagenes/favicon.ico' %}" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago Exitoso - Rápido&Sabroso</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/ConfirmacionCompra.css' %}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>¡Pago exitoso!</h1>
+        <p>Gracias por tu compra. Tu orden ha sido procesada correctamente.</p>
+        <a href="{% url 'MostrarHistorial' %}" class="btn-continue">Volver al inicio</a>
+    </div>
+
+</body>
+</html>
